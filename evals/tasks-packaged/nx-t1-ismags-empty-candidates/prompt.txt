@@ -1,0 +1,12 @@
+You are working in a fresh checkout of NetworkX, a Python library for graphs (package code in `networkx/`, tests in `tests/` subdirectories next to the modules).
+
+Problem report:
+`ISMAGS.largest_common_subgraph()` crashes when no subgraph node has a candidate match in the graph. Reproduction: build ISMAGS on two `nx.path_graph(5)` graphs where every subgraph node carries the attribute `color='blue'` and the graph nodes carry no color, using `node_match=nx.isomorphism.categorical_node_match('color', None)`. Calling `list(ismags.largest_common_subgraph())` raises `ValueError: min() iterable argument is empty` instead of simply yielding no results; there is no common subgraph in that situation, so the expected result is an empty list. A related trigger: a graph in which every node has a self-loop, matched against a subgraph without self-loops, should likewise yield no results, not crash. Ordinary matching cases must keep working.
+
+Investigate, find the root cause, and fix it in the library code so the reported behavior is correct in general, not just for the examples above. Rules:
+- Do not edit existing files under any `tests/` directory. You may add new test files if you want, but grading uses an external test suite.
+- Keep the change minimal and consistent with the surrounding code style; do not change public APIs or unrelated behavior.
+- Verify your fix by running the relevant existing tests from the repo root with the prepared environment:
+  {PYTHON} -m pytest networkx/algorithms/isomorphism/tests/test_ismags.py -q
+  Do not install packages.
+- When finished, give a short summary: root cause, what you changed, and what you ran to verify.
