@@ -38,6 +38,18 @@ Samuel (07:41 ET): V1 frozen; ramp up. Be more aggressive and curious, token-max
 - **Happened:** Verdict PARTIAL. Native AGENTS.md load PROVEN when no CLAUDE.md exists in cwd/ancestors (B, 2/2). Trap PROVEN (C, 2/2): annex-only CLAUDE.md silently suppresses the shared file — the bridge is load-bearing. Arm D: both-files mode IS settable headlessly via user settings `pluginConfigs` (`instructionFiles: claude-md-and-agents-md`), 2/2 both canaries. Recommendation: keep the `@AGENTS.md` bridge; dropping loses the annex + InstructionsLoaded hook firing and adds a silent ancestor-suppression failure mode (bit the child's first runs — repo's own ancestor CLAUDE.md contaminated in-repo scratch; clean runs moved to /tmp, deviation documented). Spend $0.1204 of $1.00 cap. Integrated as c8f14ed (author rewritten to Helm identity — child's commit carried Samuel's private email and GitHub rejected the push, GH007).
 - **Phase 2 spend so far: $0.1204 / $15.**
 
+### 08:04 — W1 install-surface matrix landed + adapter bug fixed
+- **Intended:** Capability × install-path × tool matrix, proven by invocation.
+- **Tried:** Paths (a) `npx skills add`, (b) in-tool plugin installs, (c) canonical install.sh; marker fixtures under evals/fixtures/w1-install-probes/, all cells verified on disk / in session events.
+- **Happened:** Matrix committed (integrated as ba9d73b; author rewritten to Helm identity — same GH007 issue as W5). Spend $0.6505 of $3.00 cap. Headline findings:
+  1. **Canonical adapter bug:** `.github/mcp.json` emitted `{"servers": …}`; Copilot rejects verbatim (`malformed: mcpServers: Required`). Canonical Copilot MCP only worked by accident via the root `.mcp.json`. Coordinator re-verified all three key variants with `copilot mcp list` (no model spend): mcpServers ✓, both keys ✓, servers-only ✗. **Fix applied** (adapters.py emits both keys; outputs regenerated incl. ECC ports; commit 4ed071c) and repo config re-verified live: Copilot lists all 5 workspace MCP servers.
+  2. One plugin source tree (`.claude-plugin/plugin.json` + skills/agents/hooks/.mcp.json) installs and fires under BOTH tools — bundled skill, agent, MCP tool, and hook each invoked; even the Claude-shaped hook file fired under Copilot. Caveats: Copilot local-path install prints a deprecation warning (marketplace form is supported), and its install summary under-reports what actually works.
+  3. `npx skills add` is skills-only: writes canonical copy in `.agents/skills/` + per-agent symlinks + skills-lock.json; Copilot reads `.agents/skills/` natively (no file written for it); agents/hooks/MCP/plugins via this path REFUTED.
+  4. Copilot workspace config is invisibly trust-gated: without COPILOT_ALLOW_ALL, `copilot mcp list` reports "No MCP servers configured" with correct files present. Also `copilot mcp add` refuses group/other-writable config dirs (chmod 700 fixes).
+  5. Path C scorecard: Claude — skill/agent/MCP/failure-hook all PROVEN in one run. Copilot — skill + agent PROVEN by invocation with markers on disk; MCP PROVEN via the root-.mcp.json accident (now fixed properly); failure hook REFUTED for shell failures (consistent with E4 addendum). Canonical plugin path does not exist — REFUTED for Path C.
+  - One cell UNVERIFIABLE by design: Claude remote GitHub marketplace install (local marketplace proven instead; Copilot remote marketplace proven).
+- **Phase 2 spend so far: $0.7709 / $15.** W3 still running (due 13:30).
+
 ## Learned
 <filled at hardening>
 
