@@ -31,7 +31,11 @@ PARTIAL. Sources in `evals/results/2026-09-30-P2-*` and
 4. **CLAUDE.md stays.** Native AGENTS.md load on Claude 2.1.285 PROVEN
    (2/2) — and the suppression trap PROVEN (2/2): an annex-only CLAUDE.md
    silently stops the shared file loading. Dropping the `@AGENTS.md` bridge
-   buys a silent failure mode. Verdict PARTIAL.
+   buys a silent failure mode. Verdict PARTIAL. Qualifiers (docs-checked
+   2026-09-30): suppression is the DEFAULT memory mode's behavior;
+   native AGENTS.md load requires Claude Code ≥ v2.1.277; user-level and
+   managed CLAUDE.md do not trigger suppression. Under Samuel review:
+   delete + version-aware guard probe (see 14:00 agenda).
 5. **The ecosystem's gap is enforcement.** Skills supply chain (Snyk
    ToxicSkills, 3,984 skills): 36.8% ≥1 flaw, 13.4% critical, 76 confirmed
    malicious. Audit verdicts ship in install metadata, coverage spotty,
@@ -64,7 +68,11 @@ PARTIAL. Sources in `evals/results/2026-09-30-P2-*` and
   marketplace repos; Anthropic's plugin repo is addable per GitHub docs);
   skills strongest crossover (`.github/`, `.agents/`, `.claude/` all read);
   two behavioral divergences only — directory-trust gating and
-  `postToolUseFailure` never firing for shell tools.
+  `postToolUseFailure` not firing for shell-exit failures (live-tested;
+  the event is documented generically — the shell gap is empirical only,
+  do not state it as a universal). Also: Copilot custom agents do NOT
+  inherit repo instruction files automatically — since CLI v1.0.86 they
+  opt in per agent definition (`include-custom-instructions: true`).
 - Say carefully: session-harden skill invocation PROVEN both tools;
   automatic session-close triggering is NOT fully proven on Copilot
   (sessionEnd event documented, trust-gated). Do not upgrade this claim
@@ -107,7 +115,15 @@ V1 evals: ~$1.03.
 - D3 (email V1 deck+guide to Samuel's Gmail) never decided — moot if the
   14:00 build produces a new deck; decide in the room.
 - Orientation n=8 is two batches of 4 on one codebase (NetworkX, Haiku).
-  Present as measured-here, not as a law.
+  Present as measured-here, not as a law. Q&A exposure: two independent
+  null results exist — ETH Zurich/LogicStar (arXiv 2602.11988, revised
+  2026-09-29: context files did not generally improve success, inference
+  cost +>20%) and Khatri (arXiv 2607.27250: 288 runs, no measurable
+  correctness effect). Safe stage wording: "NetworkX, Haiku 4.5, our
+  orientation protocol: 8/8 vs 6/8." Know both papers before 16:00.
+- Copilot precedence is now documented (checked 2026-09-30): first-loaded
+  wins for agents/skills, LAST-loaded wins for MCP servers. The
+  no-duplicate-names rule stands; "no reliable precedence" is retired.
 
 ## Decisions for the room (recommendation first)
 
