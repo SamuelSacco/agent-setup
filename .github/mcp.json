@@ -1,0 +1,13 @@
+{
+  "servers": {
+    "filesystem-wiki": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "./wiki"
+      ],
+      "env": {}
+    }
+  }
+}

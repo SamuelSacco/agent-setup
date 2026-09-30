@@ -1,0 +1,10 @@
+{
+  "action": {
+    "command": "./scripts/sidecar.sh record-failure",
+    "type": "command"
+  },
+  "description": "On any tool/command failure, append a structured event to the sidecar store (events.jsonl). This is how concrete failures (e.g. an invalid python invocation) become auditable data instead of prompt noise.",
+  "event": "tool_failure",
+  "name": "failure-capture",
+  "notes": "Adapters translate this into each tool's native hook format. Delivery semantics differ per tool and must be verified per tool \u2014 see evals/."
+}
