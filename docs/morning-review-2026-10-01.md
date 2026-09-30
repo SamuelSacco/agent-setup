@@ -26,7 +26,7 @@ they're labeled.
 | E5 (wiki context cost) | **PROVEN** — 38% token cut, quality 10/10 both settings, drop 0 |
 | E6 pilot (agent parity) | **BLOCKED both sides** — Claude write-approval; Copilot reported success, wrote nothing (below) |
 | Your relayed Copilot OTel details | Accurate against GitHub's official docs, every check |
-| Copilot hooks | Documented in detail by GitHub; still **REFUTED on installed v1.0.89** (0/5). "Documented ≠ shipped" |
+| Copilot hooks | **Mechanism found 01:45**: hooks are trust-gated — untrusted headless = 0/5 (our first result); `COPILOT_ALLOW_ALL=true` trusts the dir and they fire. But `postToolUseFailure` never fires for shell failures (tool reports success; exit code buried in result text). Capture = parse the payload; adapter identified, not built |
 | The pasted OTel-architecture essay | Sound pattern, mostly documented — **not needed tomorrow**. Verdict below |
 | Karpathy llm-wiki gist | Your setup already implements it (wiki + index + log + lint); E2/E5 are its measurements |
 
@@ -91,7 +91,8 @@ files for evals." Full briefs: `hidden_files/research/2026-09-30-otel-debate-*.m
 
 Claude invocations tonight: **≈ $0.20 total** (E5 $0.091, E6 pilot $0.100,
 telemetry probes $0.012). Copilot ran on the same Anthropic key: trivial
-probes (~29k input tokens) plus the E6 pilot (63.9k fresh in / 24.4k out).
+probes (~29k input tokens), the E6 pilot (63.9k fresh in / 24.4k out), and
+the E4 hook re-test (~40k fresh input across five short runs).
 No Datadog, no other services. Nothing spent on the full E6 grid.
 
 ## Today
@@ -111,4 +112,4 @@ No Datadog, no other services. Nothing spent on the full E6 grid.
 
 - E3 (wiki value vs no-wiki): unrun; reduced version only if slack.
 - Changelog brief for both CLIs: landing in `hidden_files/research/`.
-- Copilot extension-API hook path: documented, untested — post-talk.
+- Copilot `postToolUse` payload-parsing adapter (failure capture): identified tonight, not built — post-talk. Extension-API hook path also untested.

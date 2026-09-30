@@ -46,13 +46,21 @@ Researched 2026-09-30 against GitHub's docs. Verdicts in `docs/claims-ledger.md`
   2026-09-30 (E1 — Copilot invoked `session-harden` by name in a fresh
   install and executed its body).
 
-## Hooks **[documented; REFUTED on installed v1.0.89]**
+## Hooks **[PARTIAL — trust-gated; mechanism PROVEN 2026-09-30]**
 
-- GitHub documents repo hooks in `.github/hooks/*.json` (14 events incl.
-  `postToolUseFailure`, user-level `~/.copilot/hooks/*.json` too). Our E4
-  test: 0/5 induced failures captured; no hook has ever fired in this
-  machine's session logs. Docs ≠ shipped — don't build on repo hooks on
-  this build. The SDK extension-API hook path exists but is untested.
+- Repo hooks live in `.github/hooks/*.json` (envelope `{"version": 1,
+  "hooks": {...}}`; user-level at `~/.copilot/hooks/*.json`). They only
+  load when the directory is **trusted**. Headless trap: prompt mode
+  never asks, so hooks silently never load — our first E4 run scored 0/5
+  for exactly this reason. `COPILOT_ALLOW_ALL=true` (exactly `"true"`)
+  trusts the working directory in non-interactive runs; the CLI's own
+  `copilot help environment` documents this.
+- Trusted, on v1.0.89: `sessionStart` / `preToolUse` / `postToolUse`
+  fire. **`postToolUseFailure` does not fire for shell failures**: the
+  shell tool reports `resultType: "success"` even on exit 127, with the
+  exit code inside `toolResult.textResultForLlm`. Failure capture on
+  Copilot = `postToolUse` hook that parses the payload. (Non-shell tool
+  classes untested.) The SDK extension-API hook path is also untested.
 
 ## Telemetry **[PROVEN live 2026-09-30]**
 
