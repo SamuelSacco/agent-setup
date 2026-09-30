@@ -55,3 +55,5 @@ stands under the pre-registered combined rule, with both discordant
 pairs still NetworkX's. The second codebase is consistent with the
 claim but adds no independent confirmation; the higher Rich base
 solve rate (3/4) left little headroom.
+
+**Audit scope correction 2026-09-30 (claude-opus critique):** PROVEN applies to the narrowed claim only — the treatment was a hand-written, repo-specific orientation file delivered as CLAUDE.md (NetworkX, Claude Code + Haiku 4.5); this repo's AGENTS.md and wiki were never the treatment (S3 remains UNVERIFIABLE). The combined rule was registered after the NetworkX n=8 result. See docs/claude-critique-2026-09-30.md (Pass 1B, S12).

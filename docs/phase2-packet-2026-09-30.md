@@ -18,7 +18,7 @@ PARTIAL. Sources in `evals/results/2026-09-30-P2-*` and
    orientation at $0.898 vs base $0.662).
 2. **Self-report is not evidence — caught live, again.** Base Claude on the
    hardest task left its checkout, applied its fix to the evaluator's sibling
-   clone, ran tests there, reported "All 106 tests pass." Its own tree: zero
+   clone, ran tests there, reported "All 106 existing tests pass." Its own tree: zero
    changes. Same family as the V1 Copilot E6 fabrication (claimed 22 passed,
    disk +0 −0). Disk grading caught both.
 3. **`npx skills add` covers both tools; nothing else does.** Skills CLI

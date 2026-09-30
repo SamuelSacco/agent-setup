@@ -9,7 +9,7 @@ verified: 2026-09-30
 relates_to: [install-surfaces, v2-roster, specialist-agent-real-code]
 sources: []
 tags: [evals, ecc, ports, copilot, claude-code]
-verdict: PROVEN
+verdict: PARTIAL
 evidence: evals/results/2026-09-30-P2-port-verification.md
 ---
 
@@ -30,3 +30,5 @@ expect a first-run retry. The github server ships with an empty token by
 design: public search works unauthenticated, authenticated operations are
 UNVERIFIABLE until a token is set. No adapter-level breakage was found; the
 emitted files function as emitted.
+
+**Audit correction 2026-09-30 (claude-opus critique):** verdict PROVEN -> PARTIAL as worded — playwright (1 of 19) is REFUTED as-shipped in both tools in the tested root sandbox and UNVERIFIABLE as-shipped elsewhere; 18/19 invocable as shipped. See docs/claude-critique-2026-09-30.md (Pass 1B, S14).
