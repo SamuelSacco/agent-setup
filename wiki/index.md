@@ -27,6 +27,7 @@ The map of maintained knowledge. Agents: read this first, keep it current.
 - [[copilot-rubber-duck]] — PROVEN (cross-model critic)
 - [[specialist-agent-real-code]] — UNVERIFIABLE (same solves as base, +55% turns, P2 W3)
 - [[orientation-real-code]] — PROVEN at n=4 (4/4 vs 3/4, cheapest arm, P2 W3)
+- [[ecc-ports-invocable]] — PROVEN (all emitted agents/skills/MCP invoked live in both tools; Copilot `--agent` REFUTED for reviewer persona, P2 port verification)
 
 ### Decisions
 - [[telemetry-storage]] — JSONL/SQLite sidecar; Postgres only if it earns its place
