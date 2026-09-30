@@ -19,11 +19,11 @@ Researched 2026-09-30. Live-tool verdicts pending authentication.
 
 | # | Claim | Verdict | Evidence |
 |---|-------|---------|----------|
-| S1 | One install (`scripts/install.sh`) makes a canonical skill discoverable in BOTH tools | UNVERIFIABLE (file placement proven; live discovery needs auth) | evals/tasks/E1-install-parity.md |
+| S1 | One install (`scripts/install.sh`) makes a canonical skill discoverable in BOTH tools | PARTIAL — Copilot discovery PROVEN unauthenticated; Claude discovery + any invocation UNVERIFIABLE until auth | evals/results/2026-09-30-E1-partial.md |
 | S2 | A session in tool A is continuable by tool B from the shared session log + wiki | UNVERIFIABLE | evals/tasks/E2-cross-tool-continuity.md |
 | S3 | Wiki orientation improves task success vs no-wiki baseline | UNVERIFIABLE | evals/tasks/E3-wiki-value.md |
 | S4 | The failure-capture hook records structured failure events to the sidecar | UNVERIFIABLE (sidecar itself tested locally) | evals/tasks/E4-failure-capture.md |
-| S5 | Excluding archived/stale notes holds answer quality while cutting context tokens | UNVERIFIABLE | evals/tasks/E5-context-cost.md |
+| S5 | Excluding archived/stale notes holds answer quality while cutting context tokens | PARTIAL — token axis: 38% cut on seeded wiki (≥30% threshold met); quality axis UNVERIFIABLE until auth | evals/results/2026-09-30-E5-partial.md |
 | S6 | Shared specialist agents behave consistently across both tools on the same task | UNVERIFIABLE | evals/tasks/E6-agent-parity.md |
 
 ## How a verdict changes
