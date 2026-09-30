@@ -19,8 +19,10 @@ they're labeled.
 - **D2. Full E6: go / no-go.** Pilot says the grid costs more than the old
   anchors suggested and one side is broken (below). My recommendation:
   no-go for the full grid before the talk; the pilot findings are the story.
-- **D3. Deck + guide to Gmail.** Built artifacts land today; I send after
-  your review, not silently. Confirm the address (SamuelLSacco@gmail.com).
+- **D3. Deck + guide to Gmail.** Both artifacts are built and corrected
+  (deck 15 slides incl. the heuristics close; guide 17 pages). I send
+  after your review, not silently. Confirm the address
+  (SamuelLSacco@gmail.com).
 
 ## What changed overnight
 
