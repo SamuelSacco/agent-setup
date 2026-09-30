@@ -1,3 +1,5 @@
 
 # eval scratch dirs
 /evals/scratch-*/
+
+__pycache__/

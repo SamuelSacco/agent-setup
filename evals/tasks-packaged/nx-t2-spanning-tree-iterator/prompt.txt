@@ -1,0 +1,12 @@
+You are working in a fresh checkout of NetworkX, a Python library for graphs (package code in `networkx/`, tests in `tests/` subdirectories next to the modules).
+
+Problem report:
+`next()` on a freshly constructed `SpanningTreeIterator` raises `AttributeError: 'SpanningTreeIterator' object has no attribute 'partition_queue'` when `iter()` has not been called first (i.e. the iterator is used via `next(it)` directly instead of a for loop). Expected: `next(nx.SpanningTreeIterator(G))` returns the first spanning tree, exactly as iterating does, and repeated `next()` calls enumerate trees until `StopIteration`. Iterating with a for loop already works and must keep working.
+
+Investigate, find the root cause, and fix it in the library code so the reported behavior is correct in general, not just for the examples above. Rules:
+- Do not edit existing files under any `tests/` directory. You may add new test files if you want, but grading uses an external test suite.
+- Keep the change minimal and consistent with the surrounding code style; do not change public APIs or unrelated behavior.
+- Verify your fix by running the relevant existing tests from the repo root with the prepared environment:
+  {PYTHON} -m pytest networkx/algorithms/tree/tests/test_mst.py -q
+  Do not install packages.
+- When finished, give a short summary: root cause, what you changed, and what you ran to verify.
