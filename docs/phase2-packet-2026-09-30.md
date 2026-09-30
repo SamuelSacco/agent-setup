@@ -64,6 +64,19 @@ PARTIAL. Sources in `evals/results/2026-09-30-P2-*` and
   ux-ui → skill (agent form blocked on a Playwright verify loop),
   data-scientist/ux-ui agents demoted to optional. Inherited three proven
   to share identical model/tool hints — one agent, three hats.
+  - **Correction 2026-09-30 (W2 triage lab):** the rent figures above do
+    not reproduce from the files. Re-measured (tiktoken cl100k on
+    `canonical/agents/*.md` frontmatter): all 12 = 422 tokens
+    description-only (469 with names), not ~546; the roster-v2 six map
+    to only five files (178 tokens) — `task-runner` has no canonical
+    file — and total at most 227, not ~300. The ~3.5k ECC figure is
+    unverifiable from this repo. Direction (six ≈ half of twelve)
+    survives; the numbers do not. Also: no per-agent tool restriction
+    is emitted by the adapters (hints are stripped, zero `tools:`
+    allowlists) — every agent loads the full session toolset (Claude
+    default 12 defs, Copilot default 23). Evidence:
+    `evals/results/2026-09-30-LAB-rent-toolcounts.md`; backlog X1/X2/X20
+    in `docs/experiments-backlog.md`.
 - Copilot surfaces: plugins exist fully (`copilot plugin install`,
   marketplace repos; Anthropic's plugin repo is addable per GitHub docs);
   skills strongest crossover (`.github/`, `.agents/`, `.claude/` all read);
