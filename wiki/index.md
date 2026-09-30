@@ -18,9 +18,12 @@ The map of maintained knowledge. Agents: read this first, keep it current.
 - [[session-lifecycle]] — orient → log → harden; the audit trail both tools share
 
 ### References
+- [[instruction-files]] — AGENTS.md shared layer, Claude's conditional read, Copilot's no-precedence merge
 
 ### Claims (with verdicts)
 - [[opus-55-prompt-regression]] — UNVERIFIABLE as a general claim; narrow patterns only
+- [[claude-advisor]] — PROVEN (with the not-free correction)
+- [[copilot-rubber-duck]] — PROVEN (cross-model critic)
 
 ### Decisions
 - [[telemetry-storage]] — JSONL/SQLite sidecar; Postgres only if it earns its place

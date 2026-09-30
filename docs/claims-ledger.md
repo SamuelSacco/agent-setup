@@ -10,10 +10,10 @@ Researched 2026-09-30. Live-tool verdicts pending authentication.
 
 | # | Claim | Verdict | Evidence |
 |---|-------|---------|----------|
-| C1 | Claude Code has a `/advisor` command pairing a cheaper model with Opus to save tokens | pending | research: hidden_files/research/claims-tips.md |
-| C2 | GitHub Copilot CLI has a "rubber duck" feature | pending | research: claims-tips.md |
+| C1 | Claude Code has a `/advisor` command pairing a cheaper model with Opus to save tokens | **PROVEN** with correction — Sonnet drives, Opus advises at decision points; cheaper than Opus-only but each consult costs extra Opus-rate tokens; not token-neutral | research: hidden_files/research/claims-tips.md |
+| C2 | GitHub Copilot CLI has a "rubber duck" feature | **PROVEN** — built-in cross-model critic agent (Claude↔GPT); auto-consulted on non-trivial work; `/rubber-duck` to invoke | research: claims-tips.md |
 | C3 | Opus 5.5 makes older prompts behave worse | **UNVERIFIABLE** as a general claim; narrow patterns partially supported (prefill removal, effort default) | research: opus-55-prompt-claim.md |
-| C4 | Current discovery/precedence of AGENTS.md vs CLAUDE.md vs muse-instructions | pending | research: instructions-files.md |
+| C4 | Current discovery/precedence of AGENTS.md vs CLAUDE.md vs muse-instructions | **PROVEN** (docs) — AGENTS.md is the shared layer; Claude Code reads it natively since v2.1.277 only when no CLAUDE.md is present; `@AGENTS.md` import is the robust bridge; Copilot CLI combines files with no defined precedence | research: instructions-files.md |
 
 ## System claims (ours — must earn PROVEN)
 
