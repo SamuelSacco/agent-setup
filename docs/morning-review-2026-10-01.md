@@ -11,6 +11,11 @@ they're labeled.
   code in a scratch dir without your explicit approval (your standing
   boundary from last night). Approve a narrow permission (scratch eval
   dirs only) or we run E6's Claude side together at 2 PM?
+  **Resolved by you 01:44 ET** — your "approve everything yourself / put
+  the tools in yolo mode" directive. Scope as recorded: unattended eval
+  runs in scratch dirs, routine tool approvals. Irreversible and public
+  actions (org changes, publishing, anything sent in your name) still
+  wait for you.
 - **D2. Full E6: go / no-go.** Pilot says the grid costs more than the old
   anchors suggested and one side is broken (below). My recommendation:
   no-go for the full grid before the talk; the pilot findings are the story.
@@ -23,7 +28,7 @@ they're labeled.
 |---|---|
 | Your OTel claims (both tools) | **PROVEN live** — Claude writes raw request/response JSON (size-complete; thinking text redacted); Copilot exports full-content OTel JSONL. Ledger S8/S9 |
 | The "~14.5k vs 1.9k" gap | **REFUTED as a ratio** — decomposed; it's configurable harness surface. Ledger S10 |
-| E5 (wiki context cost) | **PROVEN** — 38% token cut, quality 10/10 both settings, drop 0 |
+| E5 (wiki context cost) | **PARTIAL** — 38% token cut PROVEN; the "quality 10/10, drop 0" line did not survive re-scoring (see correction below) |
 | E6 pilot (agent parity) | **BLOCKED both sides** — Claude write-approval; Copilot reported success, wrote nothing (below) |
 | Your relayed Copilot OTel details | Accurate against GitHub's official docs, every check |
 | Copilot hooks | **Mechanism found 01:45**: hooks are trust-gated — untrusted headless = 0/5 (our first result); `COPILOT_ALLOW_ALL=true` trusts the dir and they fire. But `postToolUseFailure` never fires for shell failures (tool reports success; exit code buried in result text). Capture = parse the payload; adapter identified, not built |
@@ -78,7 +83,7 @@ Overreach: the `gen_ai.*` vocabulary is still a Development-status spec
 Copilot claims rest on GitHub's docs, not captures. And for one engineer
 with two CLIs presenting tomorrow, a Collector daemon is speculative
 generality — the learning loop already closes through files → wiki →
-skills (Karpathy's pattern, E2/E5-proven).
+skills (Karpathy's pattern, E2-proven).
 
 **Kept:** file-mode capture for evals (proven tonight). **Deferred, with a
 trigger:** a ~50-line batch normalizer over the JSONL, written the first
@@ -94,6 +99,36 @@ telemetry probes $0.012). Copilot ran on the same Anthropic key: trivial
 probes (~29k input tokens), the E6 pilot (63.9k fresh in / 24.4k out), and
 the E4 hook re-test (~40k fresh input across five short runs).
 No Datadog, no other services. Nothing spent on the full E6 grid.
+
+## Corrections before you present (mine)
+
+**E5's quality axis was mis-scored and I have demoted it.** The result
+file originally scored the active-only run 10/10 and called the quality
+drop 0. Against the pre-registered criterion (drop ≤1 correct answer
+vs the same 10-question corpus-truth baseline), the four archived-only
+facts count: active-only is 6/10, drop 4 — the axis fails as written.
+What survives, precisely: token axis PROVEN (−38%); active-scope
+answers 6/6 with zero invented; the four "misses" are correct
+retirements ("not recorded" is the designed behavior for archived
+facts). Verdict now **PARTIAL** everywhere (results file, ledger S5,
+deck). If the org asks about E5, the honest sentence is: *archiving cut
+orientation tokens 38% and lost nothing still in scope — it stopped
+answering retired facts, which is the point.*
+
+## Your 01:44 ET directives, as captured
+
+- **Yolo authorization (resolves D1).** I approve routine tool calls
+  myself and run the agent CLIs in their allow-all modes for unattended
+  eval work in scratch dirs. Anything irreversible or public still
+  waits for you.
+- **The talk ends lightweight + heuristics.** New closing slide
+  ("The setup, lightweight"): ≤ ~35 tools per agent before splitting
+  into subagents; context rent is measured and budgeted (1,866 / 14,510
+  / 20,589 — same probe); telemetry closes the loop (OTel → files →
+  wiki → skills); notes get deprecated on purpose (lifecycle + forget);
+  cleanup runs automatically at session close via hook, never from
+  memory. Marked as heuristics, not theorems.
+- **muse-toolkit stays parked** until after the demo, per your order.
 
 ## Today
 
