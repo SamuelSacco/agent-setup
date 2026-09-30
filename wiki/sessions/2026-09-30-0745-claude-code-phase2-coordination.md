@@ -27,6 +27,11 @@ Samuel (07:41 ET): V1 frozen; ramp up. Be more aggressive and curious, token-max
 - **Tried:** W1 install matrix, W5 CLAUDE.md-drop, W2 ECC mining, W3 real-codebase A/B (pre-registration required before any run).
 - **Happened:** pending — results appended as they land.
 
+### 07:47 — W2 ECC mining landed (first return)
+- **Intended:** ECC inventory, license check, ports, derived roster.
+- **Tried:** Child mined affaan-m/ECC at c70874f (v2.2.2); LICENSE read in full: MIT. 668 items inventoried individually.
+- **Happened:** 19 ported into canonical/ (9 agents, 6 skills, 4 MCP), 223 PORT-WITH-CHANGES, 426 SKIP; commands/hooks/rules skipped as classes with reasons. Spend $0.00. Integrated into phase-2 as bd1900c and pushed. V1 data-scientist and ux-ui both demoted to optional in the derived roster — Samuel's suspicion about the V1 roster confirmed by inventory.
+
 ## Learned
 <filled at hardening>
 
