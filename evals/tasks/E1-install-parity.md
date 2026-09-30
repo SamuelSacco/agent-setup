@@ -16,4 +16,8 @@ available skill in a fresh session launched from the repo root. FAIL otherwise.
 
 ## Status
 - File placement: PROVEN locally (adapters write both layouts).
-- Live discovery: UNVERIFIABLE until both CLIs are authenticated.
+- Live discovery + invocation: **PROVEN both tools** (2026-09-30) — Copilot:
+  `results/2026-09-30-E1-partial.md`; Claude:
+  `results/2026-09-30-E1-claude.md`. **E1 verdict: PASS.**
+- Constraint found: headless Claude runs block on file-write permission
+  prompts; eval runs need an explicit permission mode.
