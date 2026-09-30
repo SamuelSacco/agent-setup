@@ -22,7 +22,7 @@ they're labeled.
 - **D3. Deck + guide to Gmail.** Both artifacts are built and corrected
   (deck 15 slides incl. the heuristics close; guide 17 pages). I send
   after your review, not silently. Confirm the address
-  (SamuelLSacco@gmail.com).
+  (your Gmail).
 
 ## What changed overnight
 
