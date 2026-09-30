@@ -127,7 +127,7 @@ canonical/hooks/failure-capture.json
     <li>Only summaries re-enter the prompt. Rich telemetry never bloats context.</li>
     <li>Storage decision: JSONL/SQLite, <strong>not</strong> Postgres — single writer, low volume, file-native consumers. Postgres earns its place with concurrent writers or cross-machine queries.</li>
     <li><span class="tag proven">PROVEN</span> Claude: 5/5 induced failures landed as events — after the adapter fix. First attempt mapped to <code>PostToolUse</code> (success-only) and captured nothing but successful Reads; failures live on <code>PostToolUseFailure</code>.</li>
-    <li><span class="tag refuted">REFUTED</span> Copilot CLI v1.0.89: the binary has no user-hook surface at all. Fallback is transcript mining after the run — documented, not built.</li>
+    <li><span class="tag refuted">REFUTED</span> Copilot CLI v1.0.89: project-file hooks never fired in testing (0/5), though the machinery exists in the bundle; the SDK extension path is untested. Fallback is transcript mining after the run — documented, not built.</li>
   </ul>
 </section>
 
@@ -140,7 +140,7 @@ canonical/hooks/failure-capture.json
     <tr><td>Tool B continues tool A's session from the wiki</td><td><span class="tag proven">PROVEN</span></td><td>E2: 5/5 probes matched the log; baseline (no wiki) answered 5/5 "not recorded"</td></tr>
     <tr><td>Wiki orientation beats no-wiki baseline</td><td><span class="tag unver">UNVERIFIABLE</span></td><td>E3: 5 matched tasks, ≤25% token overhead</td></tr>
     <tr><td>Archiving stale notes cuts tokens, keeps quality</td><td><span class="tag proven">PROVEN</span></td><td>E5: 38% token cut; quality 10/10 in both settings (drop 0)</td></tr>
-    <tr><td>Failure hook captures structured events</td><td><span class="tag unver">PARTIAL</span></td><td>E4: Claude 5/5 after adapter fix; Copilot build has no hook surface (REFUTED)</td></tr>
+    <tr><td>Failure hook captures structured events</td><td><span class="tag unver">PARTIAL</span></td><td>E4: Claude 5/5 after adapter fix; Copilot project-file hooks REFUTED on v1.0.89 (0/5)</td></tr>
     <tr><td>Same API key drives both harnesses</td><td><span class="tag proven">PROVEN</span></td><td>BYOK: Copilot ran on the Anthropic key — tokens metered, zero AI Credits</td></tr>
     <tr><td>Both tools emit OpenTelemetry; we capture to files for evals</td><td><span class="tag proven">PROVEN</span></td><td>Claude raw API bodies on disk; Copilot full-content OTel JSONL — harness cost decomposed live (14,510-token prompt = system prompt + 23 tool schemas + MCP)</td></tr>
   </table>
