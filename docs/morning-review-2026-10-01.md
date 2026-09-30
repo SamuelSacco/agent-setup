@@ -21,7 +21,7 @@ they're labeled.
 
 | Item | Result |
 |---|---|
-| Your OTel claims (both tools) | **PROVEN live** — Claude writes true raw request/response JSON; Copilot exports full-content OTel JSONL. Ledger S8/S9 |
+| Your OTel claims (both tools) | **PROVEN live** — Claude writes raw request/response JSON (size-complete; thinking text redacted); Copilot exports full-content OTel JSONL. Ledger S8/S9 |
 | The "~14.5k vs 1.9k" gap | **REFUTED as a ratio** — decomposed; it's configurable harness surface. Ledger S10 |
 | E5 (wiki context cost) | **PROVEN** — 38% token cut, quality 10/10 both settings, drop 0 |
 | E6 pilot (agent parity) | **BLOCKED both sides** — Claude write-approval; Copilot reported success, wrote nothing (below) |

@@ -17,7 +17,9 @@ apiKeyHelper. Wrote:
 - `<uuid>.request.json` (5,417 B), `<request-id>.response.json`, `index.jsonl`
 
 Verdict: **PROVEN.** The `file:<dir>` mode exists and behaves as described,
-including the index file.
+including the index file. Caveat (fact-check, docs + local files): bodies
+are size-complete past the 60KB inline cap, but extended-thinking text is
+redacted in the response files — "untruncated" means size, not content.
 
 Captured request body, decomposed (chars ≈ tokens×4):
 
