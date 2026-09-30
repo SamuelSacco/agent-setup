@@ -6,3 +6,6 @@ __pycache__/
 
 # telemetry store: hook events are local-only, never committed
 /wiki/telemetry/
+
+# installer backups (scripts/adapters.py write_with_backup)
+*.bak-*

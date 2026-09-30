@@ -1,7 +1,7 @@
 {
   "args": [
     "-y",
-    "@upstash/context7-mcp@latest"
+    "@upstash/context7-mcp@4.1.1"
   ],
   "command": "npx",
   "description": "ECC mcp-configs entry 'context7' (MIT, affaan-m/ECC). Stdio server; works in both tools via canonical adapter.",
