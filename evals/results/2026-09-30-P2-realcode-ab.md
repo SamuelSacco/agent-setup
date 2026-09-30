@@ -320,4 +320,55 @@ orientation text is frozen in `assets/orientation.md` and placed as
 
 ### Results
 
-<!-- filled in after the runs, same file -->
+| Task | Arm | Success | Turns | Cost USD | Wall s | Grading tests |
+|------|-----|---------|-------|----------|--------|---------------|
+| U1 pretty: unset dataclass field | base | **yes** | 20 | 0.144 | 123 | 1 passed |
+| U1 | +orientation | **yes** | 16 | 0.088 | 58 | 1 passed |
+| U2 console: soft_wrap style reset | base | **yes** | 44 | 0.269 | 155 | 1 passed |
+| U2 | +orientation | **yes** | 51 | 0.338 | 209 | 1 passed |
+| U3 cells: ZWJ + non-printable | base | **no** | 26 | 0.203 | 130 | 1 passed, 1 failed |
+| U3 | +orientation | **no** | 21 | 0.187 | 130 | 1 passed, 1 failed |
+| U4 table: grid padding width | base | **yes** | 40 | 0.311 | 186 | 1 passed |
+| U4 | +orientation | **yes** | 43 | 0.342 | 198 | 1 passed |
+
+Rich totals: base 3/4, 130 turns, $0.928; +orientation 3/4, 131
+turns, $0.956. **Section spend: $1.883 of the $6.00 cap (8 runs).**
+
+**Claim B on Rich: UNVERIFIABLE** under the pre-registered rule —
+equal totals (3/4 vs 3/4) and zero discordant pairs in either
+direction. U3, the only task base failed, was failed identically by
++orientation. The second codebase neither confirms nor refutes the
+effect.
+
+**Combined verdict (pre-registered rule): PROVEN stands.** Combined
+across both codebases (n=12 paired tasks): base 9/12, +orientation
+11/12; turns 262 vs 284; cost $2.754 vs $2.821. The rule requires
+combined +orientation > combined base AND Rich not REFUTED; both
+hold. The weight of the combined verdict, stated plainly: both
+discordant pairs in the combined set are NetworkX's (T1, R2). Rich
+contributed no discordant pair — its base solve rate was higher
+(3/4 vs NetworkX's 6/8), leaving one task of headroom (U3), and
+orientation did not take it. Ledger S12 remains PROVEN, amended with
+this section's outcome.
+
+Failure notes:
+
+- **U3 × both arms — the identical partial fix.** Each arm
+  independently (a) made control characters width 0 in
+  `get_character_cell_size` (so `test_non_printable` passes) and
+  (b) changed `next(iter_characters)` to `next(iter_characters,
+  None)` in `_cell_len`. Both left the ZWJ branch consuming the
+  character after the joiner, so `cell_len("1\u200d2")` returns 1
+  instead of 2 and `test_zwj` fails. The real fix reworked the ZWJ
+  accounting in `rich/cells.py`. Same miss in both arms; the
+  orientation text (which names `cells.py` as where width bugs live)
+  did not change the outcome.
+- No incidents: no sandbox escapes; the grading-source cleanliness
+  assert was green at every setup; no timeouts; all 8 run envelopes
+  parsed.
+
+Deviations from the prereg: none. (Candidate drops were pre-run and
+are recorded in the prereg above.)
+
+Artifacts: `~/workspace/p2/secondcode/` (`runner.py`, `assets/`,
+`runs/`, `ledger.tsv`, `validation.json`, `validation2.json`).

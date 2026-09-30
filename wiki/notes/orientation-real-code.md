@@ -43,3 +43,15 @@ the completed pairs had no headroom for an orientation win. On both
 completed pairs +orientation cost and wall time ran *above* base —
 opposite direction from the Claude arms, n=2, no cost threshold
 pre-registered.
+
+Second codebase (2026-09-30, same results file, pre-registered
+extension): the identical experiment on Textualize/rich — 4
+oracle-validated tasks (pretty, console, cells, table), base vs
++orientation, same model. Result: 3/4 vs 3/4, zero discordant pairs;
+U3 (cell widths for ZWJ sequences) was failed identically by both
+arms with the same partial fix. Claim B on Rich alone:
+UNVERIFIABLE. Combined n=12: base 9/12, orientation 11/12 — PROVEN
+stands under the pre-registered combined rule, with both discordant
+pairs still NetworkX's. The second codebase is consistent with the
+claim but adds no independent confirmation; the higher Rich base
+solve rate (3/4) left little headroom.

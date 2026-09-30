@@ -3,7 +3,7 @@ session_id: 2026-09-30-1115-helm-orientation-second-codebase
 tool: helm
 model: claude-haiku-4-5-20251001 (eval runs)
 started: 2026-09-30 11:15 EDT
-status: in-progress
+status: complete
 intent: Replicate the Claim B orientation A/B on a second codebase (Rich) under identical discipline.
 ---
 
@@ -44,8 +44,20 @@ changes: the codebase. Same model, arms, prereg discipline.
 - **Tried:** appended "Second codebase (Rich)" section to `evals/results/2026-09-30-P2-realcode-ab.md` (tasks, validation, arms, Claim B rule, combined-verdict rule, $6 cap); wrote frozen Rich orientation text + 4 prompts + runner under `~/workspace/p2/secondcode/`.
 - **Happened:** pending commit at time of writing; runs start only after the push lands.
 
+### 11:40 — Runs (8, sequential, runner.py)
+- **Intended:** base vs +orientation on U1–U4, disk grading, $6 cap.
+- **Tried:** `~/workspace/p2/secondcode/runner.py`, identical flags/caps to the replication runner; ledger logged after each run.
+- **Happened:** U1 both solved (orient cheaper: $0.088 vs $0.144); U2 both solved; U3 both FAILED identically (1 of 2 grading tests); U4 both solved. Rich totals: base 3/4, 130 turns, $0.928; +orientation 3/4, 131 turns, $0.956. Spend $1.883 of $6. No escapes, no timeouts, all envelopes parsed.
+
+### 12:45 — Results, verdicts, hardening
+- **Intended:** fill the prereg's results section, apply the pre-registered verdict rules, update ledger/wiki only as the rules direct.
+- **Tried:** results appended to `evals/results/2026-09-30-P2-realcode-ab.md`; S12 amended; [[orientation-real-code]] note appended; index line refreshed; log line added.
+- **Happened:** Claim B on Rich = UNVERIFIABLE (equal totals, zero discordant pairs). Combined n=12: base 9/12, orientation 11/12, Rich not REFUTED → combined PROVEN stands under the pre-registered combined rule, resting on NetworkX's two discordant pairs. Reported as-is: the second codebase adds no independent confirmation.
+
 ## Learned
 - Rich's snapshot-style rendering tests can be environment-sensitive at their own fix commits (Unicode data, Pygments versions) — oracle validation must run in the grading environment, not be assumed from the commit's CI.
+- On U3 (cells), base and +orientation produced the same partial fix and the same miss — orientation text that names the right file does not by itself change a hard width-accounting bug's outcome.
+- A higher base solve rate (Rich 3/4) shrinks headroom: second-codebase task sets need base-failure headroom screened at mining time if discordant pairs are the goal.
 
 ## Outcome
-in-progress — runs and verdicts to follow in this record.
+complete — Rich UNVERIFIABLE (3/4 vs 3/4, no discordant pair); combined n=12 PROVEN stands per the pre-registered rule (base 9/12, orientation 11/12). Spend $1.883 of $6 cap. Nothing open.
