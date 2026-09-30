@@ -56,7 +56,7 @@ instructions didn't load — check you launched from the repo root.
 
 Run the evals in order as auth allows: E1 (install parity) → E4 (failure 
 capture) → E2 (cross-tool continuity). Record verdicts in 
-`docs/claims-ledger.md`. The setup is only "done" when E1/E2 flip to PROVEN.
+`docs/claims-ledger.md`. Status (2026-09-30): E1/E2 outcomes are recorded in the ledger as S1/S2 — PROVEN at scoped wording (see their audit notes); the ledger, not this checklist, is the live definition of "done."
 
 ## Troubleshooting
 
