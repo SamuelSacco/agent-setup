@@ -40,7 +40,7 @@ The map of maintained knowledge. Agents: read this first, keep it current.
 
 ### Decisions
 - [[telemetry-storage]] — JSONL/SQLite sidecar; Postgres only if it earns its place
-- [[v2-roster]] — V2 default roster from the ECC inventory; data-scientist/ux-ui demoted to optional (P2 W2)
+- [[v2-roster]] — roster of record: the 12 canonical agents on disk, all installed, no tiers (X20 decision 2026-09-30 in the note's dated correction); W2 7-default and packet 6+2 rosters retired as shipped-state descriptions; task-runner/evaluator not built
 
 ## Archived
 <!-- - [[note-id]] — why archived, superseded_by if any -->
