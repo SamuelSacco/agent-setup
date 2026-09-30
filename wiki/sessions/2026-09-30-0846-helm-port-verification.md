@@ -3,7 +3,7 @@ session_id: 2026-09-30-0846-helm-port-verification
 tool: helm
 model: Muse Spark (parent-directed subagent)
 started: 2026-09-30 08:46 ET
-status: in-progress
+status: complete
 intent: Verify the 19 Phase 2 ECC ports (9 agents, 6 skills, 4 MCP) plus home-grown filesystem-wiki MCP by live invocation in both CLIs; stretch: replicate the W3 orientation arm on 4 new NetworkX tasks.
 ---
 
@@ -49,6 +49,11 @@ W2 ported 19 ECC items into canonical/ and install.sh emits them, but no live in
 - **Tried:** evals/results/2026-09-30-P2-port-verification.md; fixtures committed under evals/fixtures/p2-port-verification/; ledger S14 PROVEN + S15 REFUTED; note [[ecc-ports-invocable]]; index + log updated.
 - **Happened:** Total spend ~$2.78 of $6 cap (Claude exact, Copilot shutdown-metric upper bounds). No adapter-level breakage found; no canonical content changed.
 
+### 10:10 — Stretch: orientation replication (W3 Claim B)
+- **Intended:** Replicate the orientation result on 4 NEW NetworkX tasks, same mining/oracle/runner discipline, arms base vs +orientation only.
+- **Tried:** Mined 23 candidate fix commits at the pinned HEAD with W3's filters; oracle-validated 6 (5 valid; group-betweenness candidate dropped — its test file collected as skipped). Selected R1 dominating-set cost, R2 null-graph distance measures, R3 find_cliques_recursive directed, R4 graph_edit_distance self-loops; all parent symptoms reproduced in ≤6 lines. 8 runs via repl_runner.py (W3 runner adapted), budget guard $3.00.
+- **Happened:** Replication PROVEN again — orientation 4/4 vs base 3/4, discordant win on R2, no discordant loss. Combined n=8: base 6/8, orientation 8/8, cost parity ($1.826 vs $1.865). R2 base raised the right exception with the wrong message wording ("No nodes in graph" vs the test's `null graph` match) — recorded in the results file so the verdict's weight is judgeable. Replication spend $1.560. Results appended to evals/results/2026-09-30-P2-realcode-ab.md; S12 + [[orientation-real-code]] updated.
+
 ## Learned
 - Copilot `--agent` with an ECC reviewer persona does not terminate on trivial tasks headless; delegation via the task tool is the reliable invocation path (ledger S15).
 - Copilot MCP startup is fragile on a cold npx cache: parallel cold downloads race a 60 s lifecycle cap. Warm cache = seconds. Claude tolerates the same cold cache.
@@ -58,4 +63,6 @@ W2 ported 19 ECC items into canonical/ and install.sh emits them, but no live in
 - Copilot `session.shutdown` → `modelMetrics` is the reliable per-session token source; stdout `result` events carry no token counts.
 
 ## Outcome
-Primary complete (see Outcome update after stretch, if run).
+Primary complete: S14 PROVEN (all emitted agents/skills/MCP invocable in both tools, playwright env carve-out), S15 REFUTED (Copilot `--agent` headless for the reviewer persona). Deliverable: evals/results/2026-09-30-P2-port-verification.md (commit f65f8ad).
+Stretch complete: W3 orientation replication on 4 new tasks — PROVEN again; combined n=8 verdict and R2 message-wording caveat appended to evals/results/2026-09-30-P2-realcode-ab.md; S12 updated.
+Total session spend ~$4.34 of the $6 cap (primary ~$2.78 + replication $1.56).

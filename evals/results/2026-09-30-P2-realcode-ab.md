@@ -124,3 +124,82 @@ estimates. Copilot does not report turns.
    result summaries, and the spend ledger are preserved in
    `~/workspace/p2/w3/scratch/` (`assets/`, `runner.py`, `runs/`,
    `ledger.tsv`).
+
+---
+
+## Replication (same day, P2 port-verification session) — Claim B only
+
+Purpose: the Claim B margin above is one discordant pair at n=4. This
+replication tests the same claim on 4 NEW tasks, mined from the same
+pinned HEAD (`92f497e2e`) with the same filters as the prereg (subject
+marks a bug fix; 3–90 changed lines in non-test `.py`; ≤3 non-test
+files; ≥5 changed test lines in the same commit), excluding the four
+original fix commits. One additional candidate (group betweenness,
+`c1ebe046`) failed oracle validation — its changed test file collected
+as skipped — and was dropped before any agent run. Oracle validation
+for the four selected tasks (all done before any agent run): the real
+commit's tests pass at the commit and fail at the parent with only the
+commit's test files overlaid; each parent symptom was reproduced in
+≤6 lines.
+
+| Task | Fix commit (parent) | Discriminating tests at parent |
+|------|--------------------|----------------------------------|
+| R1 min_weighted_dominating_set cost fn | `a9c8113b` (`6bf5e809`) | 1 failed |
+| R2 eccentricity/diameter/radius on null graph | `d3e01821` (`fa512336`) | 2 failed |
+| R3 find_cliques_recursive on directed graphs | `5cfb44f7` (`8ec80c76`) | 1 failed |
+| R4 graph_edit_distance, self-loops vs empty graph | `9c17836f` (`6b57b277`) | 2 failed |
+
+Parent symptoms (verified): R1 returns {1, 2, 4} where {1, 2}
+dominates (and is the docstring's own example output). R2:
+`eccentricity` returns `{}`, `diameter`/`radius` raise `ValueError`
+from `max()`/`min()` on empty input. R3: returns `[[0, 1], [2, 3],
+[3]]` on a directed path graph instead of raising. R4:
+`graph_edit_distance` returns 1.0 where 2 (one self-loop) and 3 (two
+parallel self-loops) are correct.
+
+Arms: base vs +orientation only — identical runner discipline,
+identical prompt template, same frozen orientation text, same model.
+No +agent arm (Claim A was not under replication), no Copilot arm.
+
+| Task | Arm | Success | Turns | Cost USD | Wall s | Grading tests |
+|------|-----|---------|-------|----------|--------|---------------|
+| R1 | base | **yes** | 15 | 0.145 | 120 | 1 passed |
+| R1 | +orientation | **yes** | 15 | 0.141 | 114 | 1 passed |
+| R2 | base | **no** | 18 | 0.199 | 113 | 1 passed, 1 failed |
+| R2 | +orientation | **yes** | 20 | 0.207 | 142 | 2 passed |
+| R3 | base | **yes** | 11 | 0.080 | 41 | 1 passed |
+| R3 | +orientation | **yes** | 13 | 0.099 | 56 | 1 passed |
+| R4 | base | **yes** | 15 | 0.238 | 164 | 2 passed |
+| R4 | +orientation | **yes** | 28 | 0.451 | 378 | 2 passed |
+
+Replication totals: base 3/4, 59 turns, $0.662; +orientation 4/4, 76
+turns, $0.898. Replication spend $1.560.
+
+**Replication verdict (pre-registered Claim B rule): PROVEN again** —
+orientation solved 4/4 vs base 3/4, with the discordant win on R2 and
+no discordant loss.
+
+**Combined (original + replication, n=8 tasks): base 6/8,
++orientation 8/8; both discordant pairs (T1, R2) favor orientation;
+no discordant pair favors base.** Combined Claude totals: base 132
+turns / $1.826; +orientation 153 turns / $1.865 — cost parity overall
+(the original set had orientation cheapest; the replication had it
++36%, driven by R4's 28-turn run). Claim B stands as PROVEN at the
+pre-registered bar, strengthened from one discordant pair to two
+across independently mined task sets; it remains a small-sample
+result, not an effect-size measurement.
+
+Replication failure note — R2 × base: the fix was behaviorally near-
+correct (it raised `NetworkXPointlessConcept` for the null graph in
+`eccentricity`) but worded the message "No nodes in graph"; the real
+commit's test matches the message against `null graph`, so the
+diameter/radius node failed on message wording. The +orientation run
+used "null graph" phrasing and passed. The discordant pair therefore
+turns on exception-message wording, not on exception type or behavior
+class — recorded so the combined verdict's weight is judged with that
+fact visible. Grading followed the same disk rule as the original:
+the real commit's tests define success, message assertions included.
+
+Replication artifacts: `~/workspace/p2/portverify/` (`repl_runner.py`,
+`repl/assets/` prompts + frozen orientation text, `repl/runs/`,
+`repl/ledger.tsv`, `repl/validation.json`).
