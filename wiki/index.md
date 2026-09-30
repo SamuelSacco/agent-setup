@@ -29,6 +29,7 @@ The map of maintained knowledge. Agents: read this first, keep it current.
 - [[copilot-rubber-duck]] — PROVEN (cross-model critic)
 - [[specialist-agent-real-code]] — UNVERIFIABLE (same solves as base, +55% turns, P2 W3)
 - [[orientation-real-code]] — PROVEN combined n=12 (NetworkX 8/8 vs 6/8; second codebase Rich UNVERIFIABLE 3/4 vs 3/4, no discordant pair)
+- [[claude-opus-critique]] — pre-merge red-team (Opus 5.5): S12/S4 BLOCKERs, S14 PARTIAL, S5/S6b corrected; adapters.py drops agent tool restrictions
 - [[ecc-ports-invocable]] — PROVEN (all emitted agents/skills/MCP invoked live in both tools; Copilot `--agent` PROVEN for reviewer persona but slow, P2 port verification)
 - [[session-end-hook]] — PROVEN trigger, Claude only (SessionEnd hook fires headless 2/2 + shipped wiring; cleanup skill not built; S18)
 - [[skill-import-pinning]] — PROVEN prototype (hash-pin + audit-check skill import; tampered skill refused in demo; S19)

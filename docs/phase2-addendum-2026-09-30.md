@@ -30,7 +30,7 @@ has run in this project (incl. R2, a Claude discordant pair) — the
 completed pairs had no headroom. Descriptive, n=2: +orientation
 cost/wall ran ABOVE base on both pairs, opposite the Claude
 direction. Copilot converts at 3–9× Claude's per-task cost
-(1.7–2.0M input tokens/run, mostly cached, counted at full rate —
+(1.7–2.0M input tokens on T1/R2 runs, mostly cached, counted at full rate —
 upper bounds). Spend $4.63 vs ~$4 cap (one-run overshoot, recorded,
 not smoothed). No escapes, no fabrication; all fixes verified in
 assigned trees.
