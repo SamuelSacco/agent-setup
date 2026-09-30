@@ -153,3 +153,25 @@ scratch. It has now been reviewed and landed at `scripts/quickstart.sh`;
 in-tree `--structural-only` run passes (8/8 skills, 12/12 agents, both
 MCP configs parse, zero tree delta beyond the new file). The live-probe
 path remains gated on vendor auth as designed.
+
+**Update — 2026-09-30 ~14:55 ET (backlog X5):** the session-close item in
+the talk close is now scoped by a probe. In Claude Code 2.1.285, a
+`SessionEnd` hook fires automatically at the end of headless sessions
+(2/2 probe runs + 1/1 via the shipped wiring; ledger S18). Wired in the
+repo as a canonical `session_end` hook whose action records the
+session-end event to the sidecar store — that record is a stub, not a
+cleanup skill; no cleanup procedure runs yet. Copilot remains
+UNVERIFIABLE (no hook loader in the installed CLI, S4). Talk wording
+should say "the session-end trigger is proven in Claude; the cleanup
+procedure on it is not built," not "cleanup runs automatically."
+
+**Update — 2026-09-30 ~14:55 ET (backlog X6):** finding 5's "nobody
+enforces snapshot + hash-pin + audit-check on import" now has an
+in-repo counterexample at prototype scale: `scripts/import_skill.py`
+(audit → import → SHA-256 pin in `canonical/skill-pins.json`, `verify`
+re-hashes). Preregistered demo: clean skill pinned (hash matches an
+independent `sha256sum`); a planted tampered skill was REFUSED with 4
+critical findings (instruction override, pipe-to-shell, credential
+exfiltration); a post-import edit was caught by `verify`. Ledger S19.
+Prototype limits stand: pattern-list audit, no signatures, not wired
+into `install.sh`.
