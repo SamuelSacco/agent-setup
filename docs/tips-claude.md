@@ -39,3 +39,34 @@ Researched 2026-09-30 against Anthropic's docs. Verdicts in
   lever (unset effort = changed token budget); forced exhaustive visible 
   step-by-step may show less surface reasoning. Retune, don't panic.
 - XML structure is still recommended by Anthropic. Ignore posts claiming otherwise.
+
+## `--bare` — know what it strips **[PROVEN]**
+
+- `--bare` loads only built-in agents (`claude`, Explore, general-purpose,
+  Plan, statusline-setup): project `.claude/agents/` and project skills are
+  NOT loaded. Right tool for cheap auth probes and minimal-context
+  questions; wrong tool for project work. (E6 pilot, 2026-09-30.)
+- It is a flag, not a mode with a product name — don't present it as one.
+
+## Telemetry **[PROVEN live 2026-09-30]**
+
+- `OTEL_LOG_RAW_API_BODIES=file:<dir>` writes the untruncated Messages API
+  request/response JSON plus an `index.jsonl` linker — the ground truth
+  for "what did the harness actually send" (system prompt, tool schemas,
+  cache fields).
+- Telemetry and content capture can only be enabled from shell env, user,
+  or managed settings — a repo's `.claude/settings.json` cannot turn them
+  on. Config is read at startup; relaunch after changing it.
+
+## Hooks
+
+- Failures fire `PostToolUseFailure`, not `PostToolUse` (which is
+  success-only). Routing failures to `PostToolUse` captures nothing —
+  our adapter's first bug, caught by E4.
+
+## Headless runs honor write approvals
+
+- In `-p` mode the agent stops and asks before writing files where an
+  approval boundary applies instead of writing silently. Automation that
+  expects files must either run where approval is granted or treat
+  "awaiting approval" as a first-class outcome. (E6 pilot.)

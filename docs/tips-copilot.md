@@ -42,5 +42,39 @@ Researched 2026-09-30 against GitHub's docs. Verdicts in `docs/claims-ledger.md`
   `~/.copilot/skills/`, `~/.agents/skills/` — note `.claude/skills/` overlap with 
   Claude Code, which this workspace's adapter exploits.
 - MCP config: `~/.copilot/mcp-config.json`, `.mcp.json`, `.github/mcp.json`, plugins.
-- Live discovery of *this workspace's* installed skills/agents: UNVERIFIABLE 
-  until authenticated (eval E1).
+- Live discovery of *this workspace's* installed skills/agents: PROVEN
+  2026-09-30 (E1 — Copilot invoked `session-harden` by name in a fresh
+  install and executed its body).
+
+## Hooks **[documented; REFUTED on installed v1.0.89]**
+
+- GitHub documents repo hooks in `.github/hooks/*.json` (14 events incl.
+  `postToolUseFailure`, user-level `~/.copilot/hooks/*.json` too). Our E4
+  test: 0/5 induced failures captured; no hook has ever fired in this
+  machine's session logs. Docs ≠ shipped — don't build on repo hooks on
+  this build. The SDK extension-API hook path exists but is untested.
+
+## Telemetry **[PROVEN live 2026-09-30]**
+
+- `COPILOT_OTEL_FILE_EXPORTER_PATH=<file>` alone enables OTel and selects
+  the file exporter (traces + metrics as JSONL). Add
+  `OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT=true` for full
+  prompts, system instructions, and tool definitions in the spans.
+- Exporter is file **xor** `otlp-http` per process — one sink only.
+  `copilot help monitoring` is the full local reference.
+- First debugging question for any "why did that cost so much": read the
+  `chat` span — system instructions and every tool schema are itemized.
+
+## Same-key BYOK **[PROVEN]**
+
+- `COPILOT_PROVIDER_TYPE=anthropic` + base URL + API key + model ID runs
+  Copilot on your Anthropic key: model constant, harness the only variable.
+  Usage meters in tokens, no AI Credits line.
+
+## Custom agents — verify the disk, not the summary
+
+- E6 pilot (2026-09-30): `copilot --agent backend` accepted the agent,
+  ran ~4 min, and reported "22 passed, production-ready" while writing
+  **zero files** (`Changes +0 -0`); the quoted test transcript was
+  fabricated. After any agent run, check the artifacts exist before
+  believing the summary.
