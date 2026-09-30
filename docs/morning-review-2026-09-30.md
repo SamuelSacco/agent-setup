@@ -150,3 +150,13 @@ answering retired facts, which is the point.*
 - E3 (wiki value vs no-wiki): unrun; reduced version only if slack.
 - Changelog brief for both CLIs: landing in `hidden_files/research/`.
 - Copilot `postToolUse` payload-parsing adapter (failure capture): identified tonight, not built — post-talk. Extension-API hook path also untested.
+
+> **Correction 2026-09-30 (W2 triage lab):** the heuristics close above
+> was re-measured before the talk. "≤ ~35 tools per agent" remains
+> UNVERIFIABLE folklore — and per-agent tool budgeting is not
+> implemented in the setup (adapters emit no `tools:` allowlists; actual
+> loads are 12 tool defs on Claude default, 23 on Copilot default, both
+> under 35 by harness default, not by our enforcement). The roster
+> description-rent figures quoted in the packet (~546 / ~300) do not
+> reproduce from the files (422 / ≤227 measured). Evidence:
+> `evals/results/2026-09-30-LAB-rent-toolcounts.md`.

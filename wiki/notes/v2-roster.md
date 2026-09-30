@@ -29,3 +29,18 @@ roster is selected by job frequency under context rent (ceiling: 7 agents /
   pattern skills ship as per-stack optional packs, never defaults.
 - Live-tool discovery of the 19 ports is UNVERIFIED (install.sh emits them
   cleanly for both tools; no invocation probe run yet).
+
+## Correction — 2026-09-30 (W2 triage lab)
+
+This note records the earlier W2 derivation and is no longer the roster
+of record. The packet (`docs/phase2-packet-2026-09-30.md`) carries a
+different roster v2 (default: explorer, code-reviewer, task-runner,
+build-error-resolver, security-reviewer, evaluator; provisional: planner,
+code-explorer) — which itself exists only on paper: `canonical/agents/`
+has no `task-runner` or `evaluator` file, and "explorer" vs provisional
+"code-explorer" appear to name the same file. The line above claiming
+live-tool discovery is UNVERIFIED is overtaken: ledger S14 (PROVEN,
+2026-09-30) live-invoked all 12 agents and 8 skills in both tools.
+Three sources currently tell three roster stories; reconciling them is
+backlog X20 in `docs/experiments-backlog.md`. Do not cite this note for
+the current roster.
