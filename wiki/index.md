@@ -19,14 +19,18 @@ The map of maintained knowledge. Agents: read this first, keep it current.
 
 ### References
 - [[instruction-files]] — AGENTS.md shared layer, Claude's conditional read, Copilot's no-precedence merge
+- [[install-surfaces]] — how capabilities reach each CLI: npx skills, plugin trees, trust gates, MCP keys (P2 W1)
 
 ### Claims (with verdicts)
 - [[opus-55-prompt-regression]] — UNVERIFIABLE as a general claim; narrow patterns only
 - [[claude-advisor]] — PROVEN (with the not-free correction)
 - [[copilot-rubber-duck]] — PROVEN (cross-model critic)
+- [[specialist-agent-real-code]] — UNVERIFIABLE (same solves as base, +55% turns, P2 W3)
+- [[orientation-real-code]] — PROVEN at n=4 (4/4 vs 3/4, cheapest arm, P2 W3)
 
 ### Decisions
 - [[telemetry-storage]] — JSONL/SQLite sidecar; Postgres only if it earns its place
+- [[v2-roster]] — V2 default roster from the ECC inventory; data-scientist/ux-ui demoted to optional (P2 W2)
 
 ## Archived
 <!-- - [[note-id]] — why archived, superseded_by if any -->
