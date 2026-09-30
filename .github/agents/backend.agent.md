@@ -1,6 +1,7 @@
 ---
 name: backend
 description: Backend specialist — APIs, data models, services, reliability. Use for server-side design, implementation, and debugging.
+tools: [read, edit, shell, search]
 ---
 
 # Backend specialist

@@ -1,6 +1,7 @@
 ---
 name: planner
 description: Expert planning specialist for complex features and refactoring. Use PROACTIVELY when users request feature implementation, architectural changes, or complex refactoring. Automatically activated for planning tasks.
+tools: [read, search]
 ---
 
 <!-- Source: ECC (everything-claude-code) by Affaan Mustafa — https://github.com/affaan-m/ECC — MIT License (LICENSE in that repo; copyright notice retained per MIT terms). Ported 2026-09-30. Adaptations: canonical frontmatter only (ECC model/tool fields mapped to model_hint/tools_hint; adapter strips both); ECC 'Prompt Defense Baseline' boilerplate block dropped (repeated verbatim in every ECC agent; not role content). -->
