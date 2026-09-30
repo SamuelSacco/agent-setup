@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "hooks": {
+    "sessionEnd": [
+      {
+        "type": "command",
+        "bash": "./scripts/sidecar.sh record-session-end",
+        "timeoutSec": 10
+      }
+    ]
+  }
+}

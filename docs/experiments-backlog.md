@@ -72,9 +72,14 @@ Status key: UNVERIFIABLE / PARTIAL / REFUTED / PROVEN / UNBUILT / BLOCKED.
   Priority: medium.
 
 ### X5 — Automatic session-end cleanup/forget in both CLIs
-- Status: UNPROVEN both tools. Claude has documented SessionEnd /
+- Status: **Claude trigger PROVEN 2026-09-30** (SessionEnd hook fired 2/2
+  headless on Claude Code 2.1.285 + 1/1 via shipped wiring; wired as
+  canonical `session_end` → `sidecar.sh record-session-end`, a record
+  stub — no cleanup skill exists yet). Copilot side still UNPROVEN.
+  Ledger S19; evidence: evals/results/2026-09-30-X5-sessionend-probe.md.
+  (Was: UNPROVEN both tools. Claude has documented SessionEnd /
   PostToolUseFailure hooks; Copilot `sessionEnd` output is not processed
-  and the installed CLI's failure-hook surface is REFUTED (ledger S4).
+  and the installed CLI's failure-hook surface is REFUTED (ledger S4).)
 - Cheapest decisive test (Claude): register a SessionEnd hook that writes
   a marker + performs one cleanup action; run a headless session to
   completion; check marker and effect on disk. Copilot: probe whether
@@ -83,9 +88,16 @@ Status key: UNVERIFIABLE / PARTIAL / REFUTED / PROVEN / UNBUILT / BLOCKED.
   intent until this lands.
 
 ### X6 — Hash-pin + audit-check enforcement on skill import
-- Status: UNBUILT (packet finding 5: nobody enforces snapshot + hash-pin +
+- Status: **PROTOTYPE BUILT + demo-verified 2026-09-30**
+  (`scripts/import_skill.py`: audit → import → SHA-256 pin in
+  `canonical/skill-pins.json`, `verify` re-hashes; tampered skill
+  REFUSED with 4 critical findings, clean skill pinned, post-import
+  edit caught). Pattern-list scope only; not wired into install.sh,
+  no signatures. Ledger S19; evidence:
+  evals/results/2026-09-30-X6-hashpin-prototype.md.
+  (Was: UNBUILT (packet finding 5: nobody enforces snapshot + hash-pin +
   audit-check; Snyk ToxicSkills: 36.8% ≥1 flaw, 13.4% critical, 76
-  confirmed malicious of 3,984).
+  confirmed malicious of 3,984).)
 - Cheapest decisive test: prototype import path — snapshot skill, sha256
   pin, refuse on hash mismatch or critical audit verdict; demo against one
   tampered skill and one clean skill. Est. cost: $0 API, build time only.

@@ -8,8 +8,9 @@ Format notes (verify against live tools — see evals/):
 - Claude Code skills:  .claude/skills/<name>/SKILL.md  (frontmatter: name, description)
 - Claude Code agents:  .claude/agents/<name>.md       (frontmatter: name, description, model, tools)
 - Claude Code MCP:     .mcp.json                       ({"mcpServers": {...}})
-- Claude Code hooks:   .claude/settings.json           (hooks.PostToolUseFailure —
-  canonical `tool_failure` fires there, PROVEN E4; PostToolUse is success-only)
+- Claude Code hooks:   .claude/settings.json           (canonical events map
+  via HOOK_EVENT_MAP: `tool_failure` -> PostToolUseFailure, PROVEN E4;
+  `session_end` -> SessionEnd, PROVEN headless X5/S18)
 - Copilot skills:      .github/skills/<name>/SKILL.md  (also discovers .claude/skills)
 - Copilot agents:      .github/agents/<name>.agent.md
 - Copilot MCP:         .github/mcp.json                ({"servers": {...}})
@@ -111,15 +112,24 @@ def install_mcp():
 
 
 # ---------------------------------------------------------------- hooks
+# Canonical event -> (Claude Code event, Copilot event). Claude:
+# `tool_failure` fires on PostToolUseFailure (PROVEN E4 2026-09-30:
+# PostToolUse is success-only and would journal every successful call as
+# a "failure"); `session_end` fires on SessionEnd (PROVEN headless,
+# X5 probe 2026-09-30, ledger S18).
+HOOK_EVENT_MAP = {
+    "tool_failure": ("PostToolUseFailure", "postToolUseFailure"),
+    "session_end": ("SessionEnd", "sessionEnd"),
+}
+
+
 def install_hooks():
     settings_hooks = {}
     for src in sorted((CANON / "hooks").glob("*.json")):
         d = json.loads(src.read_text())
         cmd = d["action"]["command"]
-        # Claude Code: canonical `tool_failure` maps to PostToolUseFailure
-        # (PROVEN E4 2026-09-30: PostToolUse fires only on success and would
-        # journal every successful call as a "failure").
-        settings_hooks.setdefault("PostToolUseFailure", []).append(
+        claude_event, copilot_event = HOOK_EVENT_MAP[d["event"]]
+        settings_hooks.setdefault(claude_event, []).append(
             {"matcher": "*", "hooks": [{"type": "command", "command": cmd}]}
         )
         # Copilot: native hook file under .github/hooks/ (translated, NOT a
@@ -133,7 +143,7 @@ def install_hooks():
         native = {
             "version": 1,
             "hooks": {
-                "postToolUseFailure": [
+                copilot_event: [
                     {"type": "command", "bash": cmd, "timeoutSec": 10}
                 ]
             },

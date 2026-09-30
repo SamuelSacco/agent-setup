@@ -174,3 +174,24 @@ agent's own instructions. The flag is a no-op on this surface. Do not
 state the opt-in trap on stage as CLI behavior; other surfaces
 (IDE/cloud) remain untested. Evidence:
 `evals/results/2026-09-30-X17-copilot-agent-orientation.md` (S18).
+**Update — 2026-09-30 ~14:55 ET (backlog X5):** the session-close item in
+the talk close is now scoped by a probe. In Claude Code 2.1.285, a
+`SessionEnd` hook fires automatically at the end of headless sessions
+(2/2 probe runs + 1/1 via the shipped wiring; ledger S19). Wired in the
+repo as a canonical `session_end` hook whose action records the
+session-end event to the sidecar store — that record is a stub, not a
+cleanup skill; no cleanup procedure runs yet. Copilot remains
+UNVERIFIABLE (no hook loader in the installed CLI, S4). Talk wording
+should say "the session-end trigger is proven in Claude; the cleanup
+procedure on it is not built," not "cleanup runs automatically."
+
+**Update — 2026-09-30 ~14:55 ET (backlog X6):** finding 5's "nobody
+enforces snapshot + hash-pin + audit-check on import" now has an
+in-repo counterexample at prototype scale: `scripts/import_skill.py`
+(audit → import → SHA-256 pin in `canonical/skill-pins.json`, `verify`
+re-hashes). Preregistered demo: clean skill pinned (hash matches an
+independent `sha256sum`); a planted tampered skill was REFUSED with 4
+critical findings (instruction override, pipe-to-shell, credential
+exfiltration); a post-import edit was caught by `verify`. Ledger S20.
+Prototype limits stand: pattern-list audit, no signatures, not wired
+into `install.sh`.
