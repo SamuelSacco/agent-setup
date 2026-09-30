@@ -1,0 +1,11 @@
+{
+  "args": [
+    "-y",
+    "@upstash/context7-mcp@latest"
+  ],
+  "command": "npx",
+  "description": "ECC mcp-configs entry 'context7' (MIT, affaan-m/ECC). Stdio server; works in both tools via canonical adapter.",
+  "env": {},
+  "name": "context7",
+  "transport": "stdio"
+}

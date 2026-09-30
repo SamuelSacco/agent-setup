@@ -1,0 +1,11 @@
+{
+  "args": [
+    "-y",
+    "@modelcontextprotocol/server-sequential-thinking"
+  ],
+  "command": "npx",
+  "description": "ECC mcp-configs entry 'sequential-thinking' (MIT, affaan-m/ECC). Stdio server; works in both tools via canonical adapter.",
+  "env": {},
+  "name": "sequential-thinking",
+  "transport": "stdio"
+}

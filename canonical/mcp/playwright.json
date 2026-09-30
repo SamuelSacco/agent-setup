@@ -1,0 +1,13 @@
+{
+  "args": [
+    "-y",
+    "@playwright/mcp",
+    "--browser",
+    "chrome"
+  ],
+  "command": "npx",
+  "description": "ECC mcp-configs entry 'playwright' (MIT, affaan-m/ECC). Stdio server; works in both tools via canonical adapter.",
+  "env": {},
+  "name": "playwright",
+  "transport": "stdio"
+}

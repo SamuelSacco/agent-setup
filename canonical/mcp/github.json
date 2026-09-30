@@ -1,0 +1,13 @@
+{
+  "args": [
+    "-y",
+    "@modelcontextprotocol/server-github"
+  ],
+  "command": "npx",
+  "description": "ECC mcp-configs entry 'github' (MIT, affaan-m/ECC). Stdio server; works in both tools via canonical adapter. Set the env token before use.",
+  "env": {
+    "GITHUB_PERSONAL_ACCESS_TOKEN": ""
+  },
+  "name": "github",
+  "transport": "stdio"
+}
