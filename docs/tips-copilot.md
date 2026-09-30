@@ -22,7 +22,10 @@ Researched 2026-09-30 against GitHub's docs. Verdicts in `docs/claims-ledger.md`
 
 - Copilot CLI reads `AGENTS.md` natively, plus `.github/muse-instructions.md`, 
   `.github/instructions/**/*.instructions.md` (when `applyTo` matches), root 
-  `CLAUDE.md`/`GEMINI.md`, and user-level `$HOME/.copilot/copilot-instructions.md`.
+  `CLAUDE.md`/`GEMINI.md`, and user-level `$HOME/.copilot/copilot-instructions.md`. 
+  *(Docs-PROVEN. Local caveat 2026-09-30: `copilot instruction list` does not 
+  enumerate the muse-instructions.md source — isolated-dir test finds nothing. 
+  Authenticated probe pending; our setup doesn't depend on it.)*
 - **CLI combines everything with NO defined precedence order** (github.com 
   surfaces have a precedence list; the CLI is not github.com). Don't write 
   conflicting rules and expect a referee.
