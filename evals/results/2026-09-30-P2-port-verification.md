@@ -40,7 +40,11 @@ CLIs, and each refusal lists exactly the 12 canonical agents (Claude adds its bu
 | tdd-guide | PROVEN — marker, $0.0170 | PROVEN — marker |
 | ux-ui | PROVEN — marker, $0.0159 | PROVEN — marker |
 
-All 24 marker files verified verbatim (`<name> PV-TOKEN-7F3A`). Claude runs: 3 turns each.
+All 24 marker files contain `<name> PV-TOKEN-7F3A` — the token was read from disk
+in every case. Byte-exactness: 23 of 24 match exactly (two carry a trailing
+newline); the exception is Copilot/code-architect, whose marker appends a
+trailing period (`code-architect PV-TOKEN-7F3A.`) — an output-fidelity blemish,
+not an invocation failure. Claude runs: 3 turns each.
 
 **Copilot `--agent` finding (path-level, not per-port) — CORRECTED, see note
 below:** running the session AS the ported `code-reviewer` completed the
