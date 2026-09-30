@@ -100,9 +100,12 @@ def install_mcp():
         }
     # Claude Code: .mcp.json {"mcpServers": {...}}
     (ROOT / ".mcp.json").write_text(json.dumps({"mcpServers": servers}, indent=2) + "\n")
-    # Copilot: .github/mcp.json {"servers": {...}}
+    # Copilot: .github/mcp.json — Copilot CLI requires "mcpServers" (a
+    # "servers"-only file is rejected as malformed; P2 W1 evidence
+    # 2026-09-30, coordinator-verified). Emit both keys so VS Code-style
+    # consumers of "servers" keep working.
     COPILOT_GH.mkdir(parents=True, exist_ok=True)
-    (COPILOT_GH / "mcp.json").write_text(json.dumps({"servers": servers}, indent=2) + "\n")
+    (COPILOT_GH / "mcp.json").write_text(json.dumps({"servers": servers, "mcpServers": servers}, indent=2) + "\n")
     for name in servers:
         print(f"mcp     {name} -> claude + copilot")
 
