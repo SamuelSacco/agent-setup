@@ -11,5 +11,8 @@ All 5 induced failures, captured via `PostToolUseFailure` → sidecar:
 ```
 
 Before the adapter fix the same run captured 0 — `PostToolUse` is success-only.
-Copilot CLI v1.0.89 captured 0/5 under every wiring: no hook surface in the
-binary. Full write-up: `evals/results/2026-09-30-E4.md`.
+Copilot CLI v1.0.89 captured 0/5 failures as wired. Corrected mechanism
+(E4 addendum): hooks load in trusted dirs and sessionStart/preToolUse/
+postToolUse fire; postToolUseFailure does not fire for shell failures
+(the shell tool reports success on non-zero exit). Full write-up:
+`evals/results/2026-09-30-E4.md`.

@@ -54,7 +54,7 @@ estimates. Copilot does not report turns.
   discordant pair in either direction (both failed T1; both passed
   T2/T3/T4). The pre-registered rule requires ≥1 win over base for
   PROVEN and fewer solves for REFUTED; neither fired. Descriptive
-  facts, for the record: the agent arm cost more than base on 4/4
+  facts, for the record: the agent arm cost more than base on 3/4
   tasks (+55% turns overall, +8.5% cost) for zero additional solves.
 - **Claim B — "orientation improves success on real code": PROVEN**
   under the pre-registered rule: arm 3 solved 4/4 vs base 3/4, with

@@ -134,10 +134,13 @@ def install_hooks():
         )
         # Copilot: native hook file under .github/hooks/ (translated, NOT a
         # verbatim copy — public contract is the version:1 envelope with
-        # camelCase events and a `bash` command field). REFUTED on the
-        # installed CLI v1.0.89 (E4 2026-09-30): the binary contains no
-        # postToolUseFailure/sessionStart hook loader and no events fired.
-        # Kept so the adapter is correct the day the CLI ships hook support.
+        # camelCase events and a `bash` command field). E4 (2026-09-30,
+        # addendum-corrected): on CLI v1.0.89 hooks DO load in a trusted
+        # directory (COPILOT_ALLOW_ALL=true) and sessionStart/preToolUse/
+        # postToolUse fire; postToolUseFailure did not fire for shell
+        # failures because the shell tool reports success on non-zero exit.
+        # Failure capture on Copilot therefore needs postToolUse + exit-code
+        # parsing (identified, not built); 0/5 failures captured as shipped.
         hdir = COPILOT_GH / "hooks"
         hdir.mkdir(parents=True, exist_ok=True)
         native = {
