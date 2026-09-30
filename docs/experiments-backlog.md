@@ -216,6 +216,20 @@ Status key: UNVERIFIABLE / PARTIAL / REFUTED / PROVEN / UNBUILT / BLOCKED.
   Est. cost: $0. Priority: high — three sources currently tell three
   roster stories.
 
+- Resolution — 2026-09-30 (X20 run, branch `fix/roster-drift`):
+  CLOSED. One roster decision recorded in one place:
+  `wiki/notes/v2-roster.md`, correction of 2026-09-30 (X20 run).
+  Roster of record = the 12 files in `canonical/agents/` (all
+  installed by `install.sh`, no tier filter in `install_agents()`;
+  invocation status ledger S14 PARTIAL, not PROVEN — the W2 note's
+  UNVERIFIED line and the triage "S14 PROVEN" citation are both
+  corrected there). `task-runner` and `evaluator`: no canonical
+  file at head or in any commit tree — recorded not-built/retired,
+  no files created. `explorer`: REFUTED as a separate agent; the
+  only matching file is `code-explorer.md`, counted once. Packet
+  roster v2 retired as a shipped-state description (dated
+  correction appended to the packet). Spend: $0.
+
 ### X21 — Opus 5.5 degrades older prompts (ledger C3)
 - Status: UNVERIFIABLE as a general claim; narrow patterns partially
   supported (prefill removal, effort default). Anthropic's own guides say
