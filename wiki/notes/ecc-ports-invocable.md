@@ -20,9 +20,11 @@ skill mechanism), 5/5 MCP servers (listed in both; trivial calls answered in
 both — playwright only with `--no-sandbox`, an artifact of this root sandbox,
 not of the port).
 
-Three operational caveats ride with the verdict. Copilot's `--agent` mode is
-REFUTED for the ported `code-reviewer` persona headless (S15); delegation via
-the task tool is the working path. Copilot MCP startup fails on a cold npx
+Three operational caveats ride with the verdict. Copilot's `--agent` mode
+works for the ported `code-reviewer` (S15, PROVEN — corrected from an
+initial REFUTED recorded in error; see the results file) but took ~201 s
+for a trivial task, and a second attempt stalled in MCP startup;
+delegation via the task tool is the faster, proven path for all 12. Copilot MCP startup fails on a cold npx
 cache (parallel cold downloads vs its 60 s handshake cap) — warm the cache or
 expect a first-run retry. The github server ships with an empty token by
 design: public search works unauthenticated, authenticated operations are

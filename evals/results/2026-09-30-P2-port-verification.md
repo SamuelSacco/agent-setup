@@ -31,7 +31,7 @@ CLIs, and each refusal lists exactly the 12 canonical agents (Claude adds its bu
 | build-error-resolver | PROVEN — marker, $0.0177 | PROVEN — marker |
 | code-architect | PROVEN — marker, $0.0169 | PROVEN — marker |
 | code-explorer | PROVEN — marker, $0.0168 | PROVEN — marker |
-| code-reviewer | PROVEN — marker, $0.0342 | PROVEN — marker (delegation; see --agent finding) |
+| code-reviewer | PROVEN — marker, $0.0342 | PROVEN — marker (delegation and `--agent`; see --agent finding) |
 | data-scientist | PROVEN — marker, $0.0166 | PROVEN — marker |
 | doc-updater | PROVEN — marker, $0.0173 | PROVEN — marker |
 | planner | PROVEN — marker, $0.0185 | PROVEN — marker |
@@ -42,13 +42,29 @@ CLIs, and each refusal lists exactly the 12 canonical agents (Claude adds its bu
 
 All 24 marker files verified verbatim (`<name> PV-TOKEN-7F3A`). Claude runs: 3 turns each.
 
-**Copilot `--agent` finding (path-level, not per-port):** running the session AS the ported
-`code-reviewer` never completed the trivial marker task — attempt 1 (full repo tree) hit the
-600 s timeout, attempt 2 (minimal tree, "do not review" prompt) hit 300 s; no marker either
-time; ~442k and ~97k session input tokens respectively (upper-bound accounting below). The
-persona's review process drives open-ended exploration with no stop. For the other 11 agents
-the `--agent` path is UNVERIFIABLE (not retried — the delegation path is proven and cheaper).
-Verdict for the path with these personas, headless: REFUTED on the one agent tested.
+**Copilot `--agent` finding (path-level, not per-port) — CORRECTED, see note
+below:** running the session AS the ported `code-reviewer` completed the
+marker task on attempt 1 (full repo tree): exit code 0, marker verbatim,
+session duration 201 s, 110,590 input tokens ($0.112 upper bound). Attempt 2
+(minimal tree) never reached the task: its event stream stalls in MCP
+startup (context7 and filesystem-wiki failing lifecycle negotiation — the
+cold-cache failure below) and shows no result event; it was terminated at
+the 300 s probe limit. So the `--agent` path works for this persona but is
+slow (~201 s for a trivial task, vs under ~2 min for typical delegation
+runs) and exposed to the same cold-start MCP fragility. For the other 11
+agents the `--agent` path is UNVERIFIABLE (not tested individually;
+delegation is proven for all 12).
+
+> Correction (2026-09-30, post-commit): the first version of this file
+> recorded both `--agent` attempts as timeouts with no marker and marked
+> the path REFUTED (ledger S15). That was a probe-harness error: attempt
+> 1's process was backgrounded by the runtime and its completion arrived
+> after the verdict was written; the run's result event and the on-disk
+> marker prove it completed successfully at 201 s. The "~442k input
+> tokens" figure originally quoted for it was a double-count of
+> cumulative per-turn usage records; the session total is 110,590. S15
+> has been corrected to PROVEN for `code-reviewer` with the caveats
+> above.
 
 ## Skills (8)
 
@@ -129,7 +145,7 @@ Copilot numbers are upper bounds.
 | Claude agents — duplicate partial execution (runtime restart of the batch; 5 runs observed in its output before the clean re-run) | 5 | $0.2780 |
 | Claude skills (4 paired runs) | 4 | $0.0789 |
 | Claude MCP combined (5 calls in one run) | 1 | $0.0517 |
-| Copilot agents (2 `--agent` timeouts, 1 delegation pilot, 6 paired delegation runs) | 9 | ~$1.7556 |
+| Copilot agents (2 `--agent` attempts — 1 completed, 1 stalled in MCP startup and killed at the 300 s probe limit — 1 delegation pilot, 6 paired delegation runs) | 9 | ~$1.7556 |
 | Copilot MCP (combined + 2 re-probes) | 3 | ~$0.1574 |
 | Copilot skills (4 paired runs) | 4 | ~$0.2326 |
 | MCP protocol probes, `mcp list`, negative controls | — | $0.0000 |
