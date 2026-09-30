@@ -48,3 +48,6 @@ complete — `docs/claude-critique-2026-09-30.md` delivered on branch `critique/
 
 ### Correction (appended after close) — spend accounting
 The full claims pass's JSON envelope arrived in a late completion notification after this session was closed: exit 0, 41 turns, **$1.403259** metered. Corrected totals: **$2.7198 metered** of the $7 allocation (claims $1.4033 + smoke $0.0116 + narrative/CLAUDE.md $0.6744 + setup $0.6306). Only the S1–S9 pass remains unmetered. The critique doc's spend line was updated to match.
+
+### Correction 2 (appended) — final spend
+The S1–S9 pass's envelope also arrived late: exit 0, 34 turns, **$1.1058564**. All five runs are now metered. **Final total: $3.8257 of the $7 allocation** (smoke $0.0116 + full claims $1.4033 + S1–S9 $1.1059 + narrative/CLAUDE.md $0.6744 + setup $0.6306). Nothing unmetered remains.
