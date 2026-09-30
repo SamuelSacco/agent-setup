@@ -32,6 +32,12 @@ Samuel (07:41 ET): V1 frozen; ramp up. Be more aggressive and curious, token-max
 - **Tried:** Child mined affaan-m/ECC at c70874f (v2.2.2); LICENSE read in full: MIT. 668 items inventoried individually.
 - **Happened:** 19 ported into canonical/ (9 agents, 6 skills, 4 MCP), 223 PORT-WITH-CHANGES, 426 SKIP; commands/hooks/rules skipped as classes with reasons. Spend $0.00. Integrated into phase-2 as bd1900c and pushed. V1 data-scientist and ux-ui both demoted to optional in the derived roster — Samuel's suspicion about the V1 roster confirmed by inventory.
 
+### 07:48 — W5 CLAUDE.md-drop landed
+- **Intended:** Settle whether CLAUDE.md can be dropped on Claude 2.1.285 (four canary arms).
+- **Tried:** Arms A (control, bridge), B (no CLAUDE.md), C (annex-only CLAUDE.md, no import), D (both-files via user settings), 2 clean runs each.
+- **Happened:** Verdict PARTIAL. Native AGENTS.md load PROVEN when no CLAUDE.md exists in cwd/ancestors (B, 2/2). Trap PROVEN (C, 2/2): annex-only CLAUDE.md silently suppresses the shared file — the bridge is load-bearing. Arm D: both-files mode IS settable headlessly via user settings `pluginConfigs` (`instructionFiles: claude-md-and-agents-md`), 2/2 both canaries. Recommendation: keep the `@AGENTS.md` bridge; dropping loses the annex + InstructionsLoaded hook firing and adds a silent ancestor-suppression failure mode (bit the child's first runs — repo's own ancestor CLAUDE.md contaminated in-repo scratch; clean runs moved to /tmp, deviation documented). Spend $0.1204 of $1.00 cap. Integrated as c8f14ed (author rewritten to Helm identity — child's commit carried Samuel's private email and GitHub rejected the push, GH007).
+- **Phase 2 spend so far: $0.1204 / $15.**
+
 ## Learned
 <filled at hardening>
 
