@@ -19,7 +19,7 @@ Researched 2026-09-30. Live-tool verdicts pending authentication.
 
 | # | Claim | Verdict | Evidence |
 |---|-------|---------|----------|
-| S1 | One install (`scripts/install.sh`) makes a canonical skill discoverable in BOTH tools | PARTIAL — Copilot discovery PROVEN unauthenticated; Claude discovery + any invocation UNVERIFIABLE until auth | evals/results/2026-09-30-E1-partial.md |
+| S1 | One install (`scripts/install.sh`) makes a canonical skill discoverable in BOTH tools | PARTIAL — Copilot discovery + live invocation **PROVEN** 2026-09-30 (skill loaded by name, body executed; auth via existing GitHub session); Claude half UNVERIFIABLE until Claude sign-in completes | evals/results/2026-09-30-E1-partial.md |
 | S2 | A session in tool A is continuable by tool B from the shared session log + wiki | UNVERIFIABLE | evals/tasks/E2-cross-tool-continuity.md |
 | S3 | Wiki orientation improves task success vs no-wiki baseline | UNVERIFIABLE | evals/tasks/E3-wiki-value.md |
 | S4 | The failure-capture hook records structured failure events to the sidecar | UNVERIFIABLE (sidecar itself tested locally) | evals/tasks/E4-failure-capture.md |
