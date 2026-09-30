@@ -34,3 +34,17 @@ Researched 2026-09-30 from Anthropic + GitHub docs (full brief:
   settings `pluginConfigs` (`instructionFiles: "claude-md-and-agents-md"`,
   2/2 both canaries). Decision: keep the `@AGENTS.md` bridge — dropping
   CLAUDE.md also loses the annex and `InstructionsLoaded` hook firing.
+
+## Copilot custom agents DO receive AGENTS.md (X17, behavioral)
+
+The v1.0.86 changelog says repo instruction files are opt-in per
+custom agent (`include-custom-instructions: true`), and our emitted
+agents don't set it. Probed behaviorally 2026-09-30 (CLI 1.0.89,
+`--agent backend`, body-only marker in a scratch AGENTS.md): the
+as-emitted agent reproduced the marker exactly with zero tool calls;
+flag-on was identical; marker-removed control failed. Debug log shows
+AGENTS.md injected as a `<custom_instruction>` block alongside
+`<agent_instructions>`. **PROVEN for the CLI `--agent` surface
+(ledger S18)** — the changelog statement may describe other surfaces
+(IDE/cloud), which remain untested. Evidence:
+`evals/results/2026-09-30-X17-copilot-agent-orientation.md`.
