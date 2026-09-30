@@ -20,8 +20,12 @@ Researched 2026-09-30 against Anthropic's docs. Verdicts in
 
 - Since v2.1.277 (2026-09-18), Claude Code reads `AGENTS.md` natively — **only** 
   when no `CLAUDE.md`/`CLAUDE.local.md` exists in the cwd or above it.
-- Robust bridge: make `CLAUDE.md`'s first line `@AGENTS.md` (this workspace does). 
-  Never double-loads; hooks fire; works everywhere.
+- This workspace ships **no `CLAUDE.md`** (dropped 2026-09-30, ledger C4):
+  native `AGENTS.md` load is the only path, guarded by
+  `scripts/check-agents-md-load.sh` (version floor 2.1.277, live marker
+  probe, and a hard fail if a `CLAUDE.md` ever reappears without the
+  `@AGENTS.md` bridge — an annex-only file silently suppresses the
+  native read).
 - Verify with `/context` — the file should appear under **Memory files**.
 - `/doctor prompt-audit` (v2.1.283+) audits CLAUDE.md/AGENTS.md/rules/skills for 
   stale or conflicting instructions. Run it after big instruction edits.
