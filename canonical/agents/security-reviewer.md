@@ -101,8 +101,4 @@ If you find a CRITICAL vulnerability:
 
 ## Reference
 
-For detailed vulnerability patterns, code examples, report templates, and PR review templates, see skill: `security-review`.
-
----
-
-**Remember**: Security is not optional. One vulnerability can cost users real financial losses. Be thorough, be paranoid, be proactive.
+The checklists and patterns above are the complete reference for this agent. For the security-scan phase of the six-phase verification pass, see skill: `verification-loop`.

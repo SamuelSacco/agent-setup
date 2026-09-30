@@ -16,6 +16,7 @@ The map of maintained knowledge. Agents: read this first, keep it current.
 
 ### Procedures
 - [[session-lifecycle]] — orient → log → harden; the audit trail both tools share
+- [[instruction-debt]] — canonical prompt-debt fixes 2026-09-30: broken references rewired, 80% defined once as heuristic default, rituals trimmed to mechanism
 - [[feedback-loop]] — capture → review → judge → improve; packaged eval runner `scripts/run-eval.sh` (S16)
 
 ### References

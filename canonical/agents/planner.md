@@ -102,7 +102,7 @@ Create detailed steps with:
 
 ## Worked Example: Adding Stripe Subscriptions
 
-Here is a complete plan showing the level of detail expected:
+Here is a complete plan at full detail, for a high-risk multi-phase change. Size the plan to the task — small changes need proportionally less.
 
 ```markdown
 # Implementation Plan: Stripe Subscription Billing
@@ -176,7 +176,7 @@ Stripe Checkout, and webhook events keep subscription status in sync.
 - [ ] Webhook correctly syncs subscription status
 - [ ] Free users cannot access Pro features
 - [ ] Downgrade/cancellation works correctly
-- [ ] All tests pass with 80%+ coverage
+- [ ] All tests pass; coverage meets the project threshold (or the 80% heuristic default in `skill: tdd-workflow`)
 ```
 
 ## When Planning Refactors
