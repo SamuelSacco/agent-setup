@@ -92,9 +92,12 @@ compare bare Claude to default Copilot — that framing is REFUTED.
 
 ## Spend
 
-Phase 2 total ≈ $8–9 of the $15 cap (W3 $5.35; matrix $0.65; W5 $0.12;
-replication $1.56; port probes <$1; onboarding $0.08). Key balance after:
-roughly $9–10 of Samuel's reported $18.23. V1 evals: ~$1.03.
+Phase 2 total ≈ $10.5 of the $15 cap (W3 $5.35; matrix $0.65; W5 $0.12;
+replication $1.56; port probes $2.78; onboarding $0.08). Corrected
+2026-09-30 after adversarial re-derivation: the port-probe cost log
+sums to $2.7768, not <$1. Key balance after Phase 2: roughly $7.7 of
+Samuel's reported $18.23, before the late-morning extension streams.
+V1 evals: ~$1.03.
 
 ## Open risks for 16:00
 
