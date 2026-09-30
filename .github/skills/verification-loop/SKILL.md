@@ -55,8 +55,8 @@ ruff check . 2>&1 | head -30
 # Run tests with coverage
 npm run test -- --coverage 2>&1 | tail -50
 
-# Check coverage threshold
-# Target: 80% minimum
+# Check coverage against the project threshold
+# Default if the project sets none: 80% heuristic (defined in skill: tdd-workflow, Coverage Requirements)
 ```
 
 Report:
@@ -111,16 +111,16 @@ Issues to Fix:
 
 ## Continuous Mode
 
-For long sessions, run verification every 15 minutes or after major changes:
+Re-run verification when the verified state changes — not on a timer. A PASS
+against an unchanged tree carries no new information.
 
-```markdown
-Set a mental checkpoint:
-- After completing each function
-- After finishing a component
-- Before moving to next task
+Re-verify:
+- After a fix or refactor lands
+- After completing a component or feature chunk
+- Before creating a PR
+- Before claiming work is done
 
-Run: /verify
-```
+Run this skill again at each of those points.
 
 ## Integration with Hooks
 

@@ -1,6 +1,6 @@
 ---
 name: search-first
-description: Research-before-coding workflow: search npm/PyPI, MCP servers, skills, and GitHub for existing tools before writing custom code, then adopt, extend, or build. Launches the researcher agent for non-trivial needs. Use when starting a feature, adding a dependency or integration, or about to write a utility that may already exist.
+description: Research-before-coding workflow: search npm/PyPI, MCP servers, skills, and GitHub for existing tools before writing custom code, then adopt, extend, or build. For non-trivial needs, delegates the search to a subagent. Use when starting a feature, adding a dependency or integration, or about to write a utility that may already exist.
 ---
 
 <!-- Source: ECC (everything-claude-code) by Affaan Mustafa — https://github.com/affaan-m/ECC — MIT License (LICENSE in that repo; copyright notice retained per MIT terms). Ported 2026-09-30. Adaptations: canonical frontmatter only (name/description); Claude-only names/paths replaced with tool-neutral equivalents so the same file serves Claude Code and Copilot CLI. -->
@@ -29,7 +29,7 @@ Use this skill when:
 │     Define what functionality is needed      │
 │     Identify language/framework constraints  │
 ├─────────────────────────────────────────────┤
-│  2. PARALLEL SEARCH (researcher agent)      │
+│  2. PARALLEL SEARCH (subagent)              │
 │     ┌──────────┐ ┌──────────┐ ┌──────────┐  │
 │     │  npm /   │ │  MCP /   │ │  GitHub / │  │
 │     │  PyPI    │ │  Skills  │ │  Web      │  │
@@ -87,7 +87,7 @@ Before writing a utility or adding functionality, mentally run through:
 
 ### Full Mode (agent)
 
-For non-trivial functionality, launch the researcher agent:
+For non-trivial functionality, delegate the search to a subagent:
 
 ```
 Agent(subagent_type="general-purpose", prompt="
@@ -128,19 +128,19 @@ tool name exposed by the active harness.
 ## Integration Points
 
 ### With planner agent
-The planner should invoke researcher before Phase 1 (Architecture Review):
-- Researcher identifies available tools
+The planner should run this research pass before Phase 1 (Architecture Review):
+- The research pass identifies available tools
 - Planner incorporates them into the implementation plan
 - Avoids "reinventing the wheel" in the plan
 
-### With architect agent
-The architect should consult researcher for:
+### With code-architect agent
+The code-architect should consult the search-first research results for:
 - Technology stack decisions
 - Integration pattern discovery
 - Existing reference architectures
 
-### With iterative-retrieval skill
-Combine for progressive discovery:
+### Progressive discovery
+For broad problem spaces, run the search in cycles:
 - Cycle 1: Broad search (npm, PyPI, MCP)
 - Cycle 2: Evaluate top candidates in detail
 - Cycle 3: Test compatibility with project constraints
