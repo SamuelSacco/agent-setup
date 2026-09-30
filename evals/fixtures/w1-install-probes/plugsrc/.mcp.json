@@ -1,0 +1,1 @@
+{"mcpServers":{"w1mcp":{"command":"python3","args":["<abs path to evals/fixtures/w1-install-probes/mcp_server.py>"],"env":{}}}}
