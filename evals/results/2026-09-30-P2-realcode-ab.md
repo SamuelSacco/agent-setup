@@ -203,3 +203,121 @@ the real commit's tests define success, message assertions included.
 Replication artifacts: `~/workspace/p2/portverify/` (`repl_runner.py`,
 `repl/assets/` prompts + frozen orientation text, `repl/runs/`,
 `repl/ledger.tsv`, `repl/validation.json`).
+
+---
+
+## Second codebase (Rich) — Claim B only
+
+Purpose: Claim B ("orientation improves success on real code") is
+PROVEN on NetworkX at n=8 tasks, one codebase. This extension runs the
+SAME experiment on a different codebase — the codebase is the only
+changed variable. Same model (`claude-haiku-4-5-20251001`), same two
+arms (base vs +orientation), same prompt template shape, same runner
+discipline, same Claim B rule. Pre-registered here and committed
+BEFORE any agent run in this section.
+
+### Codebase
+
+- **Textualize/rich** (GitHub), pinned HEAD
+  `9d8f9a372cc5916fd4781fec207ced7ddac2f08f` (2026-06-23).
+- Why: terminal text rendering/styling — a different domain from
+  NetworkX's graph algorithms; pure Python, pytest suite, long history
+  of small same-commit bugfix+test pairs.
+- Size at HEAD: ~26.6k LOC library source (`rich/`, excluding the
+  generated `_unicode_data` tables), ~11.2k LOC tests (top-level
+  `tests/`, one `test_<module>.py` per module).
+- Grading environment (pinned): Python 3.12.3 venv at
+  `~/workspace/p2/secondcode/venv` — pytest 9.1.1, Pygments 2.21.0,
+  markdown-it-py 4.2.0, attrs 26.1.0 (attrs is test-only). Library is
+  imported from the run's own checkout, never installed. Grading runs
+  with `COLUMNS=200`, `TERM=dumb` (identical to validation below).
+
+### Task selection and oracle validation
+
+Same mining filters as W3: scanned the last 800 non-merge commits at
+pinned HEAD; subject marks a bug fix; 3–90 changed lines in non-test
+`.py` under `rich/`; ≤3 non-test files; ≥5 changed test lines in the
+same commit. 18 candidates survived. Candidate accounting, in full:
+
+- **Dropped pre-validation:** `f2ee29531` (text.py, self-append
+  infinite loop) — the commit's regression test *hangs* at the parent
+  rather than failing; a hang is not a gradeable failure and risks
+  900 s wall-cap burns in agent runs.
+- **Dropped at oracle validation:** `4f40703e4` (segment.py,
+  split_cells) — the commit's changed test FAILS at the fix commit in
+  this environment (`assert 53 == 52`, a Unicode-data width
+  discrepancy) and passes at the parent with the test overlaid:
+  inverted, environment-sensitive, not a valid oracle here.
+  `7ef2d05ca` (markdown.py, inline code in table cells) — the commit's
+  own test fails at the fix commit in this environment (Pygments
+  version-sensitive expected ANSI output); not a valid oracle here.
+- **Selected:** 4 tasks spanning 4 subsystems (pretty, console, cells,
+  table). Oracle validation for each (all done before any agent run):
+  the real commit's grading tests pass at the commit; at the parent
+  with only the commit's test files overlaid they fail.
+
+| Task | Fix commit (parent) | Grading tests | At parent |
+|------|--------------------|---------------|-----------|
+| U1 pretty: unset dataclass field | `6055e2d8e` (`b6f2f7aa5`) | `tests/test_pretty.py::test_dataclass_no_attribute` (1) | 1 failed — AttributeError |
+| U2 console: soft_wrap style reset | `39ee57dfe` (`05ff97092`) | `tests/test_text.py::test_soft_wrap_styled` (1) | 1 failed — reset missing before `\n` |
+| U3 cells: ZWJ + non-printable widths | `13f87a400` (`1d402e0c5`) | `tests/test_cells.py::test_zwj`, `::test_non_printable` (2) | 2 failed |
+| U4 table: grid padding width | `1c5e03eb3` (`fe55a131c`) | `tests/test_table.py::test_padding_width` (1) | 1 failed — `'aaa  aaa aaa \n'` vs `'aaa aaa aaa\n'` |
+
+Parent symptoms (verified in the validation runs): U1 printing a
+dataclass with an unset `field(init=False)` raises
+`AttributeError: 'BadDataclass' object has no attribute 'item'`. U2
+with `soft_wrap=True` and style `blue on white`, captured output lacks
+the `\x1b[0m` reset before the newline. U3 `cell_len` counts a lone
+ZERO WIDTH JOINER and control characters `chr(0)`–`chr(30)` as width
+1. U4 the grid table above renders with a double space after the first
+cell and a trailing space.
+
+The operative prompt texts are the files in
+`~/workspace/p2/secondcode/assets/` (template identical to W3 with the
+project description, verify path, and venv path substituted); the
+orientation text is frozen in `assets/orientation.md` and placed as
+`CLAUDE.md` at the checkout root in the +orientation arm only.
+
+### Arms, metrics, grading
+
+- Arm 1 — base: scratch checkout (parent commit via `git archive`,
+  fresh single-commit `git init` — no future history reachable) +
+  `.claude/settings.json` (apiKeyHelper) only.
+- Arm 2 — +orientation: identical + the frozen orientation `CLAUDE.md`.
+- No +agent arm (Claim A is not under test), no Copilot arm.
+- Claude Code 2.1.285 headless, `--output-format json`,
+  `--permission-mode acceptEdits`, same allowedTools as W3; per-run
+  wall cap 900 s (timeout kills and is logged).
+- Grading by the evaluator after the agent exits, never from agent
+  self-report: overlay the real commit's version of the changed test
+  file(s) on the run tree, run the grading test node IDs with the
+  pinned venv; success = every grading test passes. Per run also
+  recorded: `num_turns`, `total_cost_usd` (JSON envelope), wall
+  seconds, `git diff --stat`.
+
+### Claim rule and combined verdict (pre-registered)
+
+- Claim B on Rich: PROVEN if +orientation solves ≥1 task base fails
+  AND solves ≥ as many tasks overall as base. REFUTED if +orientation
+  solves fewer tasks than base. Otherwise UNVERIFIABLE.
+- Combined across both codebases (NetworkX n=8 + Rich n=4 = 12 paired
+  tasks): Claim B stands PROVEN if combined +orientation solves >
+  combined base solves AND Rich is not a REFUTED codebase. Combined
+  REFUTED if combined +orientation solves < combined base solves.
+  Any other combined outcome = UNVERIFIABLE, and ledger S12 is
+  amended to match in the same commit as these results. S12 stays
+  PROVEN only under combined PROVEN.
+
+### Budget and stop rules
+
+- Hard cap: $6.00 Anthropic spend for this section's runs (Samuel
+  authorized 2026-09-30 11:11 ET). Cumulative cost logged in the
+  ledger after each run (`~/workspace/p2/secondcode/ledger.tsv`).
+- Single-run soft cap ~$1.50: a run passing it is killed and logged.
+- Shrink order if the cap squeezes: drop U4 +orientation, then U4
+  base. Rigor (fresh tree per run, disk-based grading, identical
+  prompts) is never shrunk.
+
+### Results
+
+<!-- filled in after the runs, same file -->
