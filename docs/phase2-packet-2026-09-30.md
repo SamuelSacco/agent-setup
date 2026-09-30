@@ -85,6 +85,15 @@ PARTIAL. Sources in `evals/results/2026-09-30-P2-*` and
     default 12 defs, Copilot default 23). Evidence:
     `evals/results/2026-09-30-LAB-rent-toolcounts.md`; backlog X1/X2/X20
     in `docs/experiments-backlog.md`.
+  - **Correction 2026-09-30 (X2 remainder):** the ~3.5k ECC figure is
+    now resolved — REFUTED as a token figure, retired. Re-derived from
+    the ECC source at the mined commit (`affaan-m/ECC` `c70874f`,
+    v2.2.2, `agents/*.md`) under the LAB tiktoken cl100k method:
+    all-68 description rent = **2,728 tokens** (3,029 with names), not
+    ~3.5k. The original number is a chars÷4 estimate: 14,169 desc
+    chars (reproduced exactly from source) / 4 = 3,542; the corpus
+    runs ≈5.19 chars/token. Citable figure: 2,728. Evidence:
+    `evals/results/2026-09-30-X2-ecc-rent.md`; backlog X2 closed.
 - Copilot surfaces: plugins exist fully (`copilot plugin install`,
   marketplace repos; Anthropic's plugin repo is addable per GitHub docs);
   skills strongest crossover (`.github/`, `.agents/`, `.claude/` all read);

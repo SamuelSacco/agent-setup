@@ -53,6 +53,20 @@ Status key: UNVERIFIABLE / PARTIAL / REFUTED / PROVEN / UNBUILT / BLOCKED.
   "~3.5k for all-68 ECC" figure from the ECC source (not in this repo) or
   retire the number. Est. cost: $0 (web fetch of ECC repo). Priority: high
   — the figure is in the packet the talk is built from.
+- **Correction 2026-09-30 (X2 remainder, branch `lab/x2-ecc-rent`):
+  remainder CLOSED — "~3.5k" REFUTED as a token figure, retired.**
+  Re-derived from the ECC source at the mined commit
+  (`affaan-m/ECC` `c70874fae9eb0e5ad0365beb7e2955899fd1d30f`, v2.2.2,
+  `agents/*.md`, 68 files) under the LAB method (tiktoken
+  `cl100k_base`, per-file frontmatter descriptions, counter verified
+  against LAB at its own head: 422 / 469 / 739 exact): description-only
+  = **2,728 tokens** (name+desc 3,029; full frontmatter 4,504) — no
+  variant reaches ~3.5k. The original derivation is recovered and
+  PROVEN as an estimate: roster research summed 14,169 desc chars
+  (reproduced exactly from source) and divided by 4 → 3,542; the
+  corpus runs ≈5.19 chars/token, so the estimate overstates by ~30%.
+  Same construction as the REFUTED ~546. Citable figure: 2,728.
+  Evidence: `evals/results/2026-09-30-X2-ecc-rent.md`. Spend: $0.00.
 
 ### X3 — Orientation helps Copilot on tasks with headroom (ledger S16)
 - Status: UNVERIFIABLE — Copilot base is 3/3 on every task run; no failed
