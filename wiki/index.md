@@ -27,7 +27,7 @@ The map of maintained knowledge. Agents: read this first, keep it current.
 - [[claude-advisor]] — PROVEN (with the not-free correction)
 - [[copilot-rubber-duck]] — PROVEN (cross-model critic)
 - [[specialist-agent-real-code]] — UNVERIFIABLE (same solves as base, +55% turns, P2 W3)
-- [[orientation-real-code]] — PROVEN combined n=12 (NetworkX 8/8 vs 6/8; second codebase Rich UNVERIFIABLE 3/4 vs 3/4, no discordant pair)
+- [[orientation-real-code]] — PROVEN combined n=12 at Haiku tier (NetworkX 8/8 vs 6/8; second codebase Rich UNVERIFIABLE 3/4 vs 3/4, no discordant pair); model-tier test on claude-opus-5-5: UNVERIFIABLE, zero discordant pairs on either codebase (S18)
 - [[ecc-ports-invocable]] — PROVEN (all emitted agents/skills/MCP invoked live in both tools; Copilot `--agent` PROVEN for reviewer persona but slow, P2 port verification)
 
 ### Decisions
