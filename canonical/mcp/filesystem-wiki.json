@@ -1,1 +1,1 @@
-{"args":["-y","@modelcontextprotocol/server-filesystem","./wiki"],"command":"npx","description":"Read/write access scoped to the workspace wiki (example MCP server definition).","env":{},"name":"filesystem-wiki","transport":"stdio"}
+{"args":["-y","@modelcontextprotocol/server-filesystem@2026.8.31","./wiki"],"command":"npx","description":"Read/write access scoped to the workspace wiki (example MCP server definition).","env":{},"name":"filesystem-wiki","transport":"stdio"}

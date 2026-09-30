@@ -1,7 +1,7 @@
 {
   "args": [
     "-y",
-    "@playwright/mcp",
+    "@playwright/mcp@0.0.83",
     "--browser",
     "chrome"
   ],

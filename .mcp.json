@@ -4,7 +4,7 @@
       "command": "npx",
       "args": [
         "-y",
-        "@upstash/context7-mcp@latest"
+        "@upstash/context7-mcp@4.1.1"
       ],
       "env": {}
     },
@@ -12,7 +12,7 @@
       "command": "npx",
       "args": [
         "-y",
-        "@modelcontextprotocol/server-filesystem",
+        "@modelcontextprotocol/server-filesystem@2026.8.31",
         "./wiki"
       ],
       "env": {}
@@ -21,7 +21,7 @@
       "command": "npx",
       "args": [
         "-y",
-        "@modelcontextprotocol/server-github"
+        "@modelcontextprotocol/server-github@2025.4.8"
       ],
       "env": {
         "GITHUB_PERSONAL_ACCESS_TOKEN": ""
@@ -31,7 +31,7 @@
       "command": "npx",
       "args": [
         "-y",
-        "@playwright/mcp",
+        "@playwright/mcp@0.0.83",
         "--browser",
         "chrome"
       ],
@@ -41,7 +41,7 @@
       "command": "npx",
       "args": [
         "-y",
-        "@modelcontextprotocol/server-sequential-thinking"
+        "@modelcontextprotocol/server-sequential-thinking@2026.8.31"
       ],
       "env": {}
     }
