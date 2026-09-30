@@ -29,7 +29,7 @@ they're labeled.
 | Your OTel claims (both tools) | **PROVEN live** — Claude writes raw request/response JSON (size-complete; thinking text redacted); Copilot exports full-content OTel JSONL. Ledger S8/S9 |
 | The "~14.5k vs 1.9k" gap | **REFUTED as a ratio** — decomposed; it's configurable harness surface. Ledger S10 |
 | E5 (wiki context cost) | **PARTIAL** — 38% token cut PROVEN; the "quality 10/10, drop 0" line did not survive re-scoring (see correction below) |
-| E6 pilot (agent parity) | **BLOCKED both sides** — Claude write-approval; Copilot reported success, wrote nothing (below) |
+| E6 pilot (agent parity) | **BLOCKED both sides** — Claude write-approval; Copilot reported success, wrote nothing (below). **Update ~01:48:** Claude rerun under your yolo authorization completed — files written, pytest 13/13 (independently re-run), $0.0767. Ledger S6a PROVEN, S6b REFUTED |
 | Your relayed Copilot OTel details | Accurate against GitHub's official docs, every check |
 | Copilot hooks | **Mechanism found 01:45**: hooks are trust-gated — untrusted headless = 0/5 (our first result); `COPILOT_ALLOW_ALL=true` trusts the dir and they fire. But `postToolUseFailure` never fires for shell failures (tool reports success; exit code buried in result text). Capture = parse the payload; adapter identified, not built |
 | The pasted OTel-architecture essay | Sound pattern, mostly documented — **not needed tomorrow**. Verdict below |

@@ -10,10 +10,10 @@ Researched 2026-09-30 against GitHub's docs. Verdicts in `docs/claims-ledger.md`
 - The trick: it deliberately runs on a **different model family** than your 
   session (Claude driving → GPT critic, or vice versa) so it doesn't share the 
   driver's blind spots.
-- Auto-consulted after planning non-trivial changes, mid-implementation, after 
-  tests, and after repeated failures. Skipped for small changes.
-- Invoke manually: "Rubber duck your plan", `/rubber-duck <prompt>`, or start as 
-  one: `copilot --agent rubber-duck`.
+- Invocation is manual by default: "Rubber duck your plan", `/rubber-duck <prompt>`, or start as 
+  one: `copilot --agent rubber-duck`. Automatic consultation exists but is
+  opt-in (`rubberDuckAutoInvoke`, off by default) — don't claim it's
+  watching your work until you've turned it on.
 - Read-only: explores but never edits. Costs extra model usage per consult — 
   GitHub's bet is early catches pay for it. Test that bet (evals/) before 
   preaching it.
