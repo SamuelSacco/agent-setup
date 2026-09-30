@@ -1,4 +1,4 @@
-# Morning review — 2026-10-01 (read this on the train)
+# Morning review — 2026-09-30 (read this on the train)
 
 Everything below ran overnight while you slept. Verdicts use the ledger
 standard: PROVEN / REFUTED / UNVERIFIABLE, evidence in `evals/results/` and
@@ -34,7 +34,7 @@ they're labeled.
 | E6 pilot (agent parity) | **BLOCKED both sides** — Claude write-approval; Copilot reported success, wrote nothing (below). **Update ~01:48:** Claude rerun under your yolo authorization completed — files written, pytest 13/13 (independently re-run), $0.0767. Ledger S6a PROVEN, S6b REFUTED |
 | Your relayed Copilot OTel details | Accurate against GitHub's official docs, every check |
 | Copilot hooks | **Mechanism found 01:45**: hooks are trust-gated — untrusted headless = 0/5 (our first result); `COPILOT_ALLOW_ALL=true` trusts the dir and they fire. But `postToolUseFailure` never fires for shell failures (tool reports success; exit code buried in result text). Capture = parse the payload; adapter identified, not built |
-| The pasted OTel-architecture essay | Sound pattern, mostly documented — **not needed tomorrow**. Verdict below |
+| The pasted OTel-architecture essay | Sound pattern, mostly documented — **not needed today**. Verdict below |
 | Karpathy llm-wiki gist | Your setup already implements it (wiki + index + log + lint); E2/E5 are its measurements |
 
 ## The 14.5k answer (so you can say it cold)
@@ -83,7 +83,7 @@ Overreach: the `gen_ai.*` vocabulary is still a Development-status spec
 (not the stable standard the essay implies); neither tool emits the
 `skill`/`hook` span events its canonical schema assumes; its strongest
 Copilot claims rest on GitHub's docs, not captures. And for one engineer
-with two CLIs presenting tomorrow, a Collector daemon is speculative
+with two CLIs presenting today, a Collector daemon is speculative
 generality — the learning loop already closes through files → wiki →
 skills (Karpathy's pattern, E2-proven).
 
