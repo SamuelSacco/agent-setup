@@ -156,7 +156,12 @@ Status key: UNVERIFIABLE / PARTIAL / REFUTED / PROVEN / UNBUILT / BLOCKED.
   Est. cost: ~$0.30 each. Priority: low.
 
 ### X17 — Copilot custom agents receive repo orientation
-- Status: UNVERIFIABLE, with a documented trap: since CLI v1.0.86 repo
+- Status: **PROVEN** 2026-09-30 (X17 probe) — as-emitted custom agents
+  DO receive AGENTS.md on CLI 1.0.89 (`--agent` path); the v1.0.86
+  opt-in statement does not hold behaviorally on this surface and the
+  flag is a no-op. Ledger S18;
+  `evals/results/2026-09-30-X17-copilot-agent-orientation.md`.
+  Original framing (superseded): since CLI v1.0.86 repo
   instruction files are opt-in per agent (`include-custom-instructions:
   true`), and our emitted `.github/agents/*.md` do not set it.
 - Cheapest decisive test: body-only-fact probe (packet's own probe lesson:

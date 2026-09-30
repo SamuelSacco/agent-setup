@@ -161,3 +161,16 @@ scratch. It has now been reviewed and landed at `scripts/quickstart.sh`;
 in-tree `--structural-only` run passes (8/8 skills, 12/12 agents, both
 MCP configs parse, zero tree delta beyond the new file). The live-probe
 path remains gated on vendor auth as designed.
+
+**Correction — 2026-09-30 ~14:55 ET (X17 probe):** the Copilot-surfaces
+bullet above states custom agents do NOT inherit repo instruction
+files automatically since CLI v1.0.86 (opt-in via
+`include-custom-instructions: true`). Behaviorally REFUTED for CLI
+1.0.89 `--agent` sessions: an as-emitted custom agent (no flag)
+reproduced a body-only AGENTS.md marker exactly, with zero tool
+calls; the marker-removed control failed; the debug log shows
+AGENTS.md injected as a `<custom_instruction>` block next to the
+agent's own instructions. The flag is a no-op on this surface. Do not
+state the opt-in trap on stage as CLI behavior; other surfaces
+(IDE/cloud) remain untested. Evidence:
+`evals/results/2026-09-30-X17-copilot-agent-orientation.md` (S18).
