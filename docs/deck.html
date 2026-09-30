@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>One Setup, Two Agents — A Tool-Agnostic Coding-Agent Workspace</title>
+<style>
+  :root { --ink:#10131a; --dim:#4a5160; --accent:#b3541e; --ok:#1e7a34; --bad:#b3261e; --unk:#8a6d1a; --line:#d8dce4; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: Georgia, 'Times New Roman', serif; color:var(--ink); background:#f4f2ed; }
+  .slide { min-height: 100vh; padding: 7vh 9vw; display:flex; flex-direction:column; justify-content:center; border-bottom: 3px solid var(--line); background:#fbfaf7; }
+  h1 { font-size: 3rem; line-height:1.1; margin: 0 0 1rem; }
+  h2 { font-size: 2.1rem; line-height:1.15; margin: 0 0 1.2rem; }
+  p, li { font-size: 1.25rem; line-height: 1.5; }
+  .dim { color: var(--dim); }
+  .kicker { font-family: ui-monospace, Menlo, monospace; font-size:.85rem; letter-spacing:.18em; text-transform:uppercase; color:var(--accent); margin-bottom:1rem; }
+  code, .mono { font-family: ui-monospace, Menlo, monospace; font-size: .92em; background:#efece5; padding: .05em .3em; border-radius: 4px; }
+  pre { font-family: ui-monospace, Menlo, monospace; font-size: 1rem; line-height:1.55; background:#10131a; color:#e8e6df; padding:1.2rem 1.4rem; border-radius:8px; overflow-x:auto; }
+  pre .c { color:#8f97a8; }
+  table { border-collapse: collapse; font-size: 1.1rem; margin-top:.5rem; }
+  th, td { border:1px solid var(--line); padding:.55rem .9rem; text-align:left; vertical-align:top; }
+  th { background:#efece5; }
+  .tag { font-family: ui-monospace, Menlo, monospace; font-size:.78rem; font-weight:700; padding:.15em .55em; border-radius: 999px; white-space:nowrap; }
+  .proven { background:#e2f2e5; color:var(--ok); }
+  .refuted { background:#fbe7e4; color:var(--bad); }
+  .unver { background:#f7ecd0; color:var(--unk); }
+  .cols { display:grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; }
+  .num { font-family: ui-monospace, Menlo, monospace; color: var(--accent); }
+  footer { font-size:.9rem; color:var(--dim); margin-top:2rem; font-family: ui-monospace, Menlo, monospace; }
+  ul { padding-left: 1.3rem; } li { margin-bottom:.5rem; }
+  @media print { .slide { min-height:auto; page-break-after: always; } }
+</style>
+</head>
+<body>
+
+<section class="slide">
+  <div class="kicker">Team session · Agentic coding setups</div>
+  <h1>One Setup, Two Agents</h1>
+  <p>A tool-agnostic workspace for Claude Code and GitHub Copilot CLI: one place to define skills, agents, and MCP servers; one shared memory; and an evaluation habit that tells us whether any of it actually helps.</p>
+  <p class="dim">Sterile by design — nothing personal in it. Clone it, run one install command, and both tools behave the same.</p>
+</section>
+
+<section class="slide">
+  <div class="kicker">The problem</div>
+  <h2>Two agents, two configs, and knowledge that evaporates</h2>
+  <ul>
+    <li>Every capability gets configured twice — once per tool — then drifts.</li>
+    <li>What an agent learned in Monday's session is gone by Tuesday, and invisible to the other tool forever.</li>
+    <li>Most "agent setup" advice is folklore: claims copied from posts, never tested.</li>
+  </ul>
+  <p>The fix is not a bigger config. It's a shared layer, a shared memory, and proof.</p>
+</section>
+
+<section class="slide">
+  <div class="kicker">Foundation</div>
+  <h2><code>AGENTS.md</code> is now the shared instruction layer — with traps</h2>
+  <ul>
+    <li><span class="tag proven">PROVEN</span> Codex, Copilot, Cursor, Gemini CLI, Devin and others read <code>AGENTS.md</code> natively. It's stewarded by the Agentic AI Foundation (Linux Foundation).</li>
+    <li><span class="tag proven">PROVEN</span> Claude Code joined on 2026-09-18 (v2.1.277) — <em>conditionally</em>: only when no <code>CLAUDE.md</code> exists in the directory or above it.</li>
+    <li><span class="tag refuted">REFUTED</span> "Claude Code doesn't read AGENTS.md." Outdated as of last week.</li>
+    <li>The robust bridge: <code>CLAUDE.md</code> whose first line is <code>@AGENTS.md</code>. One source of truth, never double-loads.</li>
+    <li>Trap: Copilot <em>CLI</em> merges all instruction files with <strong>no defined precedence</strong>. Conflicting rules have no referee.</li>
+  </ul>
+  <footer>Sources: Anthropic memory docs + changelog; GitHub Copilot docs. Researched 2026-09-30.</footer>
+</section>
+
+<section class="slide">
+  <div class="kicker">Architecture</div>
+  <h2>Define once in <code>canonical/</code>. Adapters speak each tool's dialect.</h2>
+<pre><span class="c"># one definition</span>
+canonical/skills/session-harden.md
+canonical/agents/backend.md
+canonical/mcp/coralogix.json
+canonical/hooks/failure-capture.json
+
+<span class="c"># one command</span>
+./scripts/install.sh
+
+<span class="c"># lands natively in both</span>
+.claude/skills/…   .claude/agents/…   .mcp.json
+.github/skills/…   .github/agents/…  .github/mcp.json</pre>
+  <p>AGENTS.md unifies instruction <em>text</em>. Skills layout, agents, MCP config, and hooks are <strong>not</strong> standardized — adapters exist for exactly that residue. This is deliberately the slim version of kitchen-sink suites like ECC.</p>
+</section>
+
+<section class="slide">
+  <div class="kicker">Live demo</div>
+  <h2>One install, both tools</h2>
+  <p class="num">1.</p><p>Run <code>./scripts/install.sh</code> live. Show both directory trees written from one source.</p>
+  <p class="num">2.</p><p>Launch <code>claude</code> → skill listed. Quit. Launch <code>copilot</code> → same skill, same behavior.</p>
+  <p class="dim">If discovery fails on stage, that's a REFUTED eval with a named fix — we show the canonical file and move on. Honesty is the format of this talk.</p>
+</section>
+
+<section class="slide">
+  <div class="kicker">Shared memory</div>
+  <h2>A root-level wiki the agents maintain themselves</h2>
+  <p>Pattern after Andrej Karpathy's <code>llm-wiki</code>: immutable raw sources → LLM-maintained linked Markdown → a schema file that teaches maintenance.</p>
+  <ul>
+    <li>Every note carries YAML frontmatter: <code>id</code>, <code>type</code>, <code>status</code>, <code>verified</code> date, <code>relates_to</code> links, <code>superseded_by</code>.</li>
+    <li>Lifecycle: <code>active → stale → archived</code>. Retirement is rule-based, not vibes: unverified &gt;180 days <em>and</em> no inbound links, or a claim refuted.</li>
+    <li><code>index.md</code> is the map; <code>log.md</code> is append-only. Git-backed, Obsidian-viewable.</li>
+  </ul>
+</section>
+
+<section class="slide">
+  <div class="kicker">Session lifecycle</div>
+  <h2>Orient → log → harden</h2>
+  <ul>
+    <li><strong>Orient:</strong> every session starts by reading the index, the data model, and the recent log.</li>
+    <li><strong>Log:</strong> a session file records intent, then turn-by-turn: intended / tried / happened — failures included.</li>
+    <li><strong>Harden:</strong> at the end, durable facts are distilled into wiki notes; the raw log stays untouched.</li>
+  </ul>
+  <p>Both tools write the same format into the same directories. That's what makes "Claude started it, Copilot continues it" possible — demo, next.</p>
+</section>
+
+<section class="slide">
+  <div class="kicker">Live demo</div>
+  <h2>Cross-tool continuity</h2>
+  <p>Claude does a small task and hardens the wiki. We quit Claude, open Copilot cold, and ask: <em>"What did the last session change, why, and what failed?"</em></p>
+  <p>Copilot answers from the shared session log. No copy-paste, no re-briefing. Then the third act: an intentionally broken command lands as a structured event in the telemetry sidecar — data, not prompt noise.</p>
+</section>
+
+<section class="slide">
+  <div class="kicker">Telemetry</div>
+  <h2>Failures become data — outside the context window</h2>
+  <ul>
+    <li>Hooks capture concrete failures (wrong interpreter, failing tests, bad edits) as JSONL events in a sidecar store.</li>
+    <li>Only summaries re-enter the prompt. Rich telemetry never bloats context.</li>
+    <li>Storage decision: JSONL/SQLite, <strong>not</strong> Postgres — single writer, low volume, file-native consumers. Postgres earns its place with concurrent writers or cross-machine queries.</li>
+  </ul>
+</section>
+
+<section class="slide">
+  <div class="kicker">The part most setups skip</div>
+  <h2>Every claim gets a verdict</h2>
+  <table>
+    <tr><th>Claim</th><th>Verdict</th><th>Test</th></tr>
+    <tr><td>One install → skill discoverable in both tools</td><td><span class="tag unver">UNVERIFIABLE → live today</span></td><td>E1: fresh session, both tools list it</td></tr>
+    <tr><td>Tool B continues tool A's session from the wiki</td><td><span class="tag unver">UNVERIFIABLE → live today</span></td><td>E2: 5 probes, 4 must match the log</td></tr>
+    <tr><td>Wiki orientation beats no-wiki baseline</td><td><span class="tag unver">UNVERIFIABLE</span></td><td>E3: 5 matched tasks, ≤25% token overhead</td></tr>
+    <tr><td>Archiving stale notes cuts tokens, keeps quality</td><td><span class="tag unver">UNVERIFIABLE</span></td><td>E5: ≥30% token cut, ≤1 quality drop</td></tr>
+    <tr><td>Failure hook captures structured events</td><td><span class="tag unver">UNVERIFIABLE → live today</span></td><td>E4: 5 induced failures, ≥4 events</td></tr>
+  </table>
+  <p class="dim">Thresholds are written down <em>before</em> running. A REFUTED result drives a fix or a removal — it is never hidden.</p>
+</section>
+
+<section class="slide">
+  <div class="kicker">Tips &amp; tricks — verified edition</div>
+  <h2>Two second-opinion features, honestly priced</h2>
+  <div class="cols">
+    <div>
+      <p><strong>Claude Code <code>/advisor</code></strong> <span class="tag proven">PROVEN</span></p>
+      <ul>
+        <li>Sonnet 5.5 drives; Opus 5.5 advises at decision points.</li>
+        <li>Cheaper than Opus-only — <em>not</em> free: each consult bills at Opus rates and re-reads the full transcript.</li>
+        <li>Short tasks: pure overhead. Anthropic's docs say so.</li>
+      </ul>
+    </div>
+    <div>
+      <p><strong>Copilot rubber duck</strong> <span class="tag proven">PROVEN</span></p>
+      <ul>
+        <li>Built-in critic on a <em>different model family</em> than your driver (Claude↔GPT) — no shared blind spots.</li>
+        <li>Auto-consulted on non-trivial work; <code>/rubber-duck</code> manually. Read-only.</li>
+        <li>Costs extra model calls; the bet is early catches pay for them.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="kicker">Myth check</div>
+  <h2>"Opus 5.5 broke my old prompts"</h2>
+  <p><span class="tag unver">UNVERIFIABLE</span> as a general claim. No primary source or controlled study supports it — and the viral post behind the claim gets facts wrong (XML is <em>not</em> deprecated; the tool format didn't change).</p>
+  <ul>
+    <li>Real: prefilled final-turn responses now error.</li>
+    <li>Real: leaving <code>effort</code> unset changes your token budget.</li>
+    <li>Reasonable: prompts forcing exhaustive visible step-by-step may show less surface reasoning.</li>
+  </ul>
+  <p>That's retuning advice, not a regression. If a claim can't cite its test, it doesn't get repeated.</p>
+</section>
+
+<section class="slide">
+  <div class="kicker">Rollout</div>
+  <h2>Fifteen minutes to this setup</h2>
+  <pre>claude auth login        <span class="c"># and: copilot login</span>
+git clone &lt;this-repo&gt; &amp;&amp; cd agent-setup
+./scripts/install.sh     <span class="c"># always launch agents from this root</span></pre>
+  <p>Org toolchain (GitLab CLI, Coralogix MCP, Mongo/Postgres, Okteto, Atlassian, Chrome DevTools, CodeRabbit, Figma) joins through the same door: one canonical file per tool, one install, one verification check. New tool ≠ new ritual.</p>
+  <p><strong>This week's experiment:</strong> run E1/E2/E4 today; E3/E5 before adopting the wiki habit for real. Kill criteria are already written down.</p>
+</section>
+
+<section class="slide">
+  <div class="kicker">Close</div>
+  <h2>Evidence over enthusiasm</h2>
+  <p>Agents are easy to demo and hard to trust. The setup is the small part — shared instructions, one-install capabilities, a maintained wiki, failures as data. The discipline is the product: every claim labeled, every eval pre-registered, every REFUTED kept on the record.</p>
+  <p class="dim">Repo: <code>agent-setup</code> · Claims ledger: <code>docs/claims-ledger.md</code> · Setup: <code>docs/setup.md</code></p>
+</section>
+
+</body>
+</html>
