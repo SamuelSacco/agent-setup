@@ -1,0 +1,20 @@
+You are working in a fresh checkout of Rich, a Python library for rich
+text and terminal formatting (package code in `rich/`, tests in the
+top-level `tests/` directory).
+
+Problem report:
+`rich.cells.cell_len` reports wrong widths for zero-width and non-printable characters. Reproduction: `cell_len('\u200d')` (a lone ZERO WIDTH JOINER) should be 0 and `cell_len('1\u200d')` should be 1, but the joiner is being counted as a cell in some positions; also the non-printable control characters `chr(0)` through `chr(30)` should each measure 0, but `cell_len` returns 1 for them. Expected: zero-width joiners and non-printable characters measure 0 cells everywhere, while ordinary and wide characters keep their correct widths.
+
+Investigate, find the root cause, and fix it in the library code so the
+reported behavior is correct in general, not just for the examples
+above. Rules:
+- Do not edit existing files under the `tests/` directory. You may add
+  new test files if you want, but grading uses an external test suite.
+- Keep the change minimal and consistent with the surrounding code
+  style; do not change public APIs or unrelated behavior.
+- Verify your fix by running the relevant existing tests from the repo
+  root with the prepared environment:
+  {PYTHON} -m pytest tests/test_cells.py -q
+  Do not install packages.
+- When finished, give a short summary: root cause, what you changed,
+  and what you ran to verify.

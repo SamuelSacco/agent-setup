@@ -132,3 +132,32 @@ read-only and verified clean before/after).
 S12's Haiku verdict is untouched. Whatever this stream finds is
 recorded as a model-tier scope note (new ledger claim or S12
 amendment — decided at write-up, justified there).
+
+## Addendum — 2026-09-30, after the NetworkX set (pre-Rich)
+
+Recorded after the 8 NetworkX runs completed and BEFORE any Rich run
+launches, per the budget rules above.
+
+- **Model ID confirmed:** run 1's JSON envelope reports canonical
+  model `claude-opus-5-5` (cost basis: list). All runs use
+  `--model opus` on Claude Code 2.1.285.
+- **NetworkX set complete:** base 3/4 (T1✓ T2✓ T3✓ T4✗),
+  +orientation 3/4 (T1✓ T2✓ T3✓ T4✗). Zero discordant pairs →
+  NetworkX verdict **UNVERIFIABLE** under the rule above. Spend for
+  the set: **$1.464014** (per-run figures in the results file).
+- **Rich trigger fired:** all 8 NetworkX runs complete; projection
+  for the 8 Rich runs = $1.464014 spent + 1.25 × $0.183002 mean × 8
+  = **$3.29 total**, inside the $14.00 cap. The Rich set (U1–U4,
+  base + orientation) therefore runs.
+- Rich packages created from the second-codebase fixtures (parent/
+  fix commits, test files, nodes identical to that protocol);
+  prompts verbatim modulo the `{PYTHON}` interpreter placeholder;
+  Rich orientation artifact = `evals/fixtures/rich-orientation.md`
+  (sha256 as above). Per-run wall cap 600 s, matching the Rich Haiku
+  protocol (the NetworkX sets used 900 s). Grading invocations set
+  `COLUMNS=200 TERM=dumb`, as the second-codebase runner did.
+  Grading interpreter: the second-codebase venv (Python 3.12.3);
+  source clone `~/workspace/p2/secondcode/.infra/rich-src`,
+  verified clean before runs.
+- Fallback rule did NOT trigger (run 1 cost $0.189683 ≤ $3.50). No
+  task pairs were cut.

@@ -1,0 +1,20 @@
+You are working in a fresh checkout of Rich, a Python library for rich
+text and terminal formatting (package code in `rich/`, tests in the
+top-level `tests/` directory).
+
+Problem report:
+A grid table's column padding is applied unevenly. Reproduction: build `Table.grid(padding=(0, 1))`, add three columns of width 3, add one row of three `'aaa'` cells, print it to a recording console and export the text. The output is `'aaa  aaa aaa \n'` — a double space after the first cell and a trailing space at the end of the row. Expected: exactly one space between cells and no trailing padding: `'aaa aaa aaa\n'`. Other padding configurations and non-grid tables must render as before.
+
+Investigate, find the root cause, and fix it in the library code so the
+reported behavior is correct in general, not just for the examples
+above. Rules:
+- Do not edit existing files under the `tests/` directory. You may add
+  new test files if you want, but grading uses an external test suite.
+- Keep the change minimal and consistent with the surrounding code
+  style; do not change public APIs or unrelated behavior.
+- Verify your fix by running the relevant existing tests from the repo
+  root with the prepared environment:
+  {PYTHON} -m pytest tests/test_table.py -q
+  Do not install packages.
+- When finished, give a short summary: root cause, what you changed,
+  and what you ran to verify.

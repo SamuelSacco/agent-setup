@@ -10,42 +10,29 @@ Claim under test: The base tool, given only the symptom report, produces a libra
 |---|---|
 | Task | nx-t2-spanning-tree-iterator — NetworkX: SpanningTreeIterator next() before iter() |
 | Tool / arm | claude / base |
-| Model | claude-haiku-4-5-20251001 |
+| Model | opus |
 | Success (disk-graded) | yes |
-| Turns | 11 |
-| Cost USD | 0.10302575000000001 — metered (tool JSON envelope) |
-| Wall s | 151 |
+| Turns | 6 |
+| Cost USD | 0.127089 — metered (tool JSON envelope) |
+| Wall s | 73 |
 | Grading python | /home/hatch/workspace/p2/w3/scratch/venv/bin/python (explicit (--python / EVAL_PYTHON)) |
 | Source clone | /home/hatch/workspace/p2/w3/scratch/.infra/nx-src (parent 5d160909e, fix 46a639aeb) |
-| Run dir | /home/hatch/workspace/phase2/feedback-loop/evals/scratch-run-eval/runs/nx-t2-spanning-tree-iterator-claude-base-20260930-151609 |
-| Diff stat (excl. setup + grading tests) |  1 file changed, 3 insertions(+) |
-| Pytest tail |   warnings.warn( | .                                                                        [100%] | 1 passed in 0.15s |
+| Run dir | /home/hatch/workspace/p3/bigmodel/evals/scratch-run-eval/runs/nx-t2-spanning-tree-iterator-claude-base-20260930-184427 |
+| Diff stat (excl. setup + grading tests) |  1 file changed, 7 insertions(+) |
+| Pytest tail |   warnings.warn( | .                                                                        [100%] | 1 passed in 0.29s |
 
 Agent's own summary (self-report — not the grade):
 
 ```
-Perfect! Here's a summary of the fix:
+I fixed it: `next()` on a freshly built `SpanningTreeIterator` now returns the first tree, and repeated calls give the same trees in the same order as a for loop.
 
-## Summary
+**Root cause:** The priority queue of partitions (`self.partition_queue`) and the first minimum spanning tree were only set up inside `__iter__` (`networkx/algorithms/tree/mst.py:1078`). A for loop calls `__iter__` automatically; `next(it)` goes straight to `__next__`. So the queue didn't exist yet, and the first line of `__next__` failed with the `AttributeError`.
 
-**Root Cause:** The `SpanningTreeIterator` class initialized `partition_queue` only in `__iter__()`, which is not automatically called when `next()` is invoked directly on a fresh iterator. Python's iterator protocol only calls `__next__()` in direct `next()` calls, not `__iter__()`.
-
-**What Changed:** Added a check in `__next__()` (lines 1105-1106 in mst.py) that initializes the iterator via `__iter__()` if `partition_queue` hasn't been created yet:
-
-```python
-if not hasattr(self, "partition_queue"):
-    self.__iter__()
-```
-
-This is a minimal, non-breaking change that:
-- Enables direct `next()` calls on fresh iterators  
-- Preserves backward compatibility with for loops
-- Maintains lazy initialization (queue only created when iteration starts)
-- Follows Python's iterator protocol correctly
+**Change:** At the top of `__next__` in `networkx/algorithms/tree/mst.py`, if the queue doesn't exist yet, it now calls `self.__iter__()` to set it up. There is one extra guard: when the iterator runs out it deletes `self.G` and the queue, so if `G` is also gone it raises `StopIteration` rather than trying to set up again. Without that, a `next()` after exhaustion would crash instead of stopping. Nothing else changed, including the public API and for-loop behaviour.
 
 **Verification:**
-- ✅ All 81 existing tests in `test_mst.py` pass (2 skipped)
-- ✅ Direct `next()` calls work correctly for all spanning trees
-- ✅ For loop iteration still works as before
-- ✅ Both minimum and maximum spanning tree iteration work
+- On a weighted `K4`, I called `next()` until `StopIteration`. It gave all 16 spanning trees, identical to the for-loop output, and one more `next()` still raised `StopIteration`.
+- `python -m pytest networkx/algorithms/tree/tests/test_mst.py -q`: 81 passed, 2 skipped.
+
+`ArborescenceIterator` in `networkx/algorithms/tree/branchings.py` has the same bug, because it also only sets up its queue in `__iter__`. I left it alone since the report only covers `SpanningTreeIterator`
 ```
