@@ -133,3 +133,10 @@ V1 evals: ~$1.03.
 2. CLAUDE.md: present the trap result, not the file debate.
 3. Supply-chain numbers: include — it's the one forward-looking claim
    (enforcement gap) and it's sourced.
+
+**Correction — 2026-09-30 ~14:35 ET (merge-readiness audit):** the
+quickstart above was described in-repo but existed only in worker
+scratch. It has now been reviewed and landed at `scripts/quickstart.sh`;
+in-tree `--structural-only` run passes (8/8 skills, 12/12 agents, both
+MCP configs parse, zero tree delta beyond the new file). The live-probe
+path remains gated on vendor auth as designed.
