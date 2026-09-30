@@ -92,3 +92,11 @@ complete — runner shipped and PROVEN end-to-end (S16); docs/feedback-loop.md
 written with per-step automation labels; spend $0.103 of the $2 cap.
 Open (recorded in the doc's not-shipped list): Copilot shell-failure hook
 adapter, any scheduler/CI wiring, more than one packaged task.
+
+### 11:31 — correction (appended, per no-rewrite rule)
+- The clone timing cited above as 6m42s was wrong: it came from another
+  workstream's process output that surfaced in my context mid-run. My own
+  timed clone (the one launched at session start) reported **3m49.7s**
+  when it completed. docs/feedback-loop.md corrected to 3m50s; the
+  conclusion is unchanged (auto-clone is a real one-time first-run cost;
+  the proof run's --source choice stands).

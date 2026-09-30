@@ -98,7 +98,7 @@ into a shipped tool.
   Exit codes: 0 PASS, 1 FAIL, 2 harness ERROR (no verdict).
 - **Source:** first run clones `source.repo` into
   `evals/scratch-run-eval/cache/` (a full NetworkX clone measured
-  6m42s on this connection — one-time); `--source <clone>` or
+  3m50s on this connection — one-time); `--source <clone>` or
   `EVAL_SOURCE_DIR` points at an existing clone instead. The source
   clone must be clean; the runner refuses a dirty one.
 - **Grading env:** `--python` / `EVAL_PYTHON` wins; else system
