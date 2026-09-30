@@ -1,6 +1,7 @@
 ---
 name: refactor-cleaner
 description: Dead code cleanup and consolidation specialist. Use PROACTIVELY for removing unused code, duplicates, and refactoring. Runs analysis tools (knip, depcheck, ts-prune) to identify dead code and safely removes it.
+tools: [read, edit, shell, search]
 ---
 
 <!-- Source: ECC (everything-claude-code) by Affaan Mustafa — https://github.com/affaan-m/ECC — MIT License (LICENSE in that repo; copyright notice retained per MIT terms). Ported 2026-09-30. Adaptations: canonical frontmatter only (ECC model/tool fields mapped to model_hint/tools_hint; adapter strips both); ECC 'Prompt Defense Baseline' boilerplate block dropped (repeated verbatim in every ECC agent; not role content). -->

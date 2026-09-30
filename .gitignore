@@ -3,3 +3,6 @@
 /evals/scratch-*/
 
 __pycache__/
+
+# telemetry store: hook events are local-only, never committed
+/wiki/telemetry/

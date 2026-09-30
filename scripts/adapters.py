@@ -7,6 +7,10 @@ Generated files are overwritten; never edit them by hand.
 Format notes (verify against live tools — see evals/):
 - Claude Code skills:  .claude/skills/<name>/SKILL.md  (frontmatter: name, description)
 - Claude Code agents:  .claude/agents/<name>.md       (frontmatter: name, description, model, tools)
+- Agent tools: canonical `tools_hint` (abstract categories) is translated
+  per tool via CLAUDE_TOOL_MAP / COPILOT_TOOL_MAP below and emitted as each
+  tool's `tools:` allowlist. Unknown hint -> install fails. Agents with no
+  `tools_hint` get no `tools:` line (tool default: all tools).
 - Claude Code MCP:     .mcp.json                       ({"mcpServers": {...}})
 - Claude Code hooks:   .claude/settings.json           (canonical events map
   via HOOK_EVENT_MAP: `tool_failure` -> PostToolUseFailure, PROVEN E4;
@@ -72,21 +76,75 @@ def install_skills():
 
 
 # ---------------------------------------------------------------- agents
+# tools_hint categories -> per-tool allowlists. Canonical hints are abstract
+# (read/search/shell/edit); each tool's `tools:` field takes its own names.
+#   Claude Code subagents: tool names (Read, Grep, ...). `search` maps to the
+#     two file-search tools only — NOT WebSearch/WebFetch: a code-search hint
+#     must not silently grant network access.
+#   Copilot custom agents: frontmatter has a `tools` field (default: all) —
+#     research: hidden_files/research/2026-09-30-P2-copilot-surface.md §2.
+#     Emitted names are the canonical category names, which match Copilot's
+#     documented built-in tool categories (read/search/edit/shell); `edit`
+#     covers create+edit in that vocabulary, no separate write name exists.
+#     Copilot-side *enforcement* of the emitted names is UNVERIFIABLE from
+#     this sandbox (CLI not installed here) — probe before claiming parity.
+# An agent with no tools_hint gets no `tools:` line (tool default: all).
+# An unknown hint aborts the install: a silently dropped restriction is the
+# bug this map exists to fix (critique 2026-09-30, Pass 4 HIGH #1).
+CLAUDE_TOOL_MAP = {
+    "read": ["Read"],
+    "search": ["Grep", "Glob"],
+    "shell": ["Bash"],
+    "edit": ["Write", "Edit"],
+}
+COPILOT_TOOL_MAP = {
+    "read": ["read"],
+    "search": ["search"],
+    "shell": ["shell"],
+    "edit": ["edit"],
+}
+
+
+def translate_tools_hint(hint, tool_map, agent_name):
+    if hint is None:
+        return None
+    tools = []
+    for token in hint:
+        if token not in tool_map:
+            sys.exit(
+                f"adapters: agent {agent_name!r} declares unknown tools_hint "
+                f"{token!r} (known: {', '.join(sorted(tool_map))}); refusing "
+                "to install with a dropped restriction"
+            )
+        for t in tool_map[token]:
+            if t not in tools:
+                tools.append(t)
+    return tools
+
+
 def install_agents():
     for src in sorted((CANON / "agents").glob("*.md")):
         fm, body = parse_frontmatter(src.read_text())
         name = fm.get("name", src.stem)
+        hint = fm.get("tools_hint")
         # Claude Code subagent
         c_fm = {"name": name, "description": fm.get("description", "")}
+        c_tools = translate_tools_hint(hint, CLAUDE_TOOL_MAP, name)
+        if c_tools is not None:
+            c_fm["tools"] = c_tools
         dest = CLAUDE / "agents" / f"{name}.md"
         dest.parent.mkdir(parents=True, exist_ok=True)
         dest.write_text(f"{fm_block(c_fm)}\n\n{body}\n")
         # Copilot custom agent
         p_fm = {"name": name, "description": fm.get("description", "")}
+        p_tools = translate_tools_hint(hint, COPILOT_TOOL_MAP, name)
+        if p_tools is not None:
+            p_fm["tools"] = p_tools
         dest = COPILOT_GH / "agents" / f"{name}.agent.md"
         dest.parent.mkdir(parents=True, exist_ok=True)
         dest.write_text(f"{fm_block(p_fm)}\n\n{body}\n")
-        print(f"agent   {name} -> claude + copilot")
+        tools_note = f"tools={c_tools}" if c_tools is not None else "tools=default(all)"
+        print(f"agent   {name} -> claude + copilot ({tools_note})")
 
 
 # ---------------------------------------------------------------- mcp
