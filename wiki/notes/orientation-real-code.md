@@ -31,3 +31,15 @@ orientation, combined cost at parity (base $1.826 / orientation $1.865).
 One honesty note on R2: base raised the right exception type with the
 message "No nodes in graph" and failed the real test's `null graph`
 message match — the pair turns on message wording, not behavior class.
+
+Copilot arm (2026-09-30, evals/results/2026-09-30-P2-copilot-ab.md):
+same 8 tasks, Copilot CLI BYOK Haiku — UNVERIFIABLE. Only 2 of 8 pairs
+completed before the $4 budget gate stopped the rest (Copilot converts
+at 3–9× Claude's cost per task; 1.7–2.0M input tokens on T1/R2). Both
+completed pairs are concordant passes (base 2/2, +orientation 2/2, no
+discordant pair). Copilot base is 3/3 across every task it has run in
+this project (T1, T3, R2 — including R2, a Claude discordant pair), so
+the completed pairs had no headroom for an orientation win. On both
+completed pairs +orientation cost and wall time ran *above* base —
+opposite direction from the Claude arms, n=2, no cost threshold
+pre-registered.
