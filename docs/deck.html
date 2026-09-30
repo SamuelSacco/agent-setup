@@ -115,8 +115,8 @@ canonical/hooks/failure-capture.json
 <section class="slide">
   <div class="kicker">Live demo</div>
   <h2>Cross-tool continuity</h2>
-  <p>Claude does a small task and hardens the wiki. We quit Claude, open Copilot cold, and ask: <em>"What did the last session change, why, and what failed?"</em></p>
-  <p>Copilot answers from the shared session log. No copy-paste, no re-briefing. Then the third act: an intentionally broken command lands as a structured event in the telemetry sidecar — data, not prompt noise.</p>
+  <p>One tool does a small task and hardens the wiki. We quit it, open the other tool cold, and ask: <em>"What did the last session change, why, and what failed?"</em></p>
+  <p>It answers from the shared session log — in E2, Claude answered 5/5 probes from a Copilot session, including the trap question whose correct answer was "that decision is in no note." The no-wiki baseline answered "not recorded" 5/5 and invented nothing. Third act: an intentionally broken command lands as a structured event in the telemetry sidecar — data, not prompt noise.</p>
 </section>
 
 <section class="slide">
@@ -126,6 +126,8 @@ canonical/hooks/failure-capture.json
     <li>Hooks capture concrete failures (wrong interpreter, failing tests, bad edits) as JSONL events in a sidecar store.</li>
     <li>Only summaries re-enter the prompt. Rich telemetry never bloats context.</li>
     <li>Storage decision: JSONL/SQLite, <strong>not</strong> Postgres — single writer, low volume, file-native consumers. Postgres earns its place with concurrent writers or cross-machine queries.</li>
+    <li><span class="tag proven">PROVEN</span> Claude: 5/5 induced failures landed as events — after the adapter fix. First attempt mapped to <code>PostToolUse</code> (success-only) and captured nothing but successful Reads; failures live on <code>PostToolUseFailure</code>.</li>
+    <li><span class="tag refuted">REFUTED</span> Copilot CLI v1.0.89: the binary has no user-hook surface at all. Fallback is transcript mining after the run — documented, not built.</li>
   </ul>
 </section>
 
@@ -134,11 +136,12 @@ canonical/hooks/failure-capture.json
   <h2>Every claim gets a verdict</h2>
   <table>
     <tr><th>Claim</th><th>Verdict</th><th>Test</th></tr>
-    <tr><td>One install → skill discoverable in both tools</td><td><span class="tag unver">UNVERIFIABLE → live today</span></td><td>E1: fresh session, both tools list it</td></tr>
-    <tr><td>Tool B continues tool A's session from the wiki</td><td><span class="tag unver">UNVERIFIABLE → live today</span></td><td>E2: 5 probes, 4 must match the log</td></tr>
+    <tr><td>One install → skill discoverable in both tools</td><td><span class="tag proven">PROVEN</span></td><td>E1: both tools invoked <code>session-harden</code> by name in fresh installs</td></tr>
+    <tr><td>Tool B continues tool A's session from the wiki</td><td><span class="tag proven">PROVEN</span></td><td>E2: 5/5 probes matched the log; baseline (no wiki) answered 5/5 "not recorded"</td></tr>
     <tr><td>Wiki orientation beats no-wiki baseline</td><td><span class="tag unver">UNVERIFIABLE</span></td><td>E3: 5 matched tasks, ≤25% token overhead</td></tr>
-    <tr><td>Archiving stale notes cuts tokens, keeps quality</td><td><span class="tag unver">UNVERIFIABLE</span></td><td>E5: ≥30% token cut, ≤1 quality drop</td></tr>
-    <tr><td>Failure hook captures structured events</td><td><span class="tag unver">UNVERIFIABLE → live today</span></td><td>E4: 5 induced failures, ≥4 events</td></tr>
+    <tr><td>Archiving stale notes cuts tokens, keeps quality</td><td><span class="tag unver">PARTIAL</span></td><td>E5: 38% token cut measured; quality axis untested</td></tr>
+    <tr><td>Failure hook captures structured events</td><td><span class="tag unver">PARTIAL</span></td><td>E4: Claude 5/5 after adapter fix; Copilot build has no hook surface (REFUTED)</td></tr>
+    <tr><td>Same API key drives both harnesses</td><td><span class="tag proven">PROVEN</span></td><td>BYOK: Copilot ran on the Anthropic key — tokens metered, zero AI Credits</td></tr>
   </table>
   <p class="dim">Thresholds are written down <em>before</em> running. A REFUTED result drives a fix or a removal — it is never hidden.</p>
 </section>
@@ -185,7 +188,8 @@ canonical/hooks/failure-capture.json
 git clone &lt;this-repo&gt; &amp;&amp; cd agent-setup
 ./scripts/install.sh     <span class="c"># always launch agents from this root</span></pre>
   <p>Org toolchain (GitLab CLI, Coralogix MCP, Mongo/Postgres, Okteto, Atlassian, Chrome DevTools, CodeRabbit, Figma) joins through the same door: one canonical file per tool, one install, one verification check. New tool ≠ new ritual.</p>
-  <p><strong>This week's experiment:</strong> run E1/E2/E4 today; E3/E5 before adopting the wiki habit for real. Kill criteria are already written down.</p>
+  <p>The same credential can drive both harnesses: Claude Code takes the Anthropic key directly, and Copilot CLI takes it as a BYOK provider — the model stays constant, the harness is the only variable (<span class="tag proven">PROVEN</span> 2026-09-30).</p>
+  <p><strong>Status:</strong> E1, E2, E4 ran 2026-09-30 — results in <code>evals/results/</code>. E3 (wiki value) and E6 (agent parity) remain before adopting the wiki habit for real. Kill criteria are already written down.</p>
 </section>
 
 <section class="slide">

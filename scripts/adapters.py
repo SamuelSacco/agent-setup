@@ -8,7 +8,8 @@ Format notes (verify against live tools — see evals/):
 - Claude Code skills:  .claude/skills/<name>/SKILL.md  (frontmatter: name, description)
 - Claude Code agents:  .claude/agents/<name>.md       (frontmatter: name, description, model, tools)
 - Claude Code MCP:     .mcp.json                       ({"mcpServers": {...}})
-- Claude Code hooks:   .claude/settings.json           (hooks.PostToolUse etc.)
+- Claude Code hooks:   .claude/settings.json           (hooks.PostToolUseFailure —
+  canonical `tool_failure` fires there, PROVEN E4; PostToolUse is success-only)
 - Copilot skills:      .github/skills/<name>/SKILL.md  (also discovers .claude/skills)
 - Copilot agents:      .github/agents/<name>.agent.md
 - Copilot MCP:         .github/mcp.json                ({"servers": {...}})
@@ -112,14 +113,29 @@ def install_hooks():
     for src in sorted((CANON / "hooks").glob("*.json")):
         d = json.loads(src.read_text())
         cmd = d["action"]["command"]
-        # Claude Code: PostToolUse hook entry (best-effort mapping of tool_failure)
-        settings_hooks.setdefault("PostToolUse", []).append(
+        # Claude Code: canonical `tool_failure` maps to PostToolUseFailure
+        # (PROVEN E4 2026-09-30: PostToolUse fires only on success and would
+        # journal every successful call as a "failure").
+        settings_hooks.setdefault("PostToolUseFailure", []).append(
             {"matcher": "*", "hooks": [{"type": "command", "command": cmd}]}
         )
-        # Copilot: per-hook file under .github/hooks/
+        # Copilot: native hook file under .github/hooks/ (translated, NOT a
+        # verbatim copy — public contract is the version:1 envelope with
+        # camelCase events and a `bash` command field). REFUTED on the
+        # installed CLI v1.0.89 (E4 2026-09-30): the binary contains no
+        # postToolUseFailure/sessionStart hook loader and no events fired.
+        # Kept so the adapter is correct the day the CLI ships hook support.
         hdir = COPILOT_GH / "hooks"
         hdir.mkdir(parents=True, exist_ok=True)
-        (hdir / f"{d['name']}.json").write_text(json.dumps(d, indent=2) + "\n")
+        native = {
+            "version": 1,
+            "hooks": {
+                "postToolUseFailure": [
+                    {"type": "command", "bash": cmd, "timeoutSec": 10}
+                ]
+            },
+        }
+        (hdir / f"{d['name']}.json").write_text(json.dumps(native, indent=2) + "\n")
         print(f"hook    {d['name']} -> claude + copilot")
     CLAUDE.mkdir(parents=True, exist_ok=True)
     settings_path = CLAUDE / "settings.json"
