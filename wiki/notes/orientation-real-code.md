@@ -57,3 +57,15 @@ claim but adds no independent confirmation; the higher Rich base
 solve rate (3/4) left little headroom.
 
 **Audit scope correction 2026-09-30 (claude-opus critique):** PROVEN applies to the narrowed claim only — the treatment was a hand-written, repo-specific orientation file delivered as CLAUDE.md (NetworkX, Claude Code + Haiku 4.5); this repo's AGENTS.md and wiki were never the treatment (S3 remains UNVERIFIABLE). The combined rule was registered after the NetworkX n=8 result. See docs/claude-critique-2026-09-30.md (Pass 1B, S12).
+
+Model-tier test (2026-09-30, P3 E1, ledger S18,
+evals/results/2026-09-30-P3-bigmodel-ab.md): the identical protocol
+on claude-opus-5-5 — NetworkX 3/4 vs 3/4, Rich 3/4 vs 3/4, zero
+discordant pairs anywhere. Verdict at that tier: UNVERIFIABLE. The
+mechanism is base movement, not orientation harm: Opus base solves
+T1 (the Haiku discordant pair), and the tasks that still fail (T4,
+U3) fail identically in both arms at both tiers. Read S12 as a
+Haiku-tier result: orientation paid when the base model left
+headroom on a hard task; at the top tier, on this task mix, there
+was no headroom left for it to buy — while still charging ~+9%
+context rent per run.

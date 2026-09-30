@@ -1,0 +1,20 @@
+You are working in a fresh checkout of Rich, a Python library for rich
+text and terminal formatting (package code in `rich/`, tests in the
+top-level `tests/` directory).
+
+Problem report:
+Printing a dataclass instance with Rich crashes when a declared field was never assigned a value. Reproduction: define `@dataclass(eq=False) class BadDataclass: item: int = field(init=False)`, instantiate it (the field is never set), and print it with `Console().print(BadDataclass())` — or equivalently ask `rich.pretty` to render it. It raises `AttributeError: 'BadDataclass' object has no attribute 'item'`. Expected: an unset field is simply omitted, so the object renders as `BadDataclass()`. Dataclasses whose fields are all set must render exactly as before.
+
+Investigate, find the root cause, and fix it in the library code so the
+reported behavior is correct in general, not just for the examples
+above. Rules:
+- Do not edit existing files under the `tests/` directory. You may add
+  new test files if you want, but grading uses an external test suite.
+- Keep the change minimal and consistent with the surrounding code
+  style; do not change public APIs or unrelated behavior.
+- Verify your fix by running the relevant existing tests from the repo
+  root with the prepared environment:
+  {PYTHON} -m pytest tests/test_pretty.py -q
+  Do not install packages.
+- When finished, give a short summary: root cause, what you changed,
+  and what you ran to verify.

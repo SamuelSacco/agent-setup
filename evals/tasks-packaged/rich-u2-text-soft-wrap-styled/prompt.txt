@@ -1,0 +1,20 @@
+You are working in a fresh checkout of Rich, a Python library for rich
+text and terminal formatting (package code in `rich/`, tests in the
+top-level `tests/` directory).
+
+Problem report:
+When a `Console` prints with `soft_wrap=True` and a style that sets a background color, the style is not reset before the newline, so the background bleeds past the end of the text. Reproduction: with `Console(color_system='standard', width=80, force_terminal=True)`, capture `console.print('soft wrap is on', style='blue on white', soft_wrap=True)` followed by `console.print('Next line')`. The captured output is missing the reset sequence before the newline; expected output is `'\x1b[34;47msoft wrap is on\x1b[0m\nNext line\n'` — the background must be reset before the `\n`. Behavior without soft_wrap must be unchanged.
+
+Investigate, find the root cause, and fix it in the library code so the
+reported behavior is correct in general, not just for the examples
+above. Rules:
+- Do not edit existing files under the `tests/` directory. You may add
+  new test files if you want, but grading uses an external test suite.
+- Keep the change minimal and consistent with the surrounding code
+  style; do not change public APIs or unrelated behavior.
+- Verify your fix by running the relevant existing tests from the repo
+  root with the prepared environment:
+  {PYTHON} -m pytest tests/test_text.py -q
+  Do not install packages.
+- When finished, give a short summary: root cause, what you changed,
+  and what you ran to verify.

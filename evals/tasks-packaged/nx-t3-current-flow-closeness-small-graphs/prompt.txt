@@ -1,0 +1,12 @@
+You are working in a fresh checkout of NetworkX, a Python library for graphs (package code in `networkx/`, tests in `tests/` subdirectories next to the modules).
+
+Problem report:
+`nx.current_flow_closeness_centrality` (information centrality) fails on very small graphs. An empty graph raises `NetworkXPointlessConcept`, and a graph with a single node — with or without a self-loop — raises `ZeroDivisionError`. Expected results: empty graph -> `{}`; single node -> `{0: 1.0}` (the self-loop case likewise `{0: 1.0}`). A 2-node path already returns `{0: 1.0, 1: 1.0}` and must keep doing so; results for larger graphs must be unchanged.
+
+Investigate, find the root cause, and fix it in the library code so the reported behavior is correct in general, not just for the examples above. Rules:
+- Do not edit existing files under any `tests/` directory. You may add new test files if you want, but grading uses an external test suite.
+- Keep the change minimal and consistent with the surrounding code style; do not change public APIs or unrelated behavior.
+- Verify your fix by running the relevant existing tests from the repo root with the prepared environment:
+  {PYTHON} -m pytest networkx/algorithms/centrality/tests/test_current_flow_closeness.py -q
+  Do not install packages.
+- When finished, give a short summary: root cause, what you changed, and what you ran to verify.

@@ -1,0 +1,12 @@
+You are working in a fresh checkout of NetworkX, a Python library for graphs (package code in `networkx/`, tests in `tests/` subdirectories next to the modules).
+
+Problem report:
+`nx.stochastic_block_model` produces within-community (diagonal-block) densities that are systematically too high when it uses its sparse heuristic path. With a fixed seed the effect is deterministic: for example with sizes [75, 75] and p = [[0.25, 0.05], [0.05, 0.25]], the realized within-block densities come out well above 0.25, while the off-diagonal density is correct. Expected: the sparse path applies the same per-edge probability to diagonal blocks as to off-diagonal blocks.
+
+Investigate, find the root cause, and fix it in the library code so the reported behavior is correct in general, not just for the examples above. Rules:
+- Do not edit existing files under any `tests/` directory. You may add new test files if you want, but grading uses an external test suite.
+- Keep the change minimal and consistent with the surrounding code style; do not change public APIs or unrelated behavior.
+- Verify your fix by running the relevant existing tests from the repo root with the prepared environment:
+  {PYTHON} -m pytest networkx/generators/tests/test_community.py -q
+  Do not install packages.
+- When finished, give a short summary: root cause, what you changed, and what you ran to verify.
