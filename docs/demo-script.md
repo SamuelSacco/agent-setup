@@ -1,5 +1,10 @@
 # Live Demo Script
 
+> V1 artifact (2026-09-30). Phase 2 results supersede where they differ —
+> see `docs/phase2-packet-2026-09-30.md` + addendum. The Act 3 hook line is
+> scoped to the tested build; automatic session-end cleanup remains
+> UNPROVEN in both tools.
+
 Runtime target: 8–10 minutes inside the presentation. Every step has a 
 fallback — if a live call stalls, show the recorded artifact and say so. 
 Never fake a live result.

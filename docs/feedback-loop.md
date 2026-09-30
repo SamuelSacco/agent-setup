@@ -114,7 +114,6 @@ into a shipped tool.
 
 ### Proof run (this branch, 2026-09-30)
 
-### Proof run (this branch, 2026-09-30)
 
 The proof run pointed `--source` and `EVAL_PYTHON` at the Phase 2 W3
 mining clone and its pinned venv (the fastest honest path); the
