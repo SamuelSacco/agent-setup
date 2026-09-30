@@ -16,6 +16,7 @@ The map of maintained knowledge. Agents: read this first, keep it current.
 
 ### Procedures
 - [[session-lifecycle]] — orient → log → harden; the audit trail both tools share
+- [[feedback-loop]] — capture → review → judge → improve; packaged eval runner `scripts/run-eval.sh` (S16)
 
 ### References
 - [[instruction-files]] — AGENTS.md shared layer, Claude's conditional read, Copilot's no-precedence merge
