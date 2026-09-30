@@ -96,6 +96,14 @@ into a shipped tool.
   nodes itself, and writes `evals/results/<date>-RUN-<id>-<tool>-<arm>.md`
   with success, turns, cost, wall time, diff stat, and a verdict line.
   Exit codes: 0 PASS, 1 FAIL, 2 harness ERROR (no verdict).
+- **Preflight (W3, 2026-09-30):** before anything runs, the runner calls
+  `scripts/check-agents-md-load.sh --static` on the repo root and dies
+  (exit 2) if the instruction setup is broken — Claude below the
+  2.1.277 native-AGENTS.md floor with no `CLAUDE.md`, or a `CLAUDE.md`
+  present without the `@AGENTS.md` bridge (which would silently
+  suppress the shared file every eval depends on). Pass
+  `--skip-preflight` to bypass. The guard's full mode adds a live
+  marker probe: `scripts/check-agents-md-load.sh --runs 2`.
 - **Source:** first run clones `source.repo` into
   `evals/scratch-run-eval/cache/` (a full NetworkX clone measured
   3m50s on this connection — one-time); `--source <clone>` or

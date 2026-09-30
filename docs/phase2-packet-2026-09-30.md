@@ -36,6 +36,14 @@ PARTIAL. Sources in `evals/results/2026-09-30-P2-*` and
    native AGENTS.md load requires Claude Code ≥ v2.1.277; user-level and
    managed CLAUDE.md do not trigger suppression. Under Samuel review:
    delete + version-aware guard probe (see 14:00 agenda).
+   **Correction 2026-09-30 (W3, Samuel's 14:24 directive): finding
+   superseded — CLAUDE.md is DELETED on branch `change/no-claudemd`,
+   replaced by guard `scripts/check-agents-md-load.sh` (fails on
+   version < 2.1.277 with no CLAUDE.md, on any bridgeless CLAUDE.md,
+   or on a failed live marker probe; wired as run-eval's preflight).
+   Final shape re-proven live: Claude 2.1.285 marker load 2/2,
+   Copilot 1.0.89 1/1; negative controls exit 1. Ledger C4 amended;
+   evidence: `evals/results/2026-09-30-P2-claudemd-final-shape.md`.**
 5. **The ecosystem's gap is enforcement.** Skills supply chain (Snyk
    ToxicSkills, 3,984 skills): 36.8% ≥1 flaw, 13.4% critical, 76 confirmed
    malicious. Audit verdicts ship in install metadata, coverage spotty,

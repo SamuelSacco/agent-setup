@@ -227,7 +227,21 @@ def main():
     ap.add_argument("--python", help="grading interpreter")
     ap.add_argument("--model", help="override task model")
     ap.add_argument("--tool-bin", help="override tool binary path")
+    ap.add_argument("--skip-preflight", action="store_true",
+                    help="skip the AGENTS.md-load guard preflight")
     args = ap.parse_args()
+
+    if not args.skip_preflight:
+        guard = os.path.join(args.repo_root, "scripts",
+                             "check-agents-md-load.sh")
+        if os.path.exists(guard):
+            r = sh(["bash", guard, "--root", args.repo_root, "--static"])
+            sys.stdout.write(r.stdout)
+            if r.returncode != 0:
+                die("preflight: AGENTS.md-load guard failed (see above); "
+                    "fix the instruction setup or pass --skip-preflight")
+        else:
+            print("run-eval: preflight skipped (guard script not found)")
 
     task_dir = os.path.abspath(args.task)
     with open(os.path.join(task_dir, "task.json")) as f:

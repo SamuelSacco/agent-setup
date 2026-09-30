@@ -29,7 +29,6 @@ adapters, write sessions into `wiki/sessions/`, and maintain the wiki in `wiki/n
 ```
 agent-setup/
 ├── AGENTS.md              # Root instructions both tools load (the schema)
-├── CLAUDE.md              # Claude-specific pointer → AGENTS.md
 ├── .github/
 │   └── muse-instructions.md   # Copilot-specific pointer → AGENTS.md
 ├── canonical/             # Provider-neutral definitions (source of truth)
