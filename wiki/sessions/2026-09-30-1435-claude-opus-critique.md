@@ -45,3 +45,6 @@ Samuel's allocation: ~$7 of the $28 API budget for a Claude Code (strongest mode
 
 ## Outcome
 complete — `docs/claude-critique-2026-09-30.md` delivered on branch `critique/claude`: claims audit S1–S17, narrative audit, CLAUDE.md both-sides, setup soundness (17 findings), orchestrator verification (8 CONFIRMED / 1 PARTIAL / 1 reviewer error corrected). Metered spend $1.3166 of the $7 allocation (+ two unmetered passes, disclosed). Open for the merge owner: ship `quickstart.sh` or correct packet:83-85; commit the 4 off-branch research files; fix `adapters.py` tool-restriction drop; carry out or waive the S5 pre-registered data-model remediation.
+
+### Correction (appended after close) — spend accounting
+The full claims pass's JSON envelope arrived in a late completion notification after this session was closed: exit 0, 41 turns, **$1.403259** metered. Corrected totals: **$2.7198 metered** of the $7 allocation (claims $1.4033 + smoke $0.0116 + narrative/CLAUDE.md $0.6744 + setup $0.6306). Only the S1–S9 pass remains unmetered. The critique doc's spend line was updated to match.
