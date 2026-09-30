@@ -70,7 +70,7 @@
 <pre><span class="c"># one definition</span>
 canonical/skills/session-harden.md
 canonical/agents/backend.md
-canonical/mcp/coralogix.json
+canonical/mcp/filesystem-wiki.json
 canonical/hooks/failure-capture.json
 
 <span class="c"># one command</span>
@@ -184,10 +184,11 @@ canonical/hooks/failure-capture.json
 <section class="slide">
   <div class="kicker">Rollout</div>
   <h2>Fifteen minutes to this setup</h2>
-  <pre>claude auth login        <span class="c"># and: copilot login</span>
+  <pre>claude auth login        <span class="c"># or the same Anthropic key via apiKeyHelper</span>
+copilot login            <span class="c"># or the same key as a BYOK provider</span>
 git clone &lt;this-repo&gt; &amp;&amp; cd agent-setup
 ./scripts/install.sh     <span class="c"># always launch agents from this root</span></pre>
-  <p>Org toolchain (GitLab CLI, Coralogix MCP, Mongo/Postgres, Okteto, Atlassian, Chrome DevTools, CodeRabbit, Figma) joins through the same door: one canonical file per tool, one install, one verification check. New tool ≠ new ritual.</p>
+  <p>Org toolchain (GitLab CLI, Coralogix MCP, Mongo/Postgres, Okteto, Atlassian, Chrome DevTools, CodeRabbit, Figma): <strong>future adapter slots, not built.</strong> The door is designed — one canonical file per tool, one install, one verification check — but only <code>filesystem-wiki</code> exists today. New tool ≠ new ritual, once its canonical file lands.</p>
   <p>The same credential can drive both harnesses: Claude Code takes the Anthropic key directly, and Copilot CLI takes it as a BYOK provider — the model stays constant, the harness is the only variable (<span class="tag proven">PROVEN</span> 2026-09-30).</p>
   <p><strong>Status:</strong> E1, E2, E4 ran 2026-09-30 — results in <code>evals/results/</code>. E3 (wiki value) and E6 (agent parity) remain before adopting the wiki habit for real. Kill criteria are already written down.</p>
 </section>

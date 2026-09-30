@@ -1,0 +1,7 @@
+# Reference: Karpathy "llm-wiki" pattern (Samuel flagged 2026-09-30)
+
+Source: https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f — "A pattern for building personal knowledge bases using LLMs."
+
+Core (my summary): don't RAG raw documents per query; have the LLM incrementally build and maintain a persistent, interlinked markdown wiki between you and immutable raw sources. Operations: ingest (read source, integrate into entity/concept pages, flag contradictions), query (answers can be filed back as pages), lint (contradictions, stale claims, orphans, gaps). Navigation via index.md (content catalog) + log.md (append-only chronological record). The schema file (CLAUDE.md / AGENTS.md) is what makes the LLM a disciplined maintainer. Maintenance cost near zero is the whole point.
+
+Why Samuel flagged it here: agent-setup already implements this pattern — wiki/notes + wiki/index.md + wiki/log.md + wiki-lint skill + session records, with E2 (cross-tool continuity from the wiki) PROVEN and E5 (active-only context cost, 38% cut at zero quality drop) PROVEN. The pasted OTel essay's endgame (observe via spans → learn via normalizer → persist as note/lesson → promote to skill) terminates in exactly this wiki layer. Debate question it sharpens: given the wiki already compounds knowledge from files alone, what does the Collector/normalizer add to the learning loop — live signal, or nothing the file captures don't already feed?
