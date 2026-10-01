@@ -182,7 +182,8 @@ Status key: UNVERIFIABLE / PARTIAL / REFUTED / PROVEN / UNBUILT / BLOCKED.
   half unchanged here (separate worker). Evidence:
   evals/results/2026-10-01-X7-planner-prereg.md;
   evals/results/2026-10-01-X7-planner-results.md. Spend $0.522.]
-  [CODE-EXPLORER HALF TESTED 2026-10-01 (branch wave2c/x7-code-explorer-kill-test): code-explorer: kill test RUN 2026-10-01 (ledger S28), verdict   UNVERIFIABLE — 4 paired NetworkX exploration tasks, base 4/4 vs   agent 4/4, zero discordant pairs; kill rule not met (agent cost   $0.1526 < base $0.1970, −22.5%); PROVEN bar (discordant win) also   not met. Base had no headroom at this difficulty; a decisive   re-test needs harder tasks the base arm fails. Evidence: evals/results/2026-10-01-X7-code-explorer-results.md. Spend $0.3496.]- Cheapest decisive test: S11-protocol A/B, one provisional agent, 4 mined
+  [CODE-EXPLORER HALF TESTED 2026-10-01 (branch wave2c/x7-code-explorer-kill-test): code-explorer: kill test RUN 2026-10-01 (ledger S28), verdict   UNVERIFIABLE — 4 paired NetworkX exploration tasks, base 4/4 vs   agent 4/4, zero discordant pairs; kill rule not met (agent cost   $0.1526 < base $0.1970, −22.5%); PROVEN bar (discordant win) also   not met. Base had no headroom at this difficulty; a decisive   re-test needs harder tasks the base arm fails. Evidence: evals/results/2026-10-01-X7-code-explorer-results.md. Spend $0.3496.]
+- Cheapest decisive test: S11-protocol A/B, one provisional agent, 4 mined
   tasks, discordant-pair rule; kill = no discordant win and cost ≥ base.
   Est. cost: ~$1–2 per agent. Priority: medium.
 
