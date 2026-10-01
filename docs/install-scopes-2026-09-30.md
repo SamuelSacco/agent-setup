@@ -59,7 +59,7 @@ Verdict from the debate reconciliation: **the canonical repo is the source of tr
 
 Contested/accepted-with-mechanism points:
 - **Secrets:** definitions in repo, values only in `~/.config/agent-setup/secrets.env` (0600, mode-verified), injected at install via `claude mcp add-json` / `copilot mcp add --env`; OAuth preferred over static keys; scheduled scan greps the repo for secret-shaped values. Residual: both CLIs store secrets plaintext on disk — the model narrows who holds them, it does not claim to encrypt them.
-- **Pinning/drift:** skills pinned by SHA (X6 wiring), plugins by marketplace commit SHA, MCP by `last-verified` date; a weekly `verify` compares installed state against the canonical record — loud divergence replaces silent drift. Enforcement tooling (collision lint, secrets scan, pin wiring, weekly verify) is designed, not yet built — the model is policy until then.
+- **Pinning/drift:** skills pinned by SHA (X6 wiring), plugins by marketplace commit SHA, MCP by `last-verified` date; a weekly `verify` compares installed state against the canonical record — loud divergence replaces silent drift. Enforcement tooling (collision lint, secrets scan, pin wiring, weekly verify) is designed, not yet built — the model is policy until then. **Amendment 2026-10-01 (Q8, branch `feat/drift-enforcement`): collision lint, secrets scan, skill/MCP pin verification, and weekly verify are BUILT — `scripts/drift_check.py` (subcommands `collisions`/`secrets`/`pins`/`all`), `scripts/verify-weekly.sh`, self-test `scripts/test_drift_check.py` (11/11 PASS, real-repo run exit 0; evidence `evals/results/2026-10-01-Q8-drift-enforcement.md`). Pin wiring into install.sh remains a follow-up; the checks are not yet called by install.**
 - **install.sh coexistence:** verified against current `adapters.py` — `write_with_backup()` timestamps every backup, `.claude/settings.json` is merged (never replaced), malformed settings abort before any write. Rule: install.sh is merge-only on shared JSON, keeps a per-key/file ownership registry, registers hand-added globals on sight (import, don't overwrite), and carries `ADAPTER-OWNED` headers on wholesale-replaced files.
 
 ### Samuel's scenarios under this model
@@ -79,6 +79,7 @@ Contested/accepted-with-mechanism points:
 - Copilot session-level loading of Claude-format plugin skills: install/list recognition PROVEN, in-session loading UNVERIFIABLE (auth block).
 - Copilot workspace MCP: DOCS-ONLY (tool's own help) + REFUTED in probes → treated as dead on 1.0.89; re-probe on the next Copilot minor before promoting it back.
 - X6 pin wiring into install.sh, name-collision lint, secrets scan, weekly verify: designed, not built.
+  - **Amendment 2026-10-01 (Q8, branch `feat/drift-enforcement`): name-collision lint, secrets scan, and weekly verify BUILT (`scripts/drift_check.py`, `scripts/verify-weekly.sh`, `scripts/test_drift_check.py`); X6 pin wiring into install.sh still not built.**
 
 ## 5. Spend ledger (fleet)
 - W1: $0.0377 (3 Haiku probes) + 1 GitHub-hosted Copilot probe (AI credits, not metered here).
