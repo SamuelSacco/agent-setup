@@ -128,6 +128,17 @@ Status key: UNVERIFIABLE / PARTIAL / REFUTED / PROVEN / UNBUILT / BLOCKED.
   claim on real code; E3's seeded-wiki design is distinct.
 - Cheapest decisive test: run E3 exactly as specified in
   `evals/tasks/E3-wiki-value.md`. Est. cost: ~$1–3. Priority: medium.
+- **[RESOLVED 2026-10-01 (X8 run): PROVEN** — A 5/5 vs B 1/5 across
+  5 task types (bugfix, extend-feature, answer-from-history,
+  refactor-per-convention, find-the-decision), token overhead −41%
+  (A cheaper; the B arm burned tokens hunting for absent info).
+  Seeded "ledgerlite" fixture; facts existed only in wiki notes.
+  T4 both passed — convention recoverable from in-tree code, so
+  T4 diluted the contrast. 4 escape attempts handled under a
+  read+reflected contamination rule (2 discarded); the counted B
+  answer-task artifacts stayed genuine baseline failures. Total
+  spend ≈ $1.16 of $3.00 cap. Evidence:
+  `evals/results/2026-10-01-X8-e3-wiki-value.md`.]
 
 ### X9 — Cross-tool agent parity on the same task (ledger S6)
 - Status: UNVERIFIABLE as designed — components landed instead: S6a

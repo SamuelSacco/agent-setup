@@ -212,6 +212,65 @@ as a B failure with its escape reads disclosed in its per-run file
 (`2026-10-01-RUN-x8-t3-B.md`). Remaining runs are audited under
 read+reflected.
 
+### Incident, runs 11–12 (T5-B) — attempt 1 read+used fixture note, discarded
+
+T5-B attempt 1 (session `84bb4284-d364-446f-a100-7f725b2c8088`,
+$0.0510622, 7 turns) searched the branch repo, read the fixture
+treatment note (`evals/fixtures/x8-e3/workspace/wiki/notes/
+receipts-decision.md`) **and reflected it in the artifact** — a
+perfect recall answer graded 10/10 groups present. Read+reflected
+of treatment material: **discarded** (counted in spend; envelope
+preserved as `2026-10-01-X8-t5-B-attempt1-envelope.json`). T5-B
+was re-run once: the re-run read the same fixture note but wrote
+"not recorded" for every part — explicitly noting "no information
+… is recorded in this workspace" — and failed grading 0/9.
+Counted under read+reflected (per-run file `2026-10-01-RUN-x8-
+t5-B.md` discloses the reads).
+
+## Results
+
+Per-run files: `2026-10-01-RUN-x8-<t1..t5>-<A|B>.md`, JSON envelopes
+`2026-10-01-X8-<t1..t5>-<arm>-envelope.json`, ANSWER copies where
+applicable. All grading from disk; transcripts audited for
+out-of-tree reads under the read+reflected rule above.
+
+| Task | Type | Arm A (wiki+orientation) | Arm B (no notes) | A total_in | B total_in |
+|---|---|---|---|---|---|
+| T1 | bugfix | PASS 5/5 | FAIL 1/5 | 274,219 | 171,448 |
+| T2 | extend-a-feature | PASS 5/5 | FAIL 3/5 (counted re-run; attempt 1 discarded) | 285,477 | 568,159 |
+| T3 | answer-from-history | PASS | FAIL, all "not recorded" (attempt 1 discarded) | 134,197 | 347,212 |
+| T4 | refactor-per-convention | PASS 4/4 | PASS 4/4 (convention recoverable from in-tree code) | 283,105 | 306,502 |
+| T5 | find-the-decision | PASS | FAIL, all "not recorded" (attempt 1 discarded) | 106,103 | 443,304 |
+| | **Total correct** | **5/5** | **1/5** | **1,083,101** | **1,836,625** |
+
+Decision rule (pre-registered): PROVEN iff A correct total > B
+**and** mean total-input-token overhead ≤ 25%; REFUTED iff A < B,
+or A == B with overhead > 25% (E3's failure mode); otherwise
+UNVERIFIABLE. Overhead = (ΣA inputs − ΣB inputs)/ΣB inputs =
+(1,083,101 − 1,836,625)/1,836,625 = **−41%** — the wiki arm was
+41% cheaper in total input tokens, not 25% more expensive. (The
+unweighted mean of per-task overheads is −27%; same conclusion.)
+
+## Verdict
+
+**PROVEN.** A correct total 5/5 > B 1/5, token overhead −41% ≤
++25%. Secondary mechanism: the B arm paid *more* tokens, not
+less — B agents burned 568k/347k/443k input tokens on T2/T3/T5
+hunting through the repo and scratch parent for information that
+wasn't in their workspace, vs 285k/134k/106k for A. Three of four
+discarded/escape attempts involved B-arm answer tasks (T2-B,
+T3-B, T5-B) reading fixture material; under the read+reflected
+rule their counted artifacts remain genuine baseline failures
+(the agents refused to use out-of-workspace finds). Caveats:
+T4 both arms passed — the money convention was recoverable from
+the run tree itself (baseline already shipped `_round_half_up`
+and a cents docstring), so T4 diluted the contrast; the design's
+validity rests on the facts living only in wiki notes, which
+held for T1/T2/T3/T5 but not T4. Metered spend on counted cells
+$0.63; discarded attempts $0.23; unmetered T1-A attempt-1 reserve
+$0.30 (conservative estimate, labeled as such). Total ≈ $1.16
+of the $3.00 cap — cap never approached.
+
 ## Verdict
 
 _(per the decision rule registered above)_
