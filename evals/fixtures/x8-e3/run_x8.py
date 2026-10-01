@@ -25,7 +25,25 @@ def sh(cmd, cwd=None, timeout=None):
 def main():
     task, arm = sys.argv[1], sys.argv[2]
     assert task in ("t1","t2","t3","t4","t5") and arm in ("A","B")
-    rd = os.path.join(SCRATCH, "runs", f"{task}-{arm}")
+    # Contamination control (added after the T2-B incident, see the
+    # evidence file): only ONE live run tree may exist. Any previous
+    # run tree is moved to archive/ with its wiki notes stripped
+    # (notes are identical copies of the committed fixture; stripping
+    # loses nothing and removes the treatment material a later run
+    # could read by escaping its own tree).
+    runs_root = os.path.join(SCRATCH, "runs")
+    archive = os.path.join(SCRATCH, "archive")
+    os.makedirs(runs_root, exist_ok=True); os.makedirs(archive, exist_ok=True)
+    for prev in os.listdir(runs_root):
+        src = os.path.join(runs_root, prev)
+        notes = os.path.join(src, "wiki", "notes")
+        if os.path.isdir(notes):
+            shutil.rmtree(notes)
+        dst = os.path.join(archive, prev)
+        if os.path.exists(dst):
+            shutil.rmtree(dst)
+        shutil.move(src, dst)
+    rd = os.path.join(runs_root, f"{task}-{arm}")
     if os.path.exists(rd):
         shutil.rmtree(rd)
     shutil.copytree(os.path.join(FIX, "workspace"), rd,
@@ -59,9 +77,10 @@ def main():
     wall = round(time.time() - t0)
     with open(os.path.join(rd, "raw-output.json"), "w") as f:
         f.write(raw or "")
-    cost = turns = None; in_tok = total_in = None; result = ""
+    cost = turns = None; in_tok = total_in = None; result = ""; session_id = None
     try:
         j = json.loads(raw[raw.index("{"):])
+        session_id = j.get("session_id")
         cost = j.get("total_cost_usd"); turns = j.get("num_turns"); result = (j.get("result") or "")[:1500]
         u = j.get("usage") or {}
         in_tok = u.get("input_tokens")
@@ -118,7 +137,15 @@ def main():
             f.write(grade_detail + "\n")
 
     diff = sh(["git","diff","--stat","HEAD","--",".",":!.claude",":!raw-output.json",":!agent-result.txt",":!grade.txt",":!grade_harness.py",f":!test_grade_{task}.py"], cwd=rd).stdout.strip()
+    # Strip this run's wiki notes now that grading is done, so no
+    # later run can read them (see contamination control above).
+    notes = os.path.join(rd, "wiki", "notes")
+    stripped = []
+    if os.path.isdir(notes):
+        stripped = sorted(os.listdir(notes))
+        shutil.rmtree(notes)
     summary = dict(task=task, arm=arm, passed=passed, turns=turns, cost=cost,
+                   session_id=session_id, notes_stripped_post_grade=stripped,
                    input_tokens=in_tok, total_input_tokens=total_in, wall=wall,
                    violations=violations, grade_detail=grade_detail,
                    timed_out=timed_out, diff_stat=diff.splitlines()[-1] if diff else "",

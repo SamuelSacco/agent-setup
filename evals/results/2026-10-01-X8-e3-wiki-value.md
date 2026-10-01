@@ -148,6 +148,29 @@ metered headroom.
 
 _(results table filled in after the runs)_
 
+### Incident, run 3 (T2-B, first attempt) — cross-run contamination, discarded
+
+T2-B (no-wiki arm) passed its grading 5/5 with an implementation
+matching the wiki-only refund policy exactly (12% fee, defective
+waiver, half-up). Transcript audit (session
+`dedcf36f-1271-4b3e-87b8-fc996f97bdf1`) shows why: the agent ran
+`find` over the shared scratch parent and read
+`runs/t1-A/wiki/notes/refunds.md` — the Arm A tree left on disk from
+the previous run. Same failure family as P2's T1 sandbox escape
+(S12 results file). The T1 pair's transcripts were audited and are
+clean (own-tree reads only). This T2-B attempt is **discarded**
+(its $0.0928468 metered cost is counted in total spend).
+Mitigation, applied before any re-run: the runner now keeps only
+one live run tree — previous trees are archived with their wiki
+notes stripped (notes are identical copies of the committed
+fixture, so nothing is lost) — and strips each run's notes after
+grading. Every remaining run gets a transcript audit for
+out-of-tree reads; a run that reads treatment material is
+discarded on the same rule. T2-B is re-run once under the
+mitigation; the registered order for the remaining cells is
+unchanged (T2-A next after the T2-B re-run, then T3-A, T3-B,
+T4-B, T4-A, T5-A, T5-B).
+
 ## Verdict
 
 _(per the decision rule registered above)_
