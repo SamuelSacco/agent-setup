@@ -134,6 +134,27 @@ Status key: UNVERIFIABLE / PARTIAL / REFUTED / PROVEN / UNBUILT / BLOCKED.
   input) — the $2.20/run planning figure understates click-class
   runs ~2×; finishing stage 1 needs roughly another $25 cap.
   Evidence: `evals/results/2026-10-01-X3-wave4a-rescreen-results.md`.
+- **Update 2026-10-01 (Wave 6 screening completion, branch
+  `lab/x3-screening`):** stage 1 attempted for the last 4
+  candidates (nx-t7, nx-t8, rich-u6, rich-u7) under a fresh $30
+  cap. **All 9 launches were refused pre-execution: Anthropic API
+  `400 credit balance too low` on the BYOK account** (exhausted
+  between ~01:55 and 02:10 ET; verified across 8 worker launches
+  06:10–06:23 UTC + a coordinator probe 06:25 UTC). Zero model
+  work, zero tokens, $0 recorded spend. The runner's FAIL
+  verdicts are infrastructure ERRORs, not attempts — no candidate
+  enters the band on them. Screen stands at 5 of 9 resolved;
+  band = 1 (click-c2) < 4, so the pre-registered A/B still did
+  not run; X3 / S16 remains UNVERIFIABLE. **Blocker is now a
+  funding action (Samuel: Anthropic Plans & Billing), not a cap
+  or protocol question.** After credit restoration: stage 1 for
+  the 4 unscreened candidates under a fresh ~$25 cap at the
+  corrected calibration, then the A/B iff band ≥ 4 (click
+  orientation fixture first). Harness note: `run_eval.py`
+  records a pre-execution API refusal as FAIL, not ERROR —
+  graders must check `raw-output.txt` for the 400 / +0 −0 /
+  missing footer before counting any FAIL. Evidence:
+  `evals/results/2026-10-01-X3-screening-complete.md`.
 
 ### X4 — ux-ui as an agent (vs skill) pays off
 - Status: **REFUTED 2026-10-01** (branch `lab/x4-ux-ui-loop`,
