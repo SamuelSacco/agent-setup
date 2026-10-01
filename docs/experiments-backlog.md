@@ -162,6 +162,16 @@ Status key: UNVERIFIABLE / PARTIAL / REFUTED / PROVEN / UNBUILT / BLOCKED.
   MCP startup fragile); delegation is the proven path for all 12.
 - Cheapest decisive test: marker-invoke 3 more agents via `--agent` with
   a warm MCP cache. Est. cost: ~$1 + ~10 min wall. Priority: low.
+- **Result 2026-10-01: REFUTED for planner, security-reviewer, backend**
+  under the warm-cache arm with the emitted `.github/mcp.json` in place
+  — 3/3 killed at 300 s, zero model calls. Mechanism: `--agent`
+  serializes MCP startup (60 s lifecycle failure per server, second
+  pass), plain-session control in the same tree completed in 186 s
+  with parallel startup. Warm cache is not the binding constraint.
+  Remaining 8 agents on this path: still UNVERIFIABLE individually,
+  but the path-level mechanism is agent-independent. Cheapest
+  follow-up: one agent with `.github/mcp.json` removed (X17 config).
+  Evidence: `evals/results/2026-10-01-X13-agent-warmcache.md`.
 
 ### X14 — GitHub MCP authenticated operations (ledger S14 carve-out)
 - Status: UNVERIFIABLE — token ships empty by design; public search works
