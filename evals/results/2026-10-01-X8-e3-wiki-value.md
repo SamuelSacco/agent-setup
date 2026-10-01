@@ -191,6 +191,27 @@ after their raw outputs were preserved as per-run result files in
 `evals/results/`. T3-B is re-run once with no sibling material in
 the scratch parent.
 
+### Amendment (after T3-B re-run) — contamination rule refined to read+reflected
+
+The T3-B re-run (session `1ed80eca-6bb8-427f-be1a-69a0c692327c`,
+$0.0711075, 15 turns) escaped further: it read the fixture notes
+in the branch repo (`evals/fixtures/x8-e3/workspace/wiki/notes/
+import-history.md`), `evals/results/2026-10-01-X8-t3-A-ANSWER.md`,
+and this repo's own `wiki/index.md`/`log.md` — and still wrote
+"not recorded" for every part and failed grading identically
+(8/10 groups missing, 0 forbidden). Both B agents on T3 appear to
+treat out-of-tree finds as not "in this workspace" (the prompt's
+own wording) and refuse to use them. Rule refined, recorded here
+before any further run: a run is contaminated iff treatment
+material from outside its run tree is read **and reflected in the
+graded artifact**. T2-B attempt 1 (read + exact policy in the
+artifact) stays discarded; T3-B attempt 1 stays discarded (the
+stricter rule was in force, and discarding a B-arm failure is
+conservative against the wiki claim); the T3-B re-run is **counted**
+as a B failure with its escape reads disclosed in its per-run file
+(`2026-10-01-RUN-x8-t3-B.md`). Remaining runs are audited under
+read+reflected.
+
 ## Verdict
 
 _(per the decision rule registered above)_
