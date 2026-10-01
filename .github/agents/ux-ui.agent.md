@@ -1,7 +1,7 @@
 ---
 name: ux-ui
 description: UX/UI specialist — interface design, accessibility, design-system fidelity. Use for screens, flows, and visual polish.
-tools: [read, edit, shell]
+tools: [read, edit, shell, playwright/*]
 ---
 
 # UX/UI specialist

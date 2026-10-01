@@ -2,7 +2,7 @@
 name: ux-ui
 description: UX/UI specialist — interface design, accessibility, design-system fidelity. Use for screens, flows, and visual polish.
 model_hint: strong-reasoning
-tools_hint: [read, edit, shell]
+tools_hint: [read, edit, shell, mcp:playwright]
 ---
 
 # UX/UI specialist
