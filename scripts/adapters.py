@@ -17,7 +17,13 @@ Format notes (verify against live tools — see evals/):
   `session_end` -> SessionEnd, PROVEN headless X5/S18)
 - Copilot skills:      .github/skills/<name>/SKILL.md  (also discovers .claude/skills)
 - Copilot agents:      .github/agents/<name>.agent.md
-- Copilot MCP:         .github/mcp.json                ({"servers": {...}})
+- Copilot MCP:         .github/mcp.json                ({"servers": {...},
+  "mcpServers": {...}}) — workspace file; not loaded by Copilot CLI
+  1.0.89 (REFUTED, ledger S24). Kept for VS Code consumers / future
+  Copilot releases.
+- Copilot MCP (user):  ~/.copilot/mcp-config.json      ({"mcpServers": {...}},
+  Copilot writer format: type "local", tools ["*"]) — user scope; the
+  scope Copilot CLI 1.0.89 loads (PROVEN, ledger S24).
 - Copilot hooks:       .github/hooks/*.json
 - Persona:             canonical/persona/{SOUL,IDENTITY}.md seeds the
   root SOUL.md / IDENTITY.md on first install only. The lived files are
@@ -34,6 +40,12 @@ Write safety (copilot-critique 2026-09-30 finding #4):
   install. Malformed (or non-object) settings JSON aborts the install
   BEFORE anything is written: the file is backed up and the error names
   the file and the backup path. It is never silently reset to {}.
+- ~/.copilot/mcp-config.json is user-owned, same rule: merged, never
+  replaced — unrelated top-level keys and non-canonical servers survive,
+  canonical servers are replaced. Malformed JSON, a non-object top
+  level, or a non-object "mcpServers" aborts the install BEFORE
+  anything is written: the file is backed up and the error names the
+  file and the backup path. It is never silently reset to {}.
 """
 import datetime
 import json
@@ -84,7 +96,11 @@ def write_with_backup(path: Path, content: str) -> bool:
         if path.read_text() == content:
             return False
         backup = backup_file(path)
-        print(f"backup  {path.relative_to(ROOT)} -> {backup.name}")
+        try:
+            shown = path.relative_to(ROOT)
+        except ValueError:
+            shown = path  # outside ROOT (e.g. ~/.copilot/): show as-is
+        print(f"backup  {shown} -> {backup.name}")
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(content)
     return True
@@ -113,6 +129,47 @@ def load_existing_settings() -> dict:
         sys.exit(
             f"adapters: {settings_path} must contain a JSON object, "
             f"got {type(data).__name__}.\n"
+            f"Backed up to {backup}. Fix or remove the file, then re-run install."
+        )
+    return data
+
+
+def copilot_mcp_path() -> Path:
+    """Copilot user-scope MCP config. Path.home() honours $HOME."""
+    return Path.home() / ".copilot" / "mcp-config.json"
+
+
+def load_existing_copilot_mcp() -> dict:
+    """Return the existing ~/.copilot/mcp-config.json as a dict ({} if absent).
+
+    Malformed JSON, a non-object top level, or a non-object "mcpServers"
+    is a hard stop, checked before any file is written: the offending
+    file is backed up and the install aborts naming the file and the
+    backup. Same rule as load_existing_settings() — never reset to {}."""
+    mcp_path = copilot_mcp_path()
+    if not mcp_path.exists():
+        return {}
+    try:
+        data = json.loads(mcp_path.read_text())
+    except json.JSONDecodeError as e:
+        backup = backup_file(mcp_path)
+        sys.exit(
+            f"adapters: {mcp_path} is not valid JSON ({e}).\n"
+            f"Backed up to {backup}. Fix or remove the file, then re-run install."
+        )
+    if not isinstance(data, dict):
+        backup = backup_file(mcp_path)
+        sys.exit(
+            f"adapters: {mcp_path} must contain a JSON object, "
+            f"got {type(data).__name__}.\n"
+            f"Backed up to {backup}. Fix or remove the file, then re-run install."
+        )
+    servers = data.get("mcpServers")
+    if servers is not None and not isinstance(servers, dict):
+        backup = backup_file(mcp_path)
+        sys.exit(
+            f'adapters: {mcp_path} has an "mcpServers" value that is not a '
+            f"JSON object (got {type(servers).__name__}).\n"
             f"Backed up to {backup}. Fix or remove the file, then re-run install."
         )
     return data
@@ -227,7 +284,30 @@ def install_agents():
 
 
 # ---------------------------------------------------------------- mcp
-def install_mcp():
+def copilot_user_server(entry: dict) -> dict:
+    """Canonical server -> Copilot writer format for user scope.
+
+    Relative path args ("./", "../") resolve against ROOT: in user scope
+    the session cwd is arbitrary, so a workspace-relative path would not
+    resolve to this repo. Workspace emissions keep the args verbatim."""
+    args = []
+    for arg in entry.get("args", []):
+        if isinstance(arg, str) and (arg.startswith("./") or arg.startswith("../")):
+            args.append(str((ROOT / arg).resolve()))
+        else:
+            args.append(arg)
+    out = {
+        "type": "local",
+        "command": entry["command"],
+        "args": args,
+        "tools": ["*"],
+    }
+    if entry.get("env"):
+        out["env"] = entry["env"]
+    return out
+
+
+def install_mcp(existing_copilot_mcp: dict):
     servers = {}
     for src in sorted((CANON / "mcp").glob("*.json")):
         d = json.loads(src.read_text())
@@ -236,18 +316,31 @@ def install_mcp():
             "args": d.get("args", []),
             "env": d.get("env", {}),
         }
-    # MCP configs are fully adapter-owned (no user keys to merge), so a
-    # wholesale replace is the correct write here — with the backup that
-    # write_with_backup() takes whenever the prior content differs
-    # (critique finding #4). .claude/settings.json is the opposite case:
-    # it is user-owned and merged instead (see install_hooks).
+    # Workspace MCP configs are fully adapter-owned (no user keys to
+    # merge), so a wholesale replace is the correct write here — with the
+    # backup that write_with_backup() takes whenever the prior content
+    # differs (critique finding #4). .claude/settings.json and the
+    # Copilot user config below are the opposite case: user-owned,
+    # merged instead.
     # Claude Code: .mcp.json {"mcpServers": {...}}
     write_with_backup(ROOT / ".mcp.json", json.dumps({"mcpServers": servers}, indent=2) + "\n")
     # Copilot: .github/mcp.json — Copilot CLI requires "mcpServers" (a
     # "servers"-only file is rejected as malformed; P2 W1 evidence
     # 2026-09-30, coordinator-verified). Emit both keys so VS Code-style
-    # consumers of "servers" keep working.
+    # consumers of "servers" keep working. Workspace scope is not
+    # loaded by Copilot CLI 1.0.89 (REFUTED, ledger S24); kept as-is.
     write_with_backup(COPILOT_GH / "mcp.json", json.dumps({"servers": servers, "mcpServers": servers}, indent=2) + "\n")
+    # Copilot user scope: ~/.copilot/mcp-config.json — the scope CLI
+    # 1.0.89 loads. User-owned, so merge: unrelated top-level keys and
+    # non-canonical servers survive; canonical servers are replaced.
+    # (Malformed configs were already rejected by
+    # load_existing_copilot_mcp() in main(), before anything was written.)
+    merged = dict(existing_copilot_mcp)
+    merged_servers = dict(merged.get("mcpServers") or {})
+    for name, entry in servers.items():
+        merged_servers[name] = copilot_user_server(entry)
+    merged["mcpServers"] = merged_servers
+    write_with_backup(copilot_mcp_path(), json.dumps(merged, indent=2) + "\n")
     for name in servers:
         print(f"mcp     {name} -> claude + copilot")
 
@@ -333,13 +426,14 @@ def install_persona():
 
 
 def main():
-    # Validate the user-owned settings file before writing anything: a
-    # malformed one aborts here (with backup), never mid-install.
+    # Validate the user-owned files before writing anything: a malformed
+    # one aborts here (with backup), never mid-install.
     existing_settings = load_existing_settings()
+    existing_copilot_mcp = load_existing_copilot_mcp()
     install_persona()
     install_skills()
     install_agents()
-    install_mcp()
+    install_mcp(existing_copilot_mcp)
     install_hooks(existing_settings)
     print("\nAdapters written. Discovery by each tool is UNVERIFIED until an")
     print("authenticated run lists the capability (see evals/).")
