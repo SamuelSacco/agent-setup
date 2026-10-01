@@ -1,0 +1,2 @@
+ALERT_EMAIL = "ops@example.com"
+LOW_STOCK_DEFAULT_REORDER_POINT = 10

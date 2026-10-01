@@ -171,6 +171,17 @@ Status key: UNVERIFIABLE / PARTIAL / REFUTED / PROVEN / UNBUILT / BLOCKED.
 
 ### X7 — planner / code-explorer provisional roster entries earn their place
 - Status: UNVERIFIABLE — no kill test defined or run for either.
+  [PLANNER HALF TESTED 2026-10-01 (branch wave2c/x7-planner-kill-test):
+  still UNVERIFIABLE — 4 paired planning tasks on committed fixtures,
+  all 8 runs 5/5 on content checks, zero discordant pairs, agent
+  cheaper ($0.202 vs $0.320) so the kill rule is not met and no
+  discordant win earns the place. The prereg's fabrication clause,
+  transplanted from the tracing protocol, misclassifies proposed
+  new files; a decisive rerun needs that clause scoped to paths
+  cited as existing, plus harder/larger codebases. Code-explorer
+  half unchanged here (separate worker). Evidence:
+  evals/results/2026-10-01-X7-planner-prereg.md;
+  evals/results/2026-10-01-X7-planner-results.md. Spend $0.522.]
 - Cheapest decisive test: S11-protocol A/B, one provisional agent, 4 mined
   tasks, discordant-pair rule; kill = no discordant win and cost ≥ base.
   Est. cost: ~$1–2 per agent. Priority: medium.
