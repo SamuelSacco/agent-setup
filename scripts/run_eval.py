@@ -181,13 +181,14 @@ def run_tool(task, rd, prompt, args):
             raw = (e.stdout or b"").decode(errors="replace") \
                 if isinstance(e.stdout, bytes) else (e.stdout or "")
         result = raw[-1500:]
-        m_in = re.search(r"↑\s*([\d.]+)\s*([KM]?)", raw)
-        m_out = re.search(r"↓\s*([\d.]+)\s*([KM]?)", raw)
+        m_in = re.search(r"↑\s*([\d.]+)\s*([KMkm]?)", raw)
+        m_out = re.search(r"↓\s*([\d.]+)\s*([KMkm]?)", raw)
         if m_in and m_out:
             def tok(m):
                 v = float(m.group(1))
-                return v * (1e6 if m.group(2) == "M" else
-                            1e3 if m.group(2) == "K" else 1)
+                u = m.group(2).upper()
+                return v * (1e6 if u == "M" else
+                            1e3 if u == "K" else 1)
             # W3 prereg conversion; footers count cached input at full
             # rate, so this is an upper bound, never a billed figure.
             cost = round(tok(m_in) / 1e6 * 1.0 + tok(m_out) / 1e6 * 5.0, 4)

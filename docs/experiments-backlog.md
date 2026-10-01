@@ -75,6 +75,21 @@ Status key: UNVERIFIABLE / PARTIAL / REFUTED / PROVEN / UNBUILT / BLOCKED.
   4 in a screening pass), then 4 tasks × 2 arms, disk-graded.
 - Est. cost: $10–18 converted (Copilot burns 3–9× Claude per task).
   Priority: high value, high cost — schedule, don't improvise.
+- **Update 2026-10-01 (screening wave, branch `lab/x3-screening`):**
+  band NOT constructed; status remains UNVERIFIABLE. Mining succeeded:
+  9 candidates with disk-verified discriminating oracles committed
+  under `evals/tasks-packaged/` (nx-t5..t8, rich-u5..u7, click-c1/c2).
+  Screening produced zero valid grades — click-c1's only run graded
+  invalid (src-layout grading-env defect; remedy `PYTHONPATH=src`
+  validated at $0), the rich worker's all-PASS report was void (no
+  artifacts on disk), nx never launched. Verified spend $2.82; the
+  rich worker claimed a further $10.24, unverifiable. Side findings:
+  `run_eval.py` Copilot cost parse broken under CLI 1.0.90 lowercase
+  footer suffixes (fixed on the branch); every runner-written Copilot
+  cost field under 1.0.90 under-reports. Evidence:
+  `evals/results/2026-10-01-X3-screening-results.md`. Next: fresh cap
+  decision, then re-screen click (PYTHONPATH=src) → nx → rich, then
+  the pre-registered A/B.
 
 ### X4 — ux-ui as an agent (vs skill) pays off
 - Status: BLOCKED — agent form waits on a Playwright verification loop;
