@@ -99,84 +99,21 @@ Create detailed steps with:
 6. **Think Incrementally**: Each step should be verifiable
 7. **Document Decisions**: Explain why, not just what
 
-## Worked Example: Adding Stripe Subscriptions
+## Worked Example (outline)
 
-Here is a complete plan at full detail, for a high-risk multi-phase change. Size the plan to the task — small changes need proportionally less.
+Plan shape for a multi-phase change. Headings and one line per step;
+size the detail to the risk — small changes need proportionally less.
 
-```markdown
-# Implementation Plan: Stripe Subscription Billing
+- Overview: subscription billing, three tiers; Stripe Checkout for
+  payment, webhooks keep subscription status in sync.
+- Phases: (1) subscriptions table + webhook handler, (2) checkout
+  route + pricing page, (3) tier-gating middleware.
+- Per step: file, action, why, dependencies, risk.
+- Close with: testing strategy, risks and mitigations, success
+  criteria (tests pass; coverage against the project threshold).
 
-## Overview
-Add subscription billing with free/pro/enterprise tiers. Users upgrade via
-Stripe Checkout, and webhook events keep subscription status in sync.
-
-## Requirements
-- Three tiers: Free (default), Pro ($29/mo), Enterprise ($99/mo)
-- Stripe Checkout for payment flow
-- Webhook handler for subscription lifecycle events
-- Feature gating based on subscription tier
-
-## Architecture Changes
-- New table: `subscriptions` (user_id, stripe_customer_id, stripe_subscription_id, status, tier)
-- New API route: `app/api/checkout/route.ts` — creates Stripe Checkout session
-- New API route: `app/api/webhooks/stripe/route.ts` — handles Stripe events
-- New middleware: check subscription tier for gated features
-- New component: `PricingTable` — displays tiers with upgrade buttons
-
-## Implementation Steps
-
-### Phase 1: Database & Backend (2 files)
-1. **Create subscription migration** (File: supabase/migrations/004_subscriptions.sql)
-   - Action: CREATE TABLE subscriptions with RLS policies
-   - Why: Store billing state server-side, never trust client
-   - Dependencies: None
-   - Risk: Low
-
-2. **Create Stripe webhook handler** (File: src/app/api/webhooks/stripe/route.ts)
-   - Action: Handle checkout.session.completed, customer.subscription.updated,
-     customer.subscription.deleted events
-   - Why: Keep subscription status in sync with Stripe
-   - Dependencies: Step 1 (needs subscriptions table)
-   - Risk: High — webhook signature verification is critical
-
-### Phase 2: Checkout Flow (2 files)
-3. **Create checkout API route** (File: src/app/api/checkout/route.ts)
-   - Action: Create Stripe Checkout session with price_id and success/cancel URLs
-   - Why: Server-side session creation prevents price tampering
-   - Dependencies: Step 1
-   - Risk: Medium — must validate user is authenticated
-
-4. **Build pricing page** (File: src/components/PricingTable.tsx)
-   - Action: Display three tiers with feature comparison and upgrade buttons
-   - Why: User-facing upgrade flow
-   - Dependencies: Step 3
-   - Risk: Low
-
-### Phase 3: Feature Gating (1 file)
-5. **Add tier-based middleware** (File: src/middleware.ts)
-   - Action: Check subscription tier on protected routes, redirect free users
-   - Why: Enforce tier limits server-side
-   - Dependencies: Steps 1-2 (needs subscription data)
-   - Risk: Medium — must handle edge cases (expired, past_due)
-
-## Testing Strategy
-- Unit tests: Webhook event parsing, tier checking logic
-- Integration tests: Checkout session creation, webhook processing
-- E2E tests: Full upgrade flow (Stripe test mode)
-
-## Risks & Mitigations
-- **Risk**: Webhook events arrive out of order
-  - Mitigation: Use event timestamps, idempotent updates
-- **Risk**: User upgrades but webhook fails
-  - Mitigation: Poll Stripe as fallback, show "processing" state
-
-## Success Criteria
-- [ ] User can upgrade from Free to Pro via Stripe Checkout
-- [ ] Webhook correctly syncs subscription status
-- [ ] Free users cannot access Pro features
-- [ ] Downgrade/cancellation works correctly
-- [ ] All tests pass; coverage meets the project threshold (or the 80% heuristic default in `skill: tdd-workflow`)
-```
+A full worked plan belongs in the plan document for that task,
+not in this agent definition.
 
 ## When Planning Refactors
 

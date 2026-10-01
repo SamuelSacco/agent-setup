@@ -197,7 +197,9 @@ Status key: UNVERIFIABLE / PARTIAL / REFUTED / PROVEN / UNBUILT / BLOCKED.
   is a hole in the "one setup, both tools" story.
 
 ### X18 — Canonical instruction debt (prompt-audit fix queue)
-- Status: OPEN FIXES, not an experiment — 12 suspect patterns (10 in two
+- Status: CLOSED 2026-10-01 (X18 run, branch `fix/x18-instruction-debt`) —
+  see resolution note below.
+- (Original status: OPEN FIXES, not an experiment — 12 suspect patterns (10 in two
   ECC-derived TDD files) and 4 broken references: `researcher` agent (×5)
   and `architect` invoked but nonexistent (canonical: `code-architect`);
   `security-review` skill nonexistent; `tdd-workflow` Step 0 mandates
@@ -205,6 +207,23 @@ Status key: UNVERIFIABLE / PARTIAL / REFUTED / PROVEN / UNBUILT / BLOCKED.
 - Cheapest decisive action: fix or remove each reference; re-run the
   audit scan; zero broken references is the bar. Est. cost: $0.
   Priority: high — post-demo joint review list (addendum).
+
+- Resolution — 2026-10-01 (X18 run, branch `fix/x18-instruction-debt`):
+  CLOSED. Re-verified all 16 audit items on disk at master `ce0edbe`:
+  the 2026-09-30 fix (`297285e`, merged `82ea351`) had landed 11 of 12
+  suspect patterns and all 4 broken references (`researcher` ×5 →
+  subagent/research pass; `architect` → `code-architect`;
+  `security-review` → `verification-loop`; `setup-package-manager.js`
+  mandate → lockfile/`packageManager` detection), but never closed
+  this item and missed one pattern. Residual fixed here: planner's
+  77-line Stripe worked example (audit stale-example #12) removed,
+  replaced with a 16-line outline; adapters regenerated via
+  `scripts/install.sh`. Final scan over 61 shipped-surface files
+  (canonical + `.claude/` + `.github/` + root `AGENTS.md`): broken
+  references 0, suspect markers 0, exit 0 — before this run:
+  broken 0, suspect 1 pattern (3 surface hits). No claims-ledger
+  entry references X18; no ledger change. Evidence:
+  `evals/results/2026-10-01-X18-instruction-debt.md`. Spend: $0.
 
 ### X19 — CLAUDE.md deletion + version-aware guard probe
 - Status: BLOCKED on Samuel's ruling (keep the `@AGENTS.md` bridge vs
