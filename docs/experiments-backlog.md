@@ -45,6 +45,27 @@ Status key: UNVERIFIABLE / PARTIAL / REFUTED / PROVEN / UNBUILT / BLOCKED.
   rule. Nothing in the repo ties "35" to any outcome; treat as a talk
   heuristic, never a finding.
 - Est. cost: ~$1.50. Priority: medium (it is in the talk close).
+- **Resolution 2026-10-01 (X1 run, branch `lab/x1-toolset-ab`):
+  outcome question tested at partial n — standing verdict
+  UNVERIFIABLE as a stable effect.** Arms: full default (14 defs
+  loaded) vs restricted `--tools` set of 6 (Read, Write, Edit, Bash,
+  Grep, Glob), Haiku 4.5, packaged tasks. Completed pairs: 1 of 4
+  (nx-t2 discordant: full FAIL $0.299612/13t, restricted PASS
+  $0.055467/7t — the pre-registered rule fired PROVEN at n=1).
+  nx-t3: restricted FAIL ($0.286612/11t), full arm lost to an
+  execution-layer incident (backgrounded launches executed twice;
+  duplicate billing, partly unmetered; series stopped under the
+  $1.50 cap, rich pairs never launched). The nx-t2 discordance does
+  not stand as an effect: a duplicate execution of the identical
+  full arm on nx-t2 PASSed with a correct fix (tree verified), so
+  the pair's outcome is execution-dependent. Side-finding PROVEN by
+  raw-body capture: `--tools` restricts loaded defs to exactly the
+  named set (6/6); `--allowedTools` alone does not (14 loaded).
+  Metered spend $0.672354 of $1.50 cap (+ unmetered duplicate
+  spend, est. total billed $0.87–1.17). Evidence:
+  `evals/results/2026-10-01-X1-toolset-ab.md`. A clean rerun at
+  full n=4 needs a non-duplicating execution path and ~$1.50
+  metered headroom at 2026-10-01 prices.
 
 ### X2 — Context-rent budget rule uses the packet's rent figures
 - Status: figures REFUTED this run (see above); rule itself (fewer defaults

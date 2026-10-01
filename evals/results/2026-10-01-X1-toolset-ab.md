@@ -132,8 +132,130 @@ parent+fix): `/home/hatch/workspace/p2/w3/scratch/.infra/nx-src`,
 
 ## Results
 
-_(filled in after runs; protocol above is the pre-registration)_
+### Delivered series (primary; complete envelopes, runner disk-grading)
+
+| Task | Arm | Success | Turns | Cost USD | Wall s |
+|------|-----|---------|-------|----------|--------|
+| nx-t2 SpanningTreeIterator | full | **no** | 13 | 0.299612 | 139 |
+| nx-t2 | restricted (6) | **yes** | 7 | 0.055467 | 148 |
+| nx-t3 current_flow_closeness | full | — no result (ERROR, session terminated) | n/a | unmetered | n/a |
+| nx-t3 | restricted (6) | **no** | 11 | 0.286612 | 205 |
+| rich-u1 | both | not run — cap stop (below) | — | — | — |
+| rich-u3 | both | not run — cap stop (below) | — | — | — |
+
+Totals, delivered series: full = 0/1 graded, 13 turns, $0.299612.
+Restricted = 1/2 graded, 18 turns, $0.342079. Completed pairs: 1
+of 4 planned. Discordant pairs: **1** (nx-t2: full FAIL,
+restricted PASS).
+
+### On-disk duplicate series (incident; see below)
+
+Every backgrounded launch executed a second time on this machine.
+Those duplicate processes wrote to this filesystem, slowly and
+incompletely; the evaluator killed the nx-t2-restricted and
+nx-t3-restricted duplicates mid-run to stop duplicate billing
+(their trees here are ungraded baselines and are not evidence).
+The nx-t2-full duplicate ran to a graded result before the
+divergence was understood:
+
+| Task | Arm | Success | Turns | Cost | Wall s | Note |
+|------|-----|---------|-------|------|--------|------|
+| nx-t2 | full | **yes** | n/a (envelope lost) | unmetered | 600 (runner timeout) | Tree verified by evaluator: `mst.py` +3 lines, lazy `__iter__()` guard in `__next__` — a correct fix. File: `2026-10-01-RUN-nx-t2-spanning-tree-iterator-claude-full.md` (annotated). |
+
+So the full arm on nx-t2 has two graded executions under the same
+protocol: FAIL (delivered, clean exit) and PASS (duplicate, timeout
+kill). The discordant pair that the decision rule fires on is
+execution-dependent.
+
+### Cost pattern (descriptive, n too small for a claim)
+
+The restricted arm was cheaper on nx-t2 by 5.4× ($0.055 vs $0.300)
+with half the turns, and solved it; on nx-t3 the restricted arm
+cost $0.287 and failed (its full-arm pair never graded). Prior
+S11/S12 base runs — which used the same 6-tool `--allowedTools`
+set — cost $0.072 (nx-t2) and $0.075 (nx-t3); run-to-run cost
+variance today was large in both arms.
+
+### Spend accounting
+
+Metered (JSON envelopes, exact): probes A+B $0.030663; task runs
+$0.641691 (0.299612 + 0.055467 + 0.286612). **Metered total:
+$0.672354 of the $1.50 cap.**
+Unmetered (no envelope exists; estimates, not metered figures):
+probe C (~3 API requests, no response captured, $0.05 reserve held
+in the protocol); the duplicate executions (nx-t2-full ran a full
+fix to completion; nx-t2-restricted, nx-t3-restricted, and the
+nx-t3-full session were killed mid-run) — plausibly $0.15–0.45
+combined at Haiku rates for the turns observed. Total billed is
+therefore plausibly $0.87–1.17, under the cap on estimates but not
+fully meter-verifiable. No further runs were launched once the
+duplicate billing was identified: with nx-t3-full unmetered and
+duplicates consuming unknown spend, launching the rich pairs
+(projected $0.45–0.90 metered for 4 runs at today's prices) risked
+breaching the cap. Stop rule applied; partial n reported.
+
+## Incident: execution-layer duplication and filesystem divergence
+
+Backgrounded shell launches in this environment executed each
+command twice: a delivered execution (whose stdout, including the
+runner's JSON, was returned to the evaluator) and an on-disk
+execution on this machine (processes observable in `ps`, writing to
+the workspace filesystem). Symptoms, all verified on disk: delivered
+results arrived while the matching on-disk processes were still
+running Claude with near-zero CPU; the delivered runs' result files,
+ledger rows, and run-tree edits never appeared in this filesystem;
+the on-disk nx-t2-full runner wrote its result file and ledger row
+~10 minutes after launch, with a 600 s timeout and no envelope.
+Foreground launches (probes A–C, all git/file operations) executed
+once and persisted normally. Consequences: (1) duplicate API spend,
+partly unmetered (above); (2) the delivered series' graded run trees
+are not available for re-inspection — its per-run files in
+`evals/results/` are evaluator reconstructions from the runner's
+delivered JSON, labeled as such, except nx-t2-full, whose file is
+the on-disk duplicate's own runner file, annotated; (3) killing the
+on-disk duplicate of the combined nx-t3 session terminated that
+session, losing the nx-t3-full delivered run (recorded as ERROR,
+not a grade). This is an execution-layer failure, not an agent or
+task failure; it is recorded here in full because it bounds what
+this evidence can claim.
+
+## Deviations from the protocol
+
+1. Run order changed under the cap: nx-t3 ran before the rich
+   tasks (pair order 1, 2, 4, 3 planned as cheapest-first
+   completion), then the series stopped entirely (incident + cap).
+   Rich pairs (rich-u1, rich-u3) were never launched.
+2. Per-run files for the delivered series are reconstructions from
+   runner JSON (incident above), not runner-written files.
+3. Arm B used `--tools` in addition to `--allowedTools`, per the
+   probe finding recorded in the protocol (planned, not a
+   deviation in substance: `--allowedTools` alone disk-verifies as
+   no restriction).
 
 ## Verdict
 
-_(pending)_
+**Decision-rule outcome on completed pairs: PROVEN** — 1 completed
+pair, 1 discordant pair (nx-t2: full FAIL / restricted PASS), which
+meets the pre-registered ≥1-discordant-pair bar.
+
+**Standing verdict: UNVERIFIABLE as a stable effect.** The single
+discordant pair does not survive its own duplicate: a second
+execution of the identical full arm on the identical task passed
+with a correct fix, so at this evidence level the nx-t2 discordance
+is attributable to run-to-run variance, not to the toolset. n=1
+completed pair of 4 planned, one arm of nx-t3 ungraded, both rich
+tasks unrun, and part of the spend unmetered (incident) — there is
+no basis here to claim that restricting the toolset at this scale
+(14 defs → 6) reliably changes success in either direction, and no
+basis to refute it either: the restricted arm's nx-t3 failure has
+no graded full-arm counterpart. The 35-tool threshold itself was
+not tested (both arms sit under it) and remains UNVERIFIABLE
+folklore; X1a's REFUTED (implementation) stands unchanged.
+
+What this run does establish, descriptively: (a) `--tools`
+restricts Claude Code's loaded tool defs to exactly the named set
+(6/6, probe C) while `--allowedTools` alone does not (14 loaded,
+probe B) — PROVEN by raw-body capture; (b) a 6-tool working set is
+sufficient to solve a real NetworkX task end-to-end at the lowest
+cost observed in this series ($0.055467, 7 turns).
+
