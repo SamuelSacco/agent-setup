@@ -1,4 +1,13 @@
-<!-- V1 PRESENTATION ARTIFACT (2026-09-30). Superseded by Phase 2: docs/phase2-packet-2026-09-30.md + docs/phase2-addendum-2026-09-30.md. Known stale claim: the session-end cleanup automation line (~line 206) is UNPROVEN per Phase 2 — do not present as fact. See docs/merge-readiness-2026-09-30.md. -->
+<!-- Audit-corrected 2026-10-01 per the W5 claim audit (claim-audit.md, deck rows D1-D33): 12 text fixes applied on fix/demo-readiness. Superseded-by-Phase-2 note retained: see docs/phase2-packet-2026-09-30.md + docs/phase2-addendum-2026-09-30.md and docs/merge-readiness-2026-09-30.md. -->
+<!--
+RECHECK-AFTER-W2-MERGE: re-audit the loop/close sentences below verbatim against feat/soul-self-review when it lands.
+- "Telemetry capture is PROVEN on both tools (S8/S9): both harnesses emit OpenTelemetry; capture to files and review what failed."
+- "Lesson promotion into skills is MANUAL; no automated self-improvement loop exists at this commit."
+- "SessionEnd trigger is PROVEN in Claude (S19) and in Copilot (X5 arm, merged overnight: 3/3 on CLI 1.0.89 under trust)."
+- "The wired action on both tools is still the sidecar session-end record stub; no cleanup skill exists yet."
+- "Wiki hardening is the manual session-harden step, not a hook action."
+- "A SOUL.md/self-review pattern is landing separately on branch feat/soul-self-review (not merged)."
+-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -38,7 +47,7 @@
   <div class="kicker">Team session · Agentic coding setups</div>
   <h1>One Setup, Two Agents</h1>
   <p>A tool-agnostic workspace for Claude Code and GitHub Copilot CLI: one place to define skills, agents, and MCP servers; one shared memory; and an evaluation habit that tells us whether any of it actually helps.</p>
-  <p class="dim">Sterile by design — nothing personal in it. Clone it, run one install command, and both tools behave the same.</p>
+  <p class="dim">Sterile by design — nothing personal in it. Clone it, run one install command, and both tools load the same definitions; parity UNVERIFIABLE (S6).</p>
 </section>
 
 <section class="slide">
@@ -59,7 +68,7 @@
     <li><span class="tag proven">PROVEN</span> Codex, Copilot, Cursor, Gemini CLI, Devin and others read <code>AGENTS.md</code> natively. It's stewarded by the Agentic AI Foundation (Linux Foundation).</li>
     <li><span class="tag proven">PROVEN</span> Claude Code joined on 2026-09-18 (v2.1.277) — <em>conditionally</em>: only when no <code>CLAUDE.md</code> exists in the directory or above it.</li>
     <li><span class="tag refuted">REFUTED</span> "Claude Code doesn't read AGENTS.md." Outdated as of last week.</li>
-    <li>The robust bridge: <code>CLAUDE.md</code> whose first line is <code>@AGENTS.md</code>. One source of truth, never double-loads.</li>
+    <li>Final shape in this repo: <code>CLAUDE.md</code> dropped (C4 amendment); Claude ≥2.1.277 loads <code>AGENTS.md</code> natively (re-proven on 2.1.285), guarded by <code>scripts/check-agents-md-load.sh</code>. The bridge — <code>CLAUDE.md</code> whose first line is <code>@AGENTS.md</code> — is scoped to older versions.</li>
     <li>Trap: Copilot <em>CLI</em> merges all instruction files with <strong>no defined precedence</strong>. Conflicting rules have no referee.</li>
   </ul>
   <footer>Sources: Anthropic memory docs + changelog; GitHub Copilot docs. Researched 2026-09-30.</footer>
@@ -81,6 +90,7 @@ canonical/hooks/failure-capture.json
 .claude/skills/…   .claude/agents/…   .mcp.json
 .github/skills/…   .github/agents/…  .github/mcp.json</pre>
   <p>AGENTS.md unifies instruction <em>text</em>. Skills layout, agents, MCP config, and hooks are <strong>not</strong> standardized — adapters exist for exactly that residue. This is deliberately the slim version of kitchen-sink suites like ECC.</p>
+  <p><strong>Copilot MCP scope caveat (S24):</strong> Copilot workspace MCP files (<code>.mcp.json</code> / <code>.github/mcp.json</code>) never load on CLI 1.0.89 — <span class="tag refuted">REFUTED</span>. The working scope is user <code>~/.copilot/mcp-config.json</code>, which <code>install.sh</code> does not yet emit (W1 in flight).</p>
 </section>
 
 <section class="slide">
@@ -110,7 +120,7 @@ canonical/hooks/failure-capture.json
     <li><strong>Log:</strong> a session file records intent, then turn-by-turn: intended / tried / happened — failures included.</li>
     <li><strong>Harden:</strong> at the end, durable facts are distilled into wiki notes; the raw log stays untouched.</li>
   </ul>
-  <p>Both tools write the same format into the same directories. That's what makes "Claude started it, Copilot continues it" possible — demo, next.</p>
+  <p>Both tools write the same format into the same directories. Proven scope: Copilot→Claude is <span class="tag proven">PROVEN</span> (S2, n=1, read-only recall); the reverse direction (Claude→Copilot) is untested.</p>
 </section>
 
 <section class="slide">
@@ -140,7 +150,7 @@ canonical/hooks/failure-capture.json
     <tr><td>One install → skill discoverable in both tools</td><td><span class="tag proven">PROVEN</span></td><td>E1: both tools invoked <code>session-harden</code> by name in fresh installs</td></tr>
     <tr><td>Tool B continues tool A's session from the wiki</td><td><span class="tag proven">PROVEN</span></td><td>E2: 5/5 probes matched the log; baseline (no wiki) answered 5/5 "not recorded"</td></tr>
     <tr><td>Wiki orientation beats no-wiki baseline</td><td><span class="tag unver">UNVERIFIABLE</span></td><td>E3: 5 matched tasks, ≤25% token overhead</td></tr>
-    <tr><td>Archiving stale notes cuts tokens, keeps quality</td><td><span class="tag partial">PARTIAL</span></td><td>E5: orientation tokens −38% (PROVEN); active-scope answers unchanged (6/6), zero invented; the 4 archived-only facts retire to "not recorded" by design — so corpus-truth quality is 6/10 vs 10/10, not "drop 0"</td></tr>
+    <tr><td>Archiving stale notes cuts tokens, keeps quality</td><td><span class="tag partial">PARTIAL</span></td><td>E5: orientation tokens −38% (PROVEN); active-scope answers unchanged (6/6), zero invented; the 4 archived-only facts retire to "not recorded" by design — so corpus-truth quality is 5/10 vs 10/10 (audit-corrected 2026-09-30: Q4 active-only answered "0" vs corpus "15"), not "drop 0"</td></tr>
     <tr><td>Failure hook captures structured events</td><td><span class="tag unver">PARTIAL</span></td><td>E4: Claude 5/5 after adapter fix; Copilot hooks trust-gated — fire when trusted, but the failure event does not discriminate shell failures</td></tr>
     <tr><td>Same API key drives both harnesses</td><td><span class="tag proven">PROVEN</span></td><td>BYOK: Copilot ran on the Anthropic key — tokens metered, zero AI Credits</td></tr>
     <tr><td>Both tools emit OpenTelemetry; we capture to files for evals</td><td><span class="tag proven">PROVEN</span></td><td>Claude raw API bodies on disk; Copilot full-content OTel JSONL — harness cost decomposed live (14,510-token prompt = system prompt + 23 tool schemas + MCP)</td></tr>
@@ -164,7 +174,7 @@ canonical/hooks/failure-capture.json
       <p><strong>Copilot rubber duck</strong> <span class="tag proven">PROVEN</span></p>
       <ul>
         <li>Built-in critic on a <em>different model family</em> than your driver (Claude↔GPT) — no shared blind spots.</li>
-        <li>Manual by default: <code>/rubber-duck</code> when you ask. Auto-invoke exists but is opt-in (<code>rubberDuckAutoInvoke</code>, off by default). Read-only.</li>
+        <li>Auto-consulted on non-trivial work (GitHub docs, ledger C2); invoke manually any time with /rubber-duck. Read-only — it critiques, the driver decides.</li>
         <li>Costs extra model calls; the bet is early catches pay for them.</li>
       </ul>
     </div>
@@ -190,9 +200,9 @@ canonical/hooks/failure-capture.json
 copilot login            <span class="c"># or the same key as a BYOK provider</span>
 git clone &lt;this-repo&gt; &amp;&amp; cd agent-setup
 ./scripts/install.sh     <span class="c"># always launch agents from this root</span></pre>
-  <p>Org toolchain (GitLab CLI, Coralogix MCP, Mongo/Postgres, Okteto, Atlassian, Chrome DevTools, CodeRabbit, Figma): <strong>future adapter slots, not built.</strong> The door is designed — one canonical file per tool, one install, one verification check — but only <code>filesystem-wiki</code> exists today. New tool ≠ new ritual, once its canonical file lands.</p>
+  <p>Org toolchain (GitLab CLI, Coralogix MCP, Mongo/Postgres, Okteto, Atlassian, Chrome DevTools, CodeRabbit, Figma): <strong>future adapter slots, not built.</strong> The door is designed — one canonical file per tool, one install, one verification check. Five canonical MCP servers exist today — context7, filesystem-wiki, github, playwright, sequential-thinking — and no org tool has a canonical file; the org list above stays future adapter slots, not built. New tool ≠ new ritual, once its canonical file lands.</p>
   <p>The same credential can drive both harnesses: Claude Code takes the Anthropic key directly, and Copilot CLI takes it as a BYOK provider — the model stays constant, the harness is the only variable (<span class="tag proven">PROVEN</span> 2026-09-30).</p>
-  <p><strong>Status:</strong> E1, E2, E4, E5 ran 2026-09-30 — results in <code>evals/results/</code>. E3 (wiki value) remains unrun. E6 (agent parity) pilot caught its blockers instead: Claude would not write without approval; one Copilot run reported "22 passed" and wrote zero files. Kill criteria are already written down.</p>
+  <p><strong>Status:</strong> E1, E2, E4, E5 ran 2026-09-30 — results in <code>evals/results/</code>. E3 (wiki value) remains unrun. E6 pilot was <span class="tag refuted">REFUTED</span> under default permissions; S6a is <span class="tag proven">PROVEN</span> (rerun 13/13); S6b pre-approved rerun is <span class="tag proven">PROVEN</span> n=1 (20/20, independently re-run); parity (S6) remains <span class="tag unver">UNVERIFIABLE</span>. See the claims ledger, S8–S24, for the later verdicts.</p>
 </section>
 
 <section class="slide">
@@ -200,11 +210,11 @@ git clone &lt;this-repo&gt; &amp;&amp; cd agent-setup
   <h2>Rules we actually run by</h2>
   <p>Heuristics, not theorems — each one is cheap to adopt and has a mechanism behind it:</p>
   <ul>
-    <li><strong>Keep the tool surface ≤ ~35 tools per agent.</strong> Tool schemas cost context every turn (tonight: 23 schemas ≈ 7.7k input tokens). Past that, split the work into subagents with narrow surfaces instead of growing one agent's.</li>
+    <li><strong>Keep the tool surface ≤ ~35 tools per agent — a budgeting rule, not a measured cliff.</strong> Tool schemas cost context every turn (measured: 23 tool definitions = 30,900 chars, OTel decomposition). The ~35-tool threshold is UNVERIFIABLE folklore. Past that, split the work into subagents with narrow surfaces instead of growing one agent's. Per-agent <code>tools:</code> allowlists are emission only on Copilot: emission is PROVEN, enforcement is REFUTED — they are not a write boundary (S21, Q16 update).</li>
     <li><strong>Budget the context you always pay.</strong> System prompt + tool schemas + orientation = the rent on every call. Measure it (1,866 vs 14,510 vs 20,589 — same probe), keep the system prompt lean, and move weight into on-demand context: skills and wiki pages load only when invoked.</li>
-    <li><strong>Let telemetry close the loop.</strong> Both harnesses emit OpenTelemetry; capture to files, review what failed, and promote proven lessons into skills. The setup improves from its own evidence, not from vibes.</li>
+    <li><strong>Let telemetry close the loop — manually.</strong> Telemetry capture is PROVEN on both tools (S8/S9): both harnesses emit OpenTelemetry; capture to files and review what failed. Lesson promotion into skills is MANUAL; no automated self-improvement loop exists at this commit.</li>
     <li><strong>Notes have a lifecycle; forget on purpose.</strong> Active → stale → archived by rule (E5: −38% orientation tokens, nothing active-scope lost, nothing invented). Deprecation is a feature, not housekeeping.</li>
-    <li><strong>Cleanup runs at close, not when remembered.</strong> A session-end hook invokes the cleanup skill automatically — session record written, wiki hardened, failures filed — so no session ends unlogged.</li>
+    <li><strong>Cleanup at close — trigger proven, action is a stub.</strong> SessionEnd trigger is PROVEN in Claude (S19) and in Copilot (X5 arm, merged overnight: 3/3 on CLI 1.0.89 under trust). The wired action on both tools is still the sidecar session-end record stub; no cleanup skill exists yet. Wiki hardening is the manual session-harden step, not a hook action. A SOUL.md/self-review pattern is landing separately on branch feat/soul-self-review (not merged).</li>
   </ul>
   <p class="dim">Each rule traces to a measurement or a failure in <code>evals/results/</code>. Where a rule is a judgment call rather than a proven claim, the ledger says UNVERIFIABLE and moves on.</p>
 </section>
