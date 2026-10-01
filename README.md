@@ -8,18 +8,33 @@ Nothing here is personal. Clone it, run the installer, and both tools behave the
 
 ## Quick start
 
+Requires Claude Code >= 2.1.277 and GitHub Copilot CLI installed and
+authenticated (see `docs/setup.md` §§1–2). This repo ships no `CLAUDE.md`;
+`AGENTS.md` loads natively in Claude Code only on >= 2.1.277, and only when
+no `CLAUDE.md` exists. On an older version the instructions silently do not
+load. Guard: `scripts/check-agents-md-load.sh` (`--static` is free; the live
+probe needs an apiKeyHelper — see `docs/setup.md` §3).
+
 ```bash
 # 1. Clone and enter the root (always launch agents from here)
-git clone <this-repo> agent-setup
+git clone https://github.com/SamuelSacco/agent-setup agent-setup
 cd agent-setup
 
 # 2. Install capabilities into both tools (one command)
 ./scripts/install.sh
 
-# 3. Launch either tool from this directory
+# 3. Verify structure (no auth, no API spend)
+./scripts/quickstart.sh --structural-only
+
+# 4. Launch either tool from this directory
 claude          # Claude Code
 copilot         # GitHub Copilot CLI
 ```
+
+One-command alternative: `scripts/quickstart.sh` — preflight, install, and
+structural verify in one run; without `--structural-only` it also runs live
+probes after an auth gate. Headless/unattended permission flags are in
+`docs/setup.md` §7.
 
 Both tools read the same `AGENTS.md`, share the same skills/agents/MCP servers via 
 adapters, write sessions into `wiki/sessions/`, and maintain the wiki in `wiki/notes/`.

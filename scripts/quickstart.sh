@@ -2,7 +2,7 @@
 # quickstart.sh — one command from a stranger's machine to a verified
 # dual-tool (Claude Code + GitHub Copilot CLI) agent-setup workspace.
 #
-#   git clone <this-repo> agent-setup && cd agent-setup && ./scripts/quickstart.sh
+#   git clone https://github.com/SamuelSacco/agent-setup agent-setup && cd agent-setup && ./scripts/quickstart.sh
 #
 # What it does, in order:
 #   1. Preflight   — git, python3 present; claude/copilot CLIs present
