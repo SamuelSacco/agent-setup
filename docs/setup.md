@@ -25,6 +25,8 @@ copilot login         # GitHub device flow (gh auth alone is NOT sufficient)
 Verify:
 ```bash
 claude auth status    # loggedIn: true
+copilot               # launches and shows the signed-in GitHub account;
+                      # there is no `copilot auth status` subcommand
 ```
 
 ## 3. Get this workspace
@@ -59,6 +61,27 @@ skipped with a message naming the variable; the static checks still run.
 This reads `canonical/` and writes each tool's native layout. Add a skill 
 later = one new file in `canonical/skills/` + re-run this script.
 
+Everything it writes, including outside this repo:
+
+- `.claude/`, `.github/`, `.mcp.json` in the repo root (adapter-owned;
+  regenerated on every install).
+- `~/.copilot/mcp-config.json` in your home directory — the user scope
+  Copilot CLI actually loads (ledger S24; the workspace files above are
+  not loaded by the CLI). It is **merged, never replaced**: unrelated
+  keys and servers survive, canonical servers are replaced, and a
+  changed file is first backed up to `mcp-config.json.bak-<timestamp>`
+  next to the original. Two consequences to know before you run it:
+  the 5 canonical servers load in **every** Copilot session on this
+  machine, from any directory; and if you install from a second clone,
+  the last install wins for the canonical entries (their filesystem
+  paths point into that clone). There is no uninstaller yet — delete
+  the canonical entries from the file by hand to remove them.
+- The `github` server ships with an empty token placeholder, which the
+  installer drops at emission so it cannot override a token you exported
+  in your shell. Authenticated GitHub operations stay off until you set
+  `GITHUB_PERSONAL_ACCESS_TOKEN` in `canonical/mcp/github.json` and
+  re-run install; unauthenticated public search works either way.
+
 ## 5. First session
 
 ```bash
@@ -74,8 +97,11 @@ instructions didn't load — check you launched from the repo root.
 ## 6. Prove it (don't trust it)
 
 First: `./scripts/quickstart.sh --structural-only` — exit 0 requires
-8/8 skills and 12/12 agents per tool, and both MCP configs parsing
-(5 servers each).
+every canonical skill and agent materialized per tool (counts derived
+from `canonical/` at runtime — 9 skills and 12 agents as of 2026-10-01),
+every emitted frontmatter block parsing as strict YAML, and the MCP
+configs parsing (5 servers each, including the Copilot user-scope
+config in `~/.copilot/`).
 
 Then run the evals in order as auth allows: E1 (install parity) → E4 (failure 
 capture) → E2 (cross-tool continuity). Record verdicts in 
@@ -123,5 +149,5 @@ Run them only in a tree you are willing to let the agent modify.
 |---|---|
 | Skill not listed in one tool | Launched outside repo root, or adapter format drift — re-run install, then check the tool's skill path |
 | Instructions ignored | Wrong root: `AGENTS.md`/`CLAUDE.md` load from the launch directory upward |
-| MCP server missing in one tool | `.mcp.json` (Claude) vs `.github/mcp.json` (Copilot) — re-run install; check server name match |
+| MCP server missing in one tool | Claude reads `.mcp.json`; Copilot CLI reads `~/.copilot/mcp-config.json` (user scope — `.github/mcp.json` is NOT loaded by the CLI, ledger S24; it is kept for VS Code) — re-run install; check the server appears in the right file |
 | Sessions not shared | Agent didn't follow the lifecycle — check `wiki/sessions/` for the file; reinforce via AGENTS.md §2 |

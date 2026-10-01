@@ -1,7 +1,7 @@
 ---
-name: doc-updater
-description: Documentation and codemap specialist. Use PROACTIVELY for updating codemaps and documentation. Generates docs/CODEMAPS/*, updates READMEs and guides.
-tools: [read, edit, shell, search]
+name: "doc-updater"
+description: "Documentation and codemap specialist. Use PROACTIVELY for updating codemaps and documentation. Generates docs/CODEMAPS/*, updates READMEs and guides."
+tools: ["read", "edit", "shell", "search"]
 ---
 
 <!-- Source: ECC (everything-claude-code) by Affaan Mustafa — https://github.com/affaan-m/ECC — MIT License (LICENSE in that repo; copyright notice retained per MIT terms). Ported 2026-09-30. Adaptations: canonical frontmatter only (ECC model/tool fields mapped to model_hint/tools_hint; adapter strips both); ECC 'Prompt Defense Baseline' boilerplate block dropped (repeated verbatim in every ECC agent; not role content). -->

@@ -23,9 +23,7 @@
         "-y",
         "@modelcontextprotocol/server-github@2025.4.8"
       ],
-      "env": {
-        "GITHUB_PERSONAL_ACCESS_TOKEN": ""
-      }
+      "env": {}
     },
     "playwright": {
       "command": "npx",
@@ -70,9 +68,7 @@
         "-y",
         "@modelcontextprotocol/server-github@2025.4.8"
       ],
-      "env": {
-        "GITHUB_PERSONAL_ACCESS_TOKEN": ""
-      }
+      "env": {}
     },
     "playwright": {
       "command": "npx",

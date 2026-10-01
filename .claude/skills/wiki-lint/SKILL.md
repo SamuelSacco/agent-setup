@@ -1,6 +1,6 @@
 ---
-name: wiki-lint
-description: Lint the wiki — find orphan notes, stale notes, broken relates_to links, claims without verdicts, and index drift. Reports findings and fixes what is safe.
+name: "wiki-lint"
+description: "Lint the wiki \u2014 find orphan notes, stale notes, broken relates_to links, claims without verdicts, and index drift. Reports findings and fixes what is safe."
 ---
 
 # Wiki lint

@@ -4,7 +4,11 @@ A sterile, reproducible setup for running **Claude Code** and **GitHub Copilot C
 from one shared root, with one-install capabilities, a self-maintaining knowledge wiki, 
 normalized session telemetry, and lifecycle evaluations.
 
-Nothing here is personal. Clone it, run the installer, and both tools behave the same.
+Nothing here is personal. Clone it, run the installer, and both tools load
+the same definitions. Behavior parity is scoped per claim, not blanket —
+see `docs/claims-ledger.md` (parity PROVEN for one agent on one task
+package, S6; known gaps: Copilot failure-capture hook S4, `tools:`
+enforcement S21, workspace MCP scope S24).
 
 ## Quick start
 
@@ -87,7 +91,7 @@ agent-setup/
 See `docs/claims-ledger.md` for the live verdict on every claim this system makes.
 
 Copilot MCP note: workspace-scope MCP does not load on Copilot CLI 1.0.89
-(ledger S24, REFUTED), so the installer also emits the user-scope config
+(ledger S24, REFUTED; the installed build is now 1.0.90), so the installer also emits the user-scope config
 `~/.copilot/mcp-config.json` from the canonical MCP definitions — merged
 into any existing user config, never replaced. That scope is live-verified
 (ledger S24 closure, 2026-10-01).

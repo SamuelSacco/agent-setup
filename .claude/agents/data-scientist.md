@@ -1,7 +1,7 @@
 ---
-name: data-scientist
-description: Data scientist — analysis, experiments, evaluation design and statistics. Use for metrics, evals, and any "does this actually work?" question.
-tools: [Read, Write, Edit, Bash, Grep, Glob]
+name: "data-scientist"
+description: "Data scientist \u2014 analysis, experiments, evaluation design and statistics. Use for metrics, evals, and any \"does this actually work?\" question."
+tools: ["Read", "Write", "Edit", "Bash", "Grep", "Glob"]
 ---
 
 # Data scientist

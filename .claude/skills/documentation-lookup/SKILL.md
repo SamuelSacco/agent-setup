@@ -1,6 +1,6 @@
 ---
-name: documentation-lookup
-description: Use up-to-date library and framework docs via Context7 MCP instead of training data. Activates for setup questions, API references, code examples, or when the user names a framework (e.g. React, Next.js, Prisma).
+name: "documentation-lookup"
+description: "Use up-to-date library and framework docs via Context7 MCP instead of training data. Activates for setup questions, API references, code examples, or when the user names a framework (e.g. React, Next.js, Prisma)."
 ---
 
 <!-- Source: ECC (everything-claude-code) by Affaan Mustafa — https://github.com/affaan-m/ECC — MIT License (LICENSE in that repo; copyright notice retained per MIT terms). Ported 2026-09-30. Adaptations: canonical frontmatter only (name/description); Claude-only names/paths replaced with tool-neutral equivalents so the same file serves Claude Code and Copilot CLI. -->

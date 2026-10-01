@@ -1,6 +1,6 @@
 ---
-name: architecture-decision-records
-description: Capture architectural decisions as numbered ADR markdown files in docs/adr/ with context, alternatives considered, consequences, and an index README. Use when the user says 'record this decision' or 'ADR this', chooses between frameworks or databases, discusses trade-offs, or asks why the codebase is shaped this way.
+name: "architecture-decision-records"
+description: "Capture architectural decisions as numbered ADR markdown files in docs/adr/ with context, alternatives considered, consequences, and an index README. Use when the user says 'record this decision' or 'ADR this', chooses between frameworks or databases, discusses trade-offs, or asks why the codebase is shaped this way."
 ---
 
 <!-- Source: ECC (everything-claude-code) by Affaan Mustafa — https://github.com/affaan-m/ECC — MIT License (LICENSE in that repo; copyright notice retained per MIT terms). Ported 2026-09-30. Adaptations: canonical frontmatter only (name/description); Claude-only names/paths replaced with tool-neutral equivalents so the same file serves Claude Code and Copilot CLI. -->

@@ -1,6 +1,6 @@
 ---
 name: tdd-guide
-description: Test-Driven Development specialist enforcing write-tests-first methodology. Use PROACTIVELY when writing new features, fixing bugs, or refactoring code. Coverage target: the heuristic default defined in skill: tdd-workflow, overridable per project.
+description: "Test-Driven Development specialist enforcing write-tests-first methodology. Use PROACTIVELY when writing new features, fixing bugs, or refactoring code. Coverage target: the heuristic default defined in skill: tdd-workflow, overridable per project."
 model_hint: strong-reasoning
 tools_hint: [read, edit, shell, search]
 ---

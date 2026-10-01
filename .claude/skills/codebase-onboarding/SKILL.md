@@ -1,6 +1,6 @@
 ---
-name: codebase-onboarding
-description: Analyze an unfamiliar codebase and generate a structured onboarding guide with architecture map, key entry points, conventions, and a starter CLAUDE.md / AGENTS.md. Use when joining a new project or setting up a coding agent for the first time in a repo.
+name: "codebase-onboarding"
+description: "Analyze an unfamiliar codebase and generate a structured onboarding guide with architecture map, key entry points, conventions, and a starter CLAUDE.md / AGENTS.md. Use when joining a new project or setting up a coding agent for the first time in a repo."
 ---
 
 <!-- Source: ECC (everything-claude-code) by Affaan Mustafa — https://github.com/affaan-m/ECC — MIT License (LICENSE in that repo; copyright notice retained per MIT terms). Ported 2026-09-30. Adaptations: canonical frontmatter only (name/description); Claude-only names/paths replaced with tool-neutral equivalents so the same file serves Claude Code and Copilot CLI. -->

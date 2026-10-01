@@ -1,6 +1,6 @@
 ---
-name: session-harden
-description: End-of-session hardening — distill the current session log into maintained wiki notes, update the index, and append to the wiki log. Run before ending any work session.
+name: "session-harden"
+description: "End-of-session hardening \u2014 distill the current session log into maintained wiki notes, update the index, and append to the wiki log. Run before ending any work session."
 ---
 
 # Session hardening

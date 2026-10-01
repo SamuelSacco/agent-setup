@@ -1,7 +1,7 @@
 ---
-name: backend
-description: Backend specialist — APIs, data models, services, reliability. Use for server-side design, implementation, and debugging.
-tools: [Read, Write, Edit, Bash, Grep, Glob]
+name: "backend"
+description: "Backend specialist \u2014 APIs, data models, services, reliability. Use for server-side design, implementation, and debugging."
+tools: ["Read", "Write", "Edit", "Bash", "Grep", "Glob"]
 ---
 
 # Backend specialist

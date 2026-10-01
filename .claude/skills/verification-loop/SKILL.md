@@ -1,6 +1,6 @@
 ---
-name: verification-loop
-description: Run a six-phase verification of a coding-agent session's work — build, type check, lint, tests with coverage, security grep, and diff review — then produce a PASS/FAIL verification report. Use when verifying work after completing a feature or refactor, before creating a PR, or when quality gates must pass.
+name: "verification-loop"
+description: "Run a six-phase verification of a coding-agent session's work \u2014 build, type check, lint, tests with coverage, security grep, and diff review \u2014 then produce a PASS/FAIL verification report. Use when verifying work after completing a feature or refactor, before creating a PR, or when quality gates must pass."
 ---
 
 <!-- Source: ECC (everything-claude-code) by Affaan Mustafa — https://github.com/affaan-m/ECC — MIT License (LICENSE in that repo; copyright notice retained per MIT terms). Ported 2026-09-30. Adaptations: canonical frontmatter only (name/description); Claude-only names/paths replaced with tool-neutral equivalents so the same file serves Claude Code and Copilot CLI. -->
