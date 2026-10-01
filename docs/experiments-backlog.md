@@ -228,12 +228,17 @@ Status key: UNVERIFIABLE / PARTIAL / REFUTED / PROVEN / UNBUILT / BLOCKED.
   specified. See `evals/results/2026-10-01-X9-e6-parity.md`.
 
 ### X10 — Specialist agent pays at higher n / harder tasks (ledger S11)
-- Status: UNVERIFIABLE — n=4, zero discordant pairs, descriptively
-  cost-negative (+55% turns, +8.5% cost).
-- Cheapest decisive test: extend to 8 tasks in a harder band, same
-  protocol. Est. cost: ~$3–5. Priority: medium — a REFUTED here would
-  retire the roster's agent thesis; a PROVEN would reverse the packet's
-  finding 1, so the test must be pre-registered either way.
+- Status: DONE 2026-10-01 — REFUTED (ledger S11 amended). Pre-registered
+  8-task harder band; 5 pairs completed before Anthropic API credit
+  exhaustion truncated H8/H9/H10 (spend $3.98 of $5 cap): base 3/5,
+  specialist 1/5, net discordant −2, firing the pre-registered REFUTED
+  line. Remaining decisive test if the verdict is ever revisited:
+  re-run the 3 unrun pairs (H8/H9/H10) unchanged from the prereg once
+  credit is restored. Est. cost: ~$1.5–2.5.
+- Original note: UNVERIFIABLE — n=4, zero discordant pairs, descriptively
+  cost-negative (+55% turns, +8.5% cost). Cheapest decisive test was:
+  extend to 8 tasks in a harder band, same protocol, pre-registered
+  either way.
 
 ### X11 — Copilot failure-capture hook (ledger S4, Copilot arm)
 - Status: REFUTED on installed CLI v1.0.89 (binary contains no hook
