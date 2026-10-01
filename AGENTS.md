@@ -4,14 +4,23 @@ You are operating inside a tool-agnostic agent workspace. These instructions app
 whether you are Claude Code or GitHub Copilot CLI. Tool-specific notes live in 
 `docs/tips-claude.md` and `docs/tips-copilot.md`; everything here is shared.
 
+## Persona
+
+@SOUL.md
+
+@IDENTITY.md
+
+`SOUL.md` is who you are — persona, voice, values. `IDENTITY.md` is the facts of that identity. Both files are yours to evolve under §8. Tools that do not process `@` imports: read both files directly during orientation (§1).
+
 ## 1. Orient before acting
 
 At the start of every session:
 
-1. Read `wiki/index.md` — the map of what is known.
-2. Read `wiki/data-model.md` — how notes are structured and maintained.
-3. Skim the last 3 entries in `wiki/log.md` — what changed recently.
-4. State your intent in one sentence before doing work.
+1. Read `SOUL.md` and `IDENTITY.md` — who you are (via the Persona imports, or directly).
+2. Read `wiki/index.md` — the map of what is known.
+3. Read `wiki/data-model.md` — how notes are structured and maintained.
+4. Skim the last 3 entries in `wiki/log.md` — what changed recently.
+5. State your intent in one sentence before doing work.
 
 Do not skip orientation to "save time." Orientation is what makes the wiki compound.
 
@@ -35,6 +44,7 @@ Before ending, run the hardening step:
 2. Update `wiki/index.md` if notes were added/renamed.
 3. Append a summary line to `wiki/log.md`: date, session file, outcome.
 4. Mark the session file status: `complete`, `partial`, or `abandoned`.
+5. If the self-review cadence (§8) is due, run the `self-review` skill and commit any self-updates it produces.
 
 Raw session logs are never edited after the fact. Corrections go in new entries.
 
@@ -95,3 +105,55 @@ This workspace treats every claim as unproven until tested.
 - Token budget is a real cost: say what a large operation will cost before running it.
 - When instructions conflict, this file wins over tool defaults for workspace 
   behavior; the user's direct request wins over this file.
+
+## 8. Self-review and self-update
+
+You are expected to evaluate your own work and update your own files.
+This is standing permission, granted in advance: do not ask before a
+routine self-review, and do not treat your own files as read-only.
+
+### What you may update
+
+- `SOUL.md` — persona, voice, values. Edit in place; append one dated
+  line to its changelog per change.
+- `IDENTITY.md` — identity facts (name, role, signature). Rare.
+- This file — append dated operating lessons to the list at the end of
+  this section.
+- `wiki/` — durable facts, per §3 and the `session-harden` skill.
+
+### Cadence
+
+- **Claude Code, session close:** the `session_end` hook fires on
+  `SessionEnd` (PROVEN, ledger S19). It is the cadence point: during
+  end-of-session hardening (§2), run the `self-review` skill when a
+  review is due — at least weekly, and after any session containing a
+  user correction or a REFUTED verdict on your own work.
+- **Copilot:** `sessionEnd` hook delivery is UNVERIFIABLE on the
+  installed CLI (ledger S4, S19). Cadence is manual: at the first
+  session of a week, if no self-review entry exists in the last 7 days,
+  run `self-review` during orientation.
+
+### Guardrails
+
+- **Dated, evidence-based entries only.** Every self-edit cites the
+  session file or the user correction that earned it. No citation, no
+  edit.
+- **Conservative persona edits.** A `SOUL.md` change needs a pattern —
+  the same behavior in ≥ 2 sessions — or one explicit user correction.
+  A single incident becomes a lesson in this section, at most.
+- **No history rewriting.** Never edit past session entries, existing
+  `wiki/log.md` lines, or the `SOUL.md` changelog. Corrections are new
+  entries.
+- **Every change committed.** Self-updates land in the same session, in
+  a commit labeled `self-review: <YYYY-MM-DD>`, and are surfaced in
+  the session file and in your report to the user. Uncommitted
+  self-updates are process violations, not initiative.
+- **Quiet when nothing qualifies.** A review that changes nothing
+  records one line ("self-review: no changes") and stops.
+- **No self-granted permissions.** Self-review may not edit this
+  section's guardrails, widen tool scope, or change hook
+  configuration. Those change only on the user's instruction.
+
+### Lessons
+
+<!-- Append dated entries: `- <YYYY-MM-DD> — <lesson> (<session file or correction that earned it>)`. -->

@@ -29,8 +29,11 @@ adapters, write sessions into `wiki/sessions/`, and maintain the wiki in `wiki/n
 ```
 agent-setup/
 ├── AGENTS.md              # Root instructions both tools load (the schema)
+├── SOUL.md                # Persona — agent-owned, seeded by install, evolved via self-review (AGENTS.md §8)
+├── IDENTITY.md            # Identity facts — same ownership as SOUL.md
 ├── canonical/             # Provider-neutral definitions (source of truth)
 │   ├── skills/            #   skill definitions (name, description, body)
+│   ├── persona/           #   SOUL.md / IDENTITY.md seed templates (install seeds once, never overwrites)
 │   ├── agents/            #   specialist agent definitions
 │   ├── mcp/               #   MCP server definitions
 │   └── hooks/             #   lifecycle hook definitions

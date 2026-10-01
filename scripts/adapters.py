@@ -19,6 +19,10 @@ Format notes (verify against live tools — see evals/):
 - Copilot agents:      .github/agents/<name>.agent.md
 - Copilot MCP:         .github/mcp.json                ({"servers": {...}})
 - Copilot hooks:       .github/hooks/*.json
+- Persona:             canonical/persona/{SOUL,IDENTITY}.md seeds the
+  root SOUL.md / IDENTITY.md on first install only. The lived files are
+  agent-owned (self-review protocol, AGENTS.md section 8): the
+  installer NEVER overwrites them.
 
 Write safety (copilot-critique 2026-09-30 finding #4):
 - Every emitted file goes through write_with_backup(): if the existing
@@ -311,10 +315,28 @@ def install_hooks(existing_settings: dict):
     write_with_backup(settings_path, json.dumps(settings, indent=2) + "\n")
 
 
+# ---------------------------------------------------------------- persona
+def install_persona():
+    """Seed root SOUL.md / IDENTITY.md from canonical/persona/ — first
+    install only. Persona files are lived documents the agent evolves
+    itself (AGENTS.md section 8, `self-review` skill), so unlike every
+    other adapter output they are never overwritten and never backed up:
+    an existing file is the agent's, full stop."""
+    for name in ("SOUL.md", "IDENTITY.md"):
+        src = CANON / "persona" / name
+        dest = ROOT / name
+        if dest.exists():
+            print(f"persona {name} exists — agent-owned, left untouched")
+        else:
+            dest.write_text(src.read_text())
+            print(f"persona {name} seeded from canonical/persona/")
+
+
 def main():
     # Validate the user-owned settings file before writing anything: a
     # malformed one aborts here (with backup), never mid-install.
     existing_settings = load_existing_settings()
+    install_persona()
     install_skills()
     install_agents()
     install_mcp()

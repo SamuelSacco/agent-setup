@@ -1,1 +1,10 @@
-{"action":{"command":"./scripts/sidecar.sh record-session-end","type":"command"},"description":"On session end, append a structured session-end event (session id, reason, cwd) to the sidecar store (events.jsonl). This is the trigger point for session-close cleanup: today it records the end; cleanup steps attach here. Delivery is per tool — see notes.","event":"session_end","name":"session-end","notes":"Claude Code: SessionEnd hook FIRED headless (claude -p) 2/2 runs, Claude Code 2.1.285 — PROVEN as a trigger, evals/results/2026-09-30-X5-sessionend-probe.md (ledger S18). Copilot: UNVERIFIED — the installed CLI (v1.0.89) has no hook loader (ledger S4); the adapter emits the sessionEnd file so it is correct the day the CLI ships hook support."}
+{
+  "action": {
+    "command": "./scripts/sidecar.sh record-session-end",
+    "type": "command"
+  },
+  "description": "On session end, append a structured session-end event (session id, reason, cwd) to the sidecar store (events.jsonl). This hook is the cadence point for the self-review protocol (AGENTS.md section 8, canonical skill `self-review`): on Claude Code the SessionEnd trigger is PROVEN, and the agent runs self-review during end-of-session hardening; the hook itself only records the end. Copilot cadence is manual/weekly \u2014 sessionEnd delivery there is UNVERIFIED. Delivery is per tool \u2014 see notes.",
+  "event": "session_end",
+  "name": "session-end",
+  "notes": "Claude Code: SessionEnd hook FIRED headless (claude -p) 2/2 runs, Claude Code 2.1.285 \u2014 PROVEN as a trigger, evals/results/2026-09-30-X5-sessionend-probe.md (ledger S19). Copilot: UNVERIFIED \u2014 hook delivery for sessionEnd is not established on the installed CLI (v1.0.89, ledger S4); the adapter emits the sessionEnd file so it is correct the day the CLI ships hook support, and AGENTS.md section 8 assigns Copilot a manual weekly self-review cadence in the meantime."
+}
