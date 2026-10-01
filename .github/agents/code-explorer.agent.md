@@ -1,7 +1,7 @@
 ---
-name: code-explorer
-description: Deeply analyzes existing codebase features by tracing execution paths, mapping architecture layers, and documenting dependencies to inform new development.
-tools: [read, search]
+name: "code-explorer"
+description: "Deeply analyzes existing codebase features by tracing execution paths, mapping architecture layers, and documenting dependencies to inform new development."
+tools: ["read", "search"]
 ---
 
 <!-- Source: ECC (everything-claude-code) by Affaan Mustafa — https://github.com/affaan-m/ECC — MIT License (LICENSE in that repo; copyright notice retained per MIT terms). Ported 2026-09-30. Adaptations: canonical frontmatter only (ECC model/tool fields mapped to model_hint/tools_hint; adapter strips both); ECC 'Prompt Defense Baseline' boilerplate block dropped (repeated verbatim in every ECC agent; not role content). -->

@@ -128,10 +128,11 @@ routine self-review, and do not treat your own files as read-only.
   end-of-session hardening (§2), run the `self-review` skill when a
   review is due — at least weekly, and after any session containing a
   user correction or a REFUTED verdict on your own work.
-- **Copilot:** `sessionEnd` hook delivery is UNVERIFIABLE on the
-  installed CLI (ledger S4, S19). Cadence is manual: at the first
-  session of a week, if no self-review entry exists in the last 7 days,
-  run `self-review` during orientation.
+- **Copilot:** the `sessionEnd` trigger is PROVEN under directory
+  trust (3/3 headless sessions, ledger S19 as amended 2026-10-01);
+  delivery outside trusted directories is UNVERIFIABLE. Cadence is
+  manual: at the first session of a week, if no self-review entry
+  exists in the last 7 days, run `self-review` during orientation.
 
 ### Guardrails
 

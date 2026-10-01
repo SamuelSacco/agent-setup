@@ -1,7 +1,7 @@
 ---
-name: code-reviewer
-description: Expert code review specialist. Proactively reviews code for quality, security, and maintainability. Use after writing or modifying code, before the change is committed or handed off.
-tools: [Read, Bash, Grep, Glob]
+name: "code-reviewer"
+description: "Expert code review specialist. Proactively reviews code for quality, security, and maintainability. Use after writing or modifying code, before the change is committed or handed off."
+tools: ["Read", "Bash", "Grep", "Glob"]
 ---
 
 <!-- Source: ECC (everything-claude-code) by Affaan Mustafa — https://github.com/affaan-m/ECC — MIT License (LICENSE in that repo; copyright notice retained per MIT terms). Ported 2026-09-30. Adaptations: canonical frontmatter only (ECC model/tool fields mapped to model_hint/tools_hint; adapter strips both); ECC 'Prompt Defense Baseline' boilerplate block dropped (repeated verbatim in every ECC agent; not role content). -->

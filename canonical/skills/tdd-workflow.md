@@ -1,6 +1,6 @@
 ---
 name: tdd-workflow
-description: Test-driven development workflow: write a failing test first, watch it fail, implement the smallest change to green, then refactor. Covers unit, integration, and E2E tests; the coverage target is a labeled heuristic default (see Coverage Requirements). Use when writing a new feature, fixing a bug, refactoring, or when told to write failing tests first.
+description: "Test-driven development workflow: write a failing test first, watch it fail, implement the smallest change to green, then refactor. Covers unit, integration, and E2E tests; the coverage target is a labeled heuristic default (see Coverage Requirements). Use when writing a new feature, fixing a bug, refactoring, or when told to write failing tests first."
 ---
 
 <!-- Source: ECC (everything-claude-code) by Affaan Mustafa — https://github.com/affaan-m/ECC — MIT License (LICENSE in that repo; copyright notice retained per MIT terms). Ported 2026-09-30. Adaptations: canonical frontmatter only (name/description); Claude-only names/paths replaced with tool-neutral equivalents so the same file serves Claude Code and Copilot CLI. -->

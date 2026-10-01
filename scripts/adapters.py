@@ -6,15 +6,20 @@ Generated files are overwritten; never edit them by hand.
 
 Format notes (verify against live tools — see evals/):
 - Claude Code skills:  .claude/skills/<name>/SKILL.md  (frontmatter: name, description)
-- Claude Code agents:  .claude/agents/<name>.md       (frontmatter: name, description, model, tools)
+- Claude Code agents:  .claude/agents/<name>.md       (frontmatter: name, description, tools;
+  canonical `model_hint` is read but deliberately NOT emitted — no
+  per-agent model pin is set; the field is documentation only)
 - Agent tools: canonical `tools_hint` (abstract categories) is translated
   per tool via CLAUDE_TOOL_MAP / COPILOT_TOOL_MAP below and emitted as each
   tool's `tools:` allowlist. Unknown hint -> install fails. Agents with no
   `tools_hint` get no `tools:` line (tool default: all tools).
+- Frontmatter values are emitted double-quoted (JSON string syntax) and
+  round-trip-validated: an unquoted value containing ': ' is invalid
+  YAML and strict parsers drop the capability (Q10 finding 1).
 - Claude Code MCP:     .mcp.json                       ({"mcpServers": {...}})
 - Claude Code hooks:   .claude/settings.json           (canonical events map
   via HOOK_EVENT_MAP: `tool_failure` -> PostToolUseFailure, PROVEN E4;
-  `session_end` -> SessionEnd, PROVEN headless X5/S18)
+  `session_end` -> SessionEnd, PROVEN headless X5/S19)
 - Copilot skills:      .github/skills/<name>/SKILL.md  (also discovers .claude/skills)
 - Copilot agents:      .github/agents/<name>.agent.md
 - Copilot MCP:         .github/mcp.json                ({"servers": {...},
@@ -175,6 +180,18 @@ def load_existing_copilot_mcp() -> dict:
     return data
 
 
+def _unquote(v: str) -> str:
+    """Strip one layer of double-quoting (JSON string syntax, a subset of
+    YAML double-quoted style) so canonical files may quote values that
+    contain ': ' without the quotes becoming part of the value."""
+    if len(v) >= 2 and v.startswith('"') and v.endswith('"'):
+        try:
+            return json.loads(v)
+        except json.JSONDecodeError:
+            return v
+    return v
+
+
 def parse_frontmatter(text: str):
     m = re.match(r"^---\n(.*?)\n---\n?(.*)$", text, re.S)
     if not m:
@@ -185,19 +202,45 @@ def parse_frontmatter(text: str):
             k, v = line.split(":", 1)
             v = v.strip()
             if v.startswith("[") and v.endswith("]"):
-                v = [x.strip() for x in v[1:-1].split(",") if x.strip()]
+                v = [_unquote(x.strip()) for x in v[1:-1].split(",") if x.strip()]
+            else:
+                v = _unquote(v)
             fm[k.strip()] = v
     return fm, m.group(2).strip()
+
+
+def _yaml_scalar(v) -> str:
+    # Double-quoted YAML scalar via JSON string syntax (JSON strings are a
+    # subset of YAML double-quoted style). Unquoted emission was a live
+    # defect: descriptions containing ': ' made the emitted frontmatter
+    # invalid YAML, strict parsers rejected the whole block, and Copilot
+    # CLI silently dropped the capability (Q10 finding 1, 2026-10-01:
+    # tdd-guide, search-first, tdd-workflow failed to load in Copilot).
+    return json.dumps(str(v))
 
 
 def fm_block(fm: dict) -> str:
     lines = ["---"]
     for k, v in fm.items():
         if isinstance(v, list):
-            v = "[" + ", ".join(v) + "]"
+            v = "[" + ", ".join(_yaml_scalar(x) for x in v) + "]"
+        else:
+            v = _yaml_scalar(v)
         lines.append(f"{k}: {v}")
     lines.append("---")
-    return "\n".join(lines)
+    block = "\n".join(lines)
+    # Round-trip check: re-parse the emitted block and demand an exact
+    # match, so a future emitter change fails the install loudly instead
+    # of shipping frontmatter a strict YAML parser would reject.
+    parsed, _ = parse_frontmatter(block + "\n")
+    for k, v in fm.items():
+        want = [str(x) for x in v] if isinstance(v, list) else str(v)
+        if parsed.get(k) != want:
+            sys.exit(
+                f"adapters: emitted frontmatter for key {k!r} does not "
+                f"round-trip: {parsed.get(k)!r} != {want!r}"
+            )
+    return block
 
 
 # ---------------------------------------------------------------- skills
@@ -235,8 +278,12 @@ def install_skills():
 #     Emitted names are the canonical category names, which match Copilot's
 #     documented built-in tool categories (read/search/edit/shell); `edit`
 #     covers create+edit in that vocabulary, no separate write name exists.
-#     Copilot-side *enforcement* of the emitted names is UNVERIFIABLE from
-#     this sandbox (CLI not installed here) — probe before claiming parity.
+#     Copilot-side *enforcement* of the emitted names was probed
+#     2026-10-01 (ledger S21): REFUTED as a capability boundary for
+#     agents holding `shell` (code-reviewer wrote via bash heredoc,
+#     W4 probe); PROVEN blocked in isolation for `planner` (neither
+#     edit nor shell; 3 trials, Q14). Treat `tools:` as a capability
+#     declaration, not a sandbox, whenever shell is granted.
 # An agent with no tools_hint gets no `tools:` line (tool default: all).
 # An unknown hint aborts the install: a silently dropped restriction is the
 # bug this map exists to fix (critique 2026-09-30, Pass 4 HIGH #1).
@@ -337,11 +384,20 @@ def install_mcp(existing_copilot_mcp: dict):
     servers = {}
     for src in sorted((CANON / "mcp").glob("*.json")):
         d = json.loads(src.read_text())
+        # Empty-string env values are dropped at emission: an emitted
+        # "VAR": "" would set the variable to empty in the server
+        # process, overriding any token the user exported in their
+        # shell (Q10 finding 6, 2026-10-01). Canonical keeps the empty
+        # placeholder as documentation that a value belongs there.
+        env = {k: v for k, v in d.get("env", {}).items() if v != ""}
         servers[d["name"]] = {
             "command": d["command"],
             "args": d.get("args", []),
-            "env": d.get("env", {}),
+            "env": env,
         }
+    if not servers.get("github", {}).get("env", {}).get("GITHUB_PERSONAL_ACCESS_TOKEN"):
+        print("note:   github MCP has no token set — authenticated GitHub ops stay off; "
+              "public search works. Set GITHUB_PERSONAL_ACCESS_TOKEN in canonical/mcp/github.json to enable.")
     # Workspace MCP configs are fully adapter-owned (no user keys to
     # merge), so a wholesale replace is the correct write here — with the
     # backup that write_with_backup() takes whenever the prior content
@@ -376,7 +432,7 @@ def install_mcp(existing_copilot_mcp: dict):
 # `tool_failure` fires on PostToolUseFailure (PROVEN E4 2026-09-30:
 # PostToolUse is success-only and would journal every successful call as
 # a "failure"); `session_end` fires on SessionEnd (PROVEN headless,
-# X5 probe 2026-09-30, ledger S18).
+# X5 probe 2026-09-30, ledger S19).
 HOOK_EVENT_MAP = {
     "tool_failure": ("PostToolUseFailure", "postToolUseFailure"),
     "session_end": ("SessionEnd", "sessionEnd"),
@@ -413,6 +469,13 @@ def install_hooks(existing_settings: dict):
         }
         write_with_backup(hdir / f"{d['name']}.json", json.dumps(native, indent=2) + "\n")
         print(f"hook    {d['name']} -> claude + copilot")
+        if d["event"] == "tool_failure":
+            # Q10 finding 24: the Copilot leg of this hook does not fire
+            # for shell failures (ledger S4) — say so at install time
+            # instead of letting the emitted file imply parity.
+            print("note:   failure-capture on Copilot does not fire for shell failures "
+                  "(ledger S4: 0/5 on CLI 1.0.89; mechanism unchanged on 1.0.90, X11). "
+                  "Emitted for parity; the Claude leg is the proven path.")
     # settings.json is user-owned, so merge — never replace the file.
     # Unrelated top-level keys survive verbatim; hook events canonical
     # does not manage survive; managed events get the canonical entries.
@@ -461,8 +524,10 @@ def main():
     install_agents()
     install_mcp(existing_copilot_mcp)
     install_hooks(existing_settings)
-    print("\nAdapters written. Discovery by each tool is UNVERIFIED until an")
-    print("authenticated run lists the capability. Next step:")
+    print("\nAdapters written. Discovery is probed for the tested scope:")
+    print("session-harden invoked by name in both tools (ledger S1); the full")
+    print("emitted set's discovery counts and carve-outs are ledger S14.")
+    print("Next step:")
     print("./scripts/quickstart.sh --structural-only")
 
 

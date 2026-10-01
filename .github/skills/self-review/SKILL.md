@@ -1,6 +1,6 @@
 ---
-name: self-review
-description: Periodic self-evaluation — rate recent work on 5 axes from session logs and telemetry, route what you learned to the right file (lessons to AGENTS.md, persona to SOUL.md, facts to the wiki), and commit the update. Run at session close (SessionEnd cadence) or weekly.
+name: "self-review"
+description: "Periodic self-evaluation \u2014 rate recent work on 5 axes from session logs and telemetry, route what you learned to the right file (lessons to AGENTS.md, persona to SOUL.md, facts to the wiki), and commit the update. Run at session close (SessionEnd cadence) or weekly."
 ---
 
 # Self-review

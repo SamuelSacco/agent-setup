@@ -6,11 +6,16 @@
 #
 # What it does, in order:
 #   1. Preflight   — git, python3 present; claude/copilot CLIs present
-#                    (npm-installs them into ~/.local if missing and npm exists).
+#                    (npm-installs them into ~/.local if missing and npm
+#                    exists). Skipped under --structural-only: materializing
+#                    and verifying files needs neither CLI nor network
+#                    (Q10 finding 4).
 #   2. Workspace   — if run outside a clone, clones the repo; then runs
 #                    scripts/install.sh (canonical/ -> both tools' layouts).
 #   3. Structural  — verifies materialized counts match canonical/ for BOTH
-#      verify        tools and both MCP configs parse. Free, deterministic.
+#      verify        tools, both MCP configs parse, the Copilot user-scope
+#                    MCP config parses, and every emitted frontmatter block
+#                    parses as strict YAML. Free, deterministic.
 #   4. Auth gate   — if a tool is unauthenticated, prints the exact login
 #                    command and exits 2. Re-run quickstart after logging in;
 #                    every step is idempotent.
@@ -46,8 +51,8 @@ fail() { printf 'FAIL: %s\n' "$*" >&2; exit 1; }
 say "== preflight =="
 command -v git     >/dev/null || fail "git not found. Install git, then re-run."
 command -v python3 >/dev/null || fail "python3 not found (install.sh needs it). Install Python 3, then re-run."
-command -v node    >/dev/null || say "WARN: node not found — MCP servers (npx-based) will not start."
-command -v npx     >/dev/null || say "WARN: npx not found — MCP servers (npx-based) will not start."
+command -v node    >/dev/null || say "WARN: node not found — all 5 MCP servers are npx-based and will not start in either tool. Install Node.js LTS to use them."
+command -v npx     >/dev/null || say "WARN: npx not found — all 5 MCP servers are npx-based and will not start in either tool. Install Node.js LTS to use them."
 
 ensure_cli() { # $1 = binary, $2 = npm package
   if command -v "$1" >/dev/null; then say "found: $1 ($(command -v "$1"))"; return 0; fi
@@ -66,8 +71,12 @@ ensure_cli() { # $1 = binary, $2 = npm package
     fail "$1 not found and npm unavailable. Install $1 (see docs/toolchain.md), then re-run."
   fi
 }
-ensure_cli claude  @anthropic-ai/claude-code
-ensure_cli copilot @github/copilot
+if [ "$LIVE" -eq 1 ]; then
+  ensure_cli claude  @anthropic-ai/claude-code
+  ensure_cli copilot @github/copilot
+else
+  say "skipping CLI presence/install (--structural-only: no CLIs, no network needed)"
+fi
 
 # ---------------------------------------------------------------- 2. workspace
 say "== workspace =="
@@ -90,7 +99,7 @@ cd "$ROOT"
 # ------------------------------------------------------- 3. structural verify
 say "== structural verify =="
 python3 - <<'PY' || fail "structural verify failed (details above)."
-import json, pathlib, sys
+import json, pathlib, re, sys
 root = pathlib.Path(".")
 canon_skills = len(list((root/"canonical/skills").glob("*.md")))
 canon_agents = len(list((root/"canonical/agents").glob("*.md")))
@@ -105,13 +114,55 @@ for name, got, want in checks:
     ok = got == want
     bad += not ok
     print(f"{'ok  ' if ok else 'BAD '} {name}: {got}/{want}")
-for tool, path, key in (("claude", ".mcp.json", "mcpServers"), ("copilot", ".github/mcp.json", "servers")):
+# Frontmatter must parse as strict YAML — a malformed block is silently
+# dropped by Copilot CLI and the capability never loads (Q10 finding 1).
+# Counts alone certified exactly that breakage; parse every emitted file.
+try:
+    import yaml
+except ImportError:
+    yaml = None
+fm_files = (list((root/".claude/skills").glob("*/SKILL.md"))
+            + list((root/".github/skills").glob("*/SKILL.md"))
+            + list((root/".claude/agents").glob("*.md"))
+            + list((root/".github/agents").glob("*.agent.md")))
+fm_bad = 0
+for f in fm_files:
+    m = re.match(r"^---\n(.*?)\n---\n", f.read_text(), re.S)
+    if not m:
+        fm_bad += 1
+        print(f"BAD  {f}: no frontmatter block")
+    elif yaml is not None:
+        try:
+            yaml.safe_load(m.group(1))
+        except Exception as e:
+            fm_bad += 1
+            print(f"BAD  {f}: frontmatter is not valid YAML: {e}")
+    else:
+        # No PyYAML on this machine: fall back to the emitter's contract —
+        # every description value is double-quoted (scripts/adapters.py).
+        for line in m.group(1).splitlines():
+            if line.startswith("description:") and not line.split(":", 1)[1].strip().startswith('"'):
+                fm_bad += 1
+                print(f"BAD  {f}: unquoted description (PyYAML unavailable for a full parse)")
+if fm_bad == 0:
+    print(f"ok   frontmatter parses: {len(fm_files)} files")
+bad += fm_bad
+for tool, path, key in (("claude", ".mcp.json", "mcpServers"), ("copilot-workspace", ".github/mcp.json", "servers")):
     try:
         servers = json.loads((root/path).read_text())[key]
         print(f"ok   {tool} mcp config parses: {len(servers)} servers")
     except Exception as e:
         bad += 1
         print(f"BAD  {tool} mcp config: {e}")
+# The scope Copilot CLI actually loads is the user config (ledger S24);
+# the workspace file above is kept for VS Code consumers.
+uc = pathlib.Path.home() / ".copilot" / "mcp-config.json"
+try:
+    uservers = json.loads(uc.read_text())["mcpServers"]
+    print(f"ok   copilot user-scope mcp config parses: {len(uservers)} servers (~/.copilot/mcp-config.json)")
+except Exception as e:
+    bad += 1
+    print(f"BAD  copilot user-scope mcp config ({uc}): {e}")
 sys.exit(1 if bad else 0)
 PY
 say "structural verify: PASS"
