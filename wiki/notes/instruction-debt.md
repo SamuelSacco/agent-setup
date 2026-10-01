@@ -4,8 +4,8 @@ title: Canonical instruction debt — fixed 2026-09-30 (branch fix/canonical-deb
 type: procedure
 status: active
 created: 2026-09-30
-updated: 2026-09-30
-verified: 2026-09-30
+updated: 2026-10-01
+verified: 2026-10-01
 relates_to: [opus-55-prompt-regression, session-lifecycle]
 sources: []
 tags: [canonical, prompts, tdd]
@@ -49,3 +49,15 @@ Adapter output (.claude/, .github/) regenerated via `scripts/install.sh`.
 
 No claims-ledger change: no ledger entry asserted the fixed content; file
 names (the invocable surface behind S14/S15) are unchanged.
+
+## Correction — 2026-10-01 (X18 closure, branch `fix/x18-instruction-debt`)
+
+The fix above missed one of the audit's 12 patterns and never closed
+backlog X18. Residual: `planner.md`'s Stripe worked example (audit
+stale-example #12) — the 2026-09-30 pass added a sizing caveat but left
+the 77-line full-detail example in place. Removed 2026-10-01 (planner
+lines 103–181 at `ce0edbe`), replaced with a 16-line outline; adapters
+regenerated. All 16 items re-verified on disk at `ce0edbe` + this fix:
+final scan over 61 shipped-surface files — broken references 0,
+suspect markers 0, exit 0. Evidence:
+`evals/results/2026-10-01-X18-instruction-debt.md`.
