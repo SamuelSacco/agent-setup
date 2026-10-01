@@ -193,11 +193,12 @@ Status key: UNVERIFIABLE / PARTIAL / REFUTED / PROVEN / UNBUILT / BLOCKED.
   `evals/results/2026-10-01-X8-e3-wiki-value.md`.]
 
 ### X9 — Cross-tool agent parity on the same task (ledger S6)
-- Status: UNVERIFIABLE as designed — components landed instead: S6a
-  PROVEN (Claude backend, rerun), S6b REFUTED (Copilot pilot: claimed 22
-  passed, disk +0 −0).
-- Cheapest decisive test: re-run the E6 protocol with disk grading on
-  both tools, same task package. Est. cost: ~$1. Priority: medium.
+- Status: DONE 2026-10-01 — decisive test run as specified (both
+  prereg arms, disk grading, same task package): S6 PROVEN at the
+  threshold boundary (blind 10 vs 9, diff 1 ≤ 1; probe 4/4 and
+  grader pytest pass on both arms), $0.754 of $2 cap. UNVERIFIABLE
+  as designed stands only for the full 3×3 grid, which was never
+  specified. See `evals/results/2026-10-01-X9-e6-parity.md`.
 
 ### X10 — Specialist agent pays at higher n / harder tasks (ledger S11)
 - Status: UNVERIFIABLE — n=4, zero discordant pairs, descriptively
