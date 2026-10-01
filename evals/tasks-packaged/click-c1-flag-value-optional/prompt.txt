@@ -1,0 +1,36 @@
+You are working in a fresh checkout of Click, a Python library for
+command line interfaces (package code in `src/click/`, tests in the
+top-level `tests/` directory).
+
+Problem report:
+An option declared with `is_flag=False` and a `flag_value` errors out
+when the flag is passed without a value, instead of using the
+`flag_value`. Reproduction:
+
+    @click.command()
+    @click.option("--name", is_flag=False, flag_value="Flag", default="Default")
+    def hello(name):
+        click.echo(f"Hello, {name}!")
+
+Invoking with `["--name"]` exits with code 2 (`Option '--name'
+requires an argument`) instead of printing `Hello, Flag!`. A related
+case: `@click.option("--count", is_flag=False, flag_value="1",
+type=int, default=0)` invoked with `["--count"]` should print
+`Line 1` (the flag value converted through the declared type), not
+exit 2. Ordinary options that take values, and plain boolean flags,
+must behave exactly as before.
+
+Investigate, find the root cause, and fix it in the library code so the
+reported behavior is correct in general, not just for the examples
+above. Rules:
+- Do not edit existing files under the `tests/` directory. You may add
+  new test files if you want, but grading uses an external test suite.
+- Keep the change minimal and consistent with the surrounding code
+  style; do not change public APIs or unrelated behavior.
+- Verify your fix by running the relevant existing tests from the repo
+  root with the prepared environment (the package is importable from
+  `src/`):
+  PYTHONPATH=src {PYTHON} -m pytest tests/test_options.py -q
+  Do not install packages.
+- When finished, give a short summary: root cause, what you changed,
+  and what you ran to verify.

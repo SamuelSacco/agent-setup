@@ -1,0 +1,31 @@
+You are working in a fresh checkout of Rich, a Python library for rich
+text and terminal formatting (package code in `rich/`, tests in the
+top-level `tests/` directory).
+
+Problem report:
+`Segment.split_cells` can return halves whose cell widths do not match
+the requested cut when the text mixes single- and double-width
+characters. Reproduction: with
+`t = Segment("TVアニメ「メルクストーリア -無気力少年と瓶の中の少女-」 主題歌CD")`,
+calling `t.split_cells(52)` yields a left half whose `cell_len` is 53
+instead of 52 (and the two halves no longer add up to the original
+width). Another trigger:
+`Segment("南無阿弥JKうらめしや?！     ").split_cells(20)` yields a left
+half measuring 21 cells instead of 20. Expected: for every cut
+position, the left half measures exactly the cut width and the right
+half measures the remainder. Pure single-width and pure double-width
+segments already split correctly and must keep doing so.
+
+Investigate, find the root cause, and fix it in the library code so the
+reported behavior is correct in general, not just for the examples
+above. Rules:
+- Do not edit existing files under the `tests/` directory. You may add
+  new test files if you want, but grading uses an external test suite.
+- Keep the change minimal and consistent with the surrounding code
+  style; do not change public APIs or unrelated behavior.
+- Verify your fix by running the relevant existing tests from the repo
+  root with the prepared environment:
+  {PYTHON} -m pytest tests/test_segment.py -q
+  Do not install packages.
+- When finished, give a short summary: root cause, what you changed,
+  and what you ran to verify.
