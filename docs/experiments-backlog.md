@@ -91,6 +91,14 @@ Status key: UNVERIFIABLE / PARTIAL / REFUTED / PROVEN / UNBUILT / BLOCKED.
   canonical `session_end` → `sidecar.sh record-session-end`, a record
   stub — no cleanup skill exists yet). Copilot side still UNPROVEN.
   Ledger S19; evidence: evals/results/2026-09-30-X5-sessionend-probe.md.
+  **Update 2026-10-01: Copilot trigger PROVEN** — `sessionEnd` fired
+  3/3 headless on Copilot CLI 1.0.89 (repo `.github/hooks/*.json`,
+  trust via `COPILOT_ALLOW_ALL=true`; `sessionStart` control 3/3;
+  terminations were complete/abort/error — provider unreachable for
+  2 trials, no clean successful-turn exit isolated). X5 trigger
+  question closed for both tools; remaining work is the cleanup
+  procedure itself, not the trigger. Evidence:
+  evals/results/2026-10-01-X5-copilot-sessionend.md.
   (Was: UNPROVEN both tools. Claude has documented SessionEnd /
   PostToolUseFailure hooks; Copilot `sessionEnd` output is not processed
   and the installed CLI's failure-hook surface is REFUTED (ledger S4).)
