@@ -90,6 +90,14 @@ Status key: UNVERIFIABLE / PARTIAL / REFUTED / PROVEN / UNBUILT / BLOCKED.
   `evals/results/2026-10-01-X3-screening-results.md`. Next: fresh cap
   decision, then re-screen click (PYTHONPATH=src) → nx → rich, then
   the pre-registered A/B.
+- **Correction 2026-10-01 ~05:15 UTC:** the sentence above voiding
+  the rich worker's report is retracted (see the results doc's
+  Correction section — the coordinator checked disk mid-flight).
+  rich-u5 was validly screened: Copilot base PASS 2/2, screened out.
+  Verified wave spend is $6.99 of the $8 cap (no breach). Still
+  unscreened: rich-u6/u7, click-c2, nx-t5..t8; click-c1's grade
+  still invalid (§6 of the results doc). Band still not
+  constructed; X3 still UNVERIFIABLE.
 
 ### X4 — ux-ui as an agent (vs skill) pays off
 - Status: BLOCKED — agent form waits on a Playwright verification loop;

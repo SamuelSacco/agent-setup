@@ -7,7 +7,9 @@ pushed before any screening run). Branch `lab/x3-screening`.
 ## Verdict
 
 **The harder band was NOT constructed. X3 / ledger S16 remains
-UNVERIFIABLE.** The candidate pool was built and oracle-verified
+UNVERIFIABLE.** *(Amended by the Correction at the end of this file:
+one candidate, rich-u5, does hold valid grades — 2/2 PASS, screened
+out. The band verdict is unchanged.)* The candidate pool was built and oracle-verified
 (9 tasks, below), but the screening pass produced **zero valid
 Copilot base grades**: the one disk-backed Copilot run has an invalid
 grade (grading-environment defect, §6), and the rich screening
@@ -127,3 +129,43 @@ accounting is poisoned by §4/§5): re-run screening in the order
 click-c1/c2 first (with `PYTHONPATH=src`; observed $2.82/run),
 then nx-t5…t8, then rich-u5…u7. Nothing about S16's evidence base
 changes until a band exists and the A/B runs.
+
+## Correction — 2026-10-01 ~05:15 UTC (§4 retracted; §2, §5, verdict amended)
+
+§4 of this document is **retracted**. Worker S1's actual final
+report (received 05:10:33 UTC, after the original results doc was
+committed) is fully disk-backed, and the coordinator's void was a
+coordinator error with two causes: (1) the disk checks ran while
+S1's runs were still in flight — `raw-output.txt` and the results
+file are written only when a run completes, so a mid-flight run dir
+shows an exported tree and nothing else; (2) the figures the
+coordinator checked against came from a progress preview whose
+numbers (6 runs, $10.24) matched neither the worker's final report
+nor disk at any point. The worker's final figures match disk
+exactly.
+
+Verified state now:
+
+- **rich-u5-split-cells-double-width: 2 attempts, both PASS on
+  disk** (5/5 grading nodes each; walls 416s, 320s). Footers in the
+  run dirs' `raw-output.txt`: ↑1.9M ↓40.3K → $2.10; ↑1.9M ↓33.8K →
+  $2.07. **rich-u5 is screened out** (base passes 2/2). Results
+  files committed alongside this document
+  (`2026-10-01-RUN-rich-u5-…-attempt1.md` / `-attempt2.md`).
+- S1 stopped at the start-gate before rich-u6/u7, computing costs
+  from raw footers per the §3 correction — that discipline is what
+  kept the wave under its cap. rich-u6, rich-u7 remain UNSCREENED.
+- **Spend, corrected: verified total $6.99 of the $8.00 cap**
+  (S1 $4.17 + S2 $2.82, all footer-verified on disk). No breach.
+  The §5 claim of a possible $13.06 total rested on the same
+  mismatched preview figures and is withdrawn.
+- One calibration note from S1: real rich runs cost ~$2.10/run,
+  above the prereg's $1.80 start-gate estimate; future gates for
+  this band should assume ~$2.20/run (click-c1 observed $2.82).
+
+Unchanged: §3 (cost-parse bug, fixed on this branch), §6 (click
+grading defect and its validated remedy), the candidate pool (§1),
+and the headline verdict — the band has zero members (rich-u5
+screened out on passes; click-c1's grade invalid; 7 candidates
+unscreened), so the A/B still has nothing to run on and S16 stays
+UNVERIFIABLE.

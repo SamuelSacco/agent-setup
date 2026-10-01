@@ -56,3 +56,7 @@ wave can run the orientation A/B. No A/B in this wave.
 
 ## Outcome
 partial — Mining + prereg + harness fixes landed and committed; screening produced zero valid grades (one invalid grade, one voided worker report, rest unscreened). Open: fresh-cap decision for a re-screen (click with PYTHONPATH=src -> nx -> rich), then the pre-registered A/B.
+
+### 05:10 — Correction: S1's final report is disk-backed; the void was my error
+- **Happened:** S1's actual final report arrived 05:10:33 UTC: 2 runs (rich-u5 x2, both PASS), $4.17 footer-derived, gate-stopped before u6/u7. Disk re-check confirms every figure: drop files written 05:04/05:10, two run dirs, raw-output footers 1.9M/40.3K and 1.9M/33.8K, verdict files PASS 5/5 nodes. My earlier disk checks ran while attempt 1 was still in flight (raw-output.txt appears only at run completion), and the "6 runs / $10.24" figures I checked against came from a progress preview that matched neither the final report nor disk. Retraction + amendments issued: results doc Correction section, ledger S16 correction, backlog X3 correction, wiki log line. Verified wave spend is $6.99 of $8 — no breach. Band verdict unchanged (rich-u5 screened OUT on passes; zero band members).
+- **Lesson (appended to Learned):** a mid-flight disk check is not evidence of absence. Before voiding a worker's report, confirm the worker has actually finished (final handoff received) and re-check disk after completion. Preview text in progress listings is not a report.
