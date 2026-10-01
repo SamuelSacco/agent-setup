@@ -98,6 +98,21 @@ Status key: UNVERIFIABLE / PARTIAL / REFUTED / PROVEN / UNBUILT / BLOCKED.
   unscreened: rich-u6/u7, click-c2, nx-t5..t8; click-c1's grade
   still invalid (§6 of the results doc). Band still not
   constructed; X3 still UNVERIFIABLE.
+- **Update 2026-10-01 (Wave 4-A re-screening, branch
+  `lab/x3-screening`):** fresh caps ($25 screening; A/B $18
+  contingent on band ≥ 4). Stage 1 completed for 4 of the 7
+  remaining candidates, all footer-verified on disk: click-c1
+  PASS 2/2 (screened out; `PYTHONPATH=src` remedy confirmed in
+  production — grades are real this time), nx-t5 PASS 2/2,
+  nx-t6 PASS 2/2, and **click-c2 FAIL 2/2 — the first Copilot base
+  failure signal of the X3 effort; click-c2 is IN the band**.
+  Verified spend $24.9025 of the $25 cap; the cap bound before
+  nx-t7, nx-t8, rich-u6, rich-u7 (still unscreened). Band = 1
+  member < 4, so the pre-registered A/B did not run; X3 remains
+  UNVERIFIABLE. Calibration: click-c2 cost $4.45/run (↑4.3M
+  input) — the $2.20/run planning figure understates click-class
+  runs ~2×; finishing stage 1 needs roughly another $25 cap.
+  Evidence: `evals/results/2026-10-01-X3-wave4a-rescreen-results.md`.
 
 ### X4 — ux-ui as an agent (vs skill) pays off
 - Status: BLOCKED — agent form waits on a Playwright verification loop;
