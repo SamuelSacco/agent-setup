@@ -1,0 +1,12 @@
+You are working in a fresh checkout of NetworkX, a Python library for graphs (package code in `networkx/`, tests in `tests/` subdirectories next to the modules).
+
+Problem report:
+`nx.network_simplex` raises a spurious `NetworkXUnbounded` ("negative cycle with infinite capacity found") on feasible min-cost-flow instances. For example, a small digraph with node demands of ±4, unit edge weights, and unit capacities — a routine transportation-style instance with an obvious feasible flow — raises instead of returning the optimal flow and its cost. Whether an instance trips the error depends on the relative magnitudes of its demands, capacities, and weights. Expected: feasible instances return the optimal flow regardless of those magnitudes, while instances that are genuinely unbounded (a negative cycle with infinite capacity) still raise `NetworkXUnbounded`.
+
+Investigate, find the root cause, and fix it in the library code so the reported behavior is correct in general, not just for the examples above. Rules:
+- Do not edit existing files under any `tests/` directory. You may add new test files if you want, but grading uses an external test suite.
+- Keep the change minimal and consistent with the surrounding code style; do not change public APIs or unrelated behavior.
+- Verify your fix by running the relevant existing tests from the repo root with the prepared environment:
+  {PYTHON} -m pytest networkx/algorithms/flow/tests/test_networksimplex.py -q
+  Do not install packages.
+- When finished, give a short summary: root cause, what you changed, and what you ran to verify.

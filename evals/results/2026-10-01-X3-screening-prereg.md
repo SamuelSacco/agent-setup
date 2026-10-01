@@ -83,6 +83,25 @@ evals/tasks-packaged/):
 stage 1 in the same order when delivered. No screening runs have
 executed; the protocol above is unchanged.
 
+## Dated amendment 2 — NetworkX candidates (2026-10-01 05:00 UTC, before any NetworkX screening run)
+
+| # | id | repo | fix commit | grading nodes |
+|---|---|------|------------|---------------|
+| 6 | nx-t5-betweenness-k-scaling | networkx/networkx | a802a27f | TestEdgeBetweennessCentrality::test_edge_betweenness_k (discriminating), test_equivalence_non_subset (regression guard, passes at parent) |
+| 7 | nx-t6-is-aperiodic-strong-connectivity | networkx/networkx | 86e143dd | 6 test_is_aperiodic_* nodes |
+| 8 | nx-t7-network-simplex-faux-inf | networkx/networkx | 7768b927 | test_network_simplex_large_capacities (8 params), test_network_simplex_unbounded_flow |
+| 9 | nx-t8-diameter-usebounds-weighted | networkx/networkx | c732e434 | TestDistance::test_use_bounds_on_off_consistency (500 params) |
+
+All 4 oracles verified discriminating on disk by the mining worker
+(parent FAIL → fix PASS; details in ~/workspace/x3-mining/a/
+verification.md). Candidate pool is now 9 (target 8-10 met).
+Scheduling note: rich/click stage-1 runs were allocated sub-caps
+summing to the $8 wave cap; NetworkX stage-1 runs launch afterwards
+under the same global cap and start-gate, in candidate order, with
+whatever budget remains — if the remainder cannot clear the start
+gate, the nx candidates are recorded as mined-but-unscreened and the
+band verdict rests on the screened pool.
+
 ## Follow-on A/B protocol (registered now, executed by a later wave)
 
 - 4 band tasks × 2 arms (base vs +orientation), same runner, model,
