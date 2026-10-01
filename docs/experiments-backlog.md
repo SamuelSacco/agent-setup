@@ -212,6 +212,17 @@ Status key: UNVERIFIABLE / PARTIAL / REFUTED / PROVEN / UNBUILT / BLOCKED.
   loader; 0/5). Non-shell tool classes untested (E4).
 - Cheapest decisive test: on the next Copilot CLI release, re-run the E4
   Copilot arm unchanged. Est. cost: ~$0.30. Priority: low — version-watch.
+- **Version-watch 2026-10-01 (branch `lab/x11-version-watch`):**
+  installed CLI is 1.0.90, a real newer release (npm tree = 1.0.89
+  launcher; running build auto-updates into
+  `~/.cache/copilot/pkg/linux-x64/1.0.90/`; transition between the
+  04:13:09Z and 04:19:55Z sessions tonight). E4 Copilot arm re-run
+  unchanged on 1.0.90: **0/5, REFUTED stands** — exits 127/1/1/1/2,
+  hook loader active under trust, sidecar never invoked; mechanism
+  unchanged (shell `tool.execution_complete` reports `success: true`,
+  failure only in result text). Spend $0.0984 converted of $0.75.
+  Evidence: `evals/results/2026-10-01-X11-version-watch.md`.
+  Next watch: re-run on the first release after 1.0.90.
 
 ### X12 — Note-exclusion rule generalizes (ledger S5)
 - Status: PARTIAL — token axis PROVEN (38% cut); quality narrowed-claim
