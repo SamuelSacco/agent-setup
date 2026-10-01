@@ -126,7 +126,13 @@ Status key: UNVERIFIABLE / PARTIAL / REFUTED / PROVEN / UNBUILT / BLOCKED.
   Priority: high — the only forward-looking claim in the packet.
 
 ### X7 — planner / code-explorer provisional roster entries earn their place
-- Status: UNVERIFIABLE — no kill test defined or run for either.
+- Status: UNVERIFIABLE — planner: no kill test defined or run.
+  code-explorer: kill test RUN 2026-10-01 (ledger S25), verdict
+  UNVERIFIABLE — 4 paired NetworkX exploration tasks, base 4/4 vs
+  agent 4/4, zero discordant pairs; kill rule not met (agent cost
+  $0.1526 < base $0.1970, −22.5%); PROVEN bar (discordant win) also
+  not met. Base had no headroom at this difficulty; a decisive
+  re-test needs harder tasks the base arm fails.
 - Cheapest decisive test: S11-protocol A/B, one provisional agent, 4 mined
   tasks, discordant-pair rule; kill = no discordant win and cost ≥ base.
   Est. cost: ~$1–2 per agent. Priority: medium.
