@@ -1,0 +1,46 @@
+{
+  "legacy_system": "You are Meta AI, a highly experienced, world-class expert assistant and meticulous reasoning partner operating in legacy expert mode. Your persona is: a careful professor, a precise calculator, a friendly tutor, and a step-by-step coach all in one. You must always be thorough, verbose in your internal reasoning, encouraging, and formal. Follow all instructions exactly and in order. Never deviate from your role.",
+  "modern_system": "",
+  "tasks": [
+    {
+      "id": "T1",
+      "instruction": "Compute (37 * 18) - 149.",
+      "format": "a single integer, with no other text",
+      "expected": "517",
+      "legacy_user": "<task_instructions>\nTake a deep breath and think step by step. Work through this slowly and carefully, step by step, before answering. Let's think step by step.\n\nFew-shot examples:\nQ: Compute 2 + 3.\nA: 5\nQ: State the capital of France.\nA: Paris\n\nAssistant: The final answer is:\n\nNow solve the following task in exactly the same format as the examples.\n<task>\nCompute (37 * 18) - 149.\n</task>\nReply with exactly: a single integer, with no other text.\n</task_instructions>",
+      "modern_user": "Compute (37 * 18) - 149.\nReply with exactly: a single integer, with no other text."
+    },
+    {
+      "id": "T2",
+      "instruction": "Reverse every word in the phrase 'agent setup wins', keeping word order and single spaces.",
+      "format": "the transformed phrase, with no other text",
+      "expected": "tnega putes sniw",
+      "legacy_user": "<task_instructions>\nTake a deep breath and think step by step. Work through this slowly and carefully, step by step, before answering. Let's think step by step.\n\nFew-shot examples:\nQ: Compute 2 + 3.\nA: 5\nQ: State the capital of France.\nA: Paris\n\nAssistant: The final answer is:\n\nNow solve the following task in exactly the same format as the examples.\n<task>\nReverse every word in the phrase 'agent setup wins', keeping word order and single spaces.\n</task>\nReply with exactly: the transformed phrase, with no other text.\n</task_instructions>",
+      "modern_user": "Reverse every word in the phrase 'agent setup wins', keeping word order and single spaces.\nReply with exactly: the transformed phrase, with no other text."
+    },
+    {
+      "id": "T3",
+      "instruction": "Sort these numbers in descending order: 14, 3, 29, 8, 21. Give them comma-separated with no spaces.",
+      "format": "the comma-separated list, with no other text",
+      "expected": "29,21,14,8,3",
+      "legacy_user": "<task_instructions>\nTake a deep breath and think step by step. Work through this slowly and carefully, step by step, before answering. Let's think step by step.\n\nFew-shot examples:\nQ: Compute 2 + 3.\nA: 5\nQ: State the capital of France.\nA: Paris\n\nAssistant: The final answer is:\n\nNow solve the following task in exactly the same format as the examples.\n<task>\nSort these numbers in descending order: 14, 3, 29, 8, 21. Give them comma-separated with no spaces.\n</task>\nReply with exactly: the comma-separated list, with no other text.\n</task_instructions>",
+      "modern_user": "Sort these numbers in descending order: 14, 3, 29, 8, 21. Give them comma-separated with no spaces.\nReply with exactly: the comma-separated list, with no other text."
+    },
+    {
+      "id": "T4",
+      "instruction": "From the sentence 'Mira Chen lives in Austin and works as a nurse', extract the city.",
+      "format": "a single word, with no other text",
+      "expected": "Austin",
+      "legacy_user": "<task_instructions>\nTake a deep breath and think step by step. Work through this slowly and carefully, step by step, before answering. Let's think step by step.\n\nFew-shot examples:\nQ: Compute 2 + 3.\nA: 5\nQ: State the capital of France.\nA: Paris\n\nAssistant: The final answer is:\n\nNow solve the following task in exactly the same format as the examples.\n<task>\nFrom the sentence 'Mira Chen lives in Austin and works as a nurse', extract the city.\n</task>\nReply with exactly: a single word, with no other text.\n</task_instructions>",
+      "modern_user": "From the sentence 'Mira Chen lives in Austin and works as a nurse', extract the city.\nReply with exactly: a single word, with no other text."
+    },
+    {
+      "id": "T5",
+      "instruction": "A store sells packs of pens. It has 7 packs with 6 pens in each pack, then gives away 5 pens. How many pens remain?",
+      "format": "a single integer, with no other text",
+      "expected": "37",
+      "legacy_user": "<task_instructions>\nTake a deep breath and think step by step. Work through this slowly and carefully, step by step, before answering. Let's think step by step.\n\nFew-shot examples:\nQ: Compute 2 + 3.\nA: 5\nQ: State the capital of France.\nA: Paris\n\nAssistant: The final answer is:\n\nNow solve the following task in exactly the same format as the examples.\n<task>\nA store sells packs of pens. It has 7 packs with 6 pens in each pack, then gives away 5 pens. How many pens remain?\n</task>\nReply with exactly: a single integer, with no other text.\n</task_instructions>",
+      "modern_user": "A store sells packs of pens. It has 7 packs with 6 pens in each pack, then gives away 5 pens. How many pens remain?\nReply with exactly: a single integer, with no other text."
+    }
+  ]
+}

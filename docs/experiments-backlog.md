@@ -399,12 +399,13 @@ Status key: UNVERIFIABLE / PARTIAL / REFUTED / PROVEN / UNBUILT / BLOCKED.
   correction appended to the packet). Spend: $0.
 
 ### X21 — Opus 5.5 degrades older prompts (ledger C3)
-- Status: UNVERIFIABLE as a general claim; narrow patterns partially
-  supported (prefill removal, effort default). Anthropic's own guides say
-  prior-generation prompts should generally carry over.
+- Status: DONE 2026-10-01 (branch lab/x21-prompt-ab) — C3 REFUTED on the
+  test: legacy 4/5 on claude-opus-5-5 and on claude-opus-5, modern 4/5 vs
+  5/5. Preregistered decision rule applied. Spend ~$0.10 of $3.50 cap.
 - Cheapest decisive test: paired prompt A/B across model generations on
   a fixed task set with planted legacy scaffolding. Est. cost: ~$2–4.
   Priority: low — external claim, not load-bearing for the setup.
+  Evidence: evals/results/2026-10-01-X21-prompt-ab.md
 
 ## Next 3 by value/cost
 

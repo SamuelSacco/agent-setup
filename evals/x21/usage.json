@@ -1,0 +1,5 @@
+{
+  "input_tokens": 4002,
+  "output_tokens": 504,
+  "est_cost_usd_at_opus_15_75_per_mtok": 0.0978
+}
