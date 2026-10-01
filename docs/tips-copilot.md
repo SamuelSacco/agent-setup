@@ -41,7 +41,10 @@ Researched 2026-09-30 against GitHub's docs. Verdicts in `docs/claims-ledger.md`
 - Skills discovered from `.github/skills/`, `.agents/skills/`, `.claude/skills/`, 
   `~/.copilot/skills/`, `~/.agents/skills/` — note `.claude/skills/` overlap with 
   Claude Code, which this workspace's adapter exploits.
-- MCP config: `~/.copilot/mcp-config.json`, `.mcp.json`, `.github/mcp.json`, plugins.
+- MCP config (S24): the working scope is user `~/.copilot/mcp-config.json`.
+  Workspace files (`.mcp.json`, `.github/mcp.json`) are documented read
+  sources but never load on CLI 1.0.89 (REFUTED); plugins are a separate
+  source.
 - Live discovery of *this workspace's* installed skills/agents: PROVEN
   2026-09-30 (E1 — Copilot invoked `session-harden` by name in a fresh
   install and executed its body).

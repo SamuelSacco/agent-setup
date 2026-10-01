@@ -320,7 +320,8 @@ def main():
     install_mcp()
     install_hooks(existing_settings)
     print("\nAdapters written. Discovery by each tool is UNVERIFIED until an")
-    print("authenticated run lists the capability (see evals/).")
+    print("authenticated run lists the capability. Next step:")
+    print("./scripts/quickstart.sh --structural-only")
 
 
 if __name__ == "__main__":
