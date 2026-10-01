@@ -85,13 +85,19 @@ a second concurrent writer, 50,000 lines, or cross-machine queries.
 
 ### Grading (from disk only, never agent self-report)
 
-- T1/T2/T4: hidden pytest files (`evals/fixtures/x8-e3/grading/`,
+- T1/T2/T4: hidden grading test files (`evals/fixtures/x8-e3/grading/`,
   never copied into a run tree before the run) are overlaid after
-  the agent exits and run by the evaluator (scratch venv python,
-  pytest). Success = all grading tests pass. Convention violations
+  the agent exits and executed by the evaluator. Success = all
+  grading tests pass. Convention violations
   = number of failed/error grading tests. Oracle-checked before
-  any run: the unmodified fixture fails the grading tests; a
-  hand-written correct implementation passes all of them.
+  any run: the unmodified fixture fails the grading tests
+  (T1 2/5, T2 import error — no `refund`, T4 0/4); a hand-written
+  correct implementation passes all of them (T1 5/5, T2 5/5, T4 4/4).
+  Pre-run amendment (2026-10-01, before any agent run): the tests
+  are plain assert functions executed by a stdlib harness, not
+  pytest — pip installs in this sandbox hang and do not persist in
+  a scratch venv (observed twice), so grading must not depend on
+  pytest. Test content and pass/fail semantics are unchanged.
 - T3/T5: `ANSWER.md` on disk is checked against pre-registered
   required token groups and forbidden false-statement strings
   (`grading/answer_checks.json`). Success = file exists, every

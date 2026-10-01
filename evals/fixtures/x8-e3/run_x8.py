@@ -76,16 +76,32 @@ def main():
     if task in ("t1","t2","t4"):
         gt = os.path.join(FIX, "grading", f"test_{task}.py")
         shutil.copy(gt, os.path.join(rd, f"test_grade_{task}.py"))
-        venv_py = os.path.join(SCRATCH, "venv", "bin", "python")
-        pybin = venv_py if os.path.exists(venv_py) else "python3"
-        gr = sh([pybin,"-m","pytest", f"test_grade_{task}.py", "-q"], cwd=rd, timeout=120)
+        # Stdlib grading harness: grading tests are plain assert
+        # functions (no pytest fixtures); pip installs are unreliable
+        # in this sandbox, so grading must not depend on pytest.
+        harness = (
+            "import importlib, sys, traceback\n"
+            f"m = importlib.import_module('test_grade_{task}')\n"
+            "fails = 0; total = 0\n"
+            "for name in sorted(dir(m)):\n"
+            "    if name.startswith('test_'):\n"
+            "        total += 1\n"
+            "        try:\n"
+            "            getattr(m, name)(); print(f'PASS {name}')\n"
+            "        except Exception:\n"
+            "            fails += 1; print(f'FAIL {name}'); traceback.print_exc()\n"
+            "print(f'{total - fails} passed, {fails} failed')\n"
+            "sys.exit(1 if fails else 0)\n"
+        )
+        with open(os.path.join(rd, "grade_harness.py"), "w") as f:
+            f.write(harness)
+        gr = sh(["python3","grade_harness.py"], cwd=rd, timeout=120)
         grade_detail = gr.stdout.strip().splitlines()[-1] if gr.stdout.strip() else ""
-        # violations = number of failed/error grading tests
         import re
-        m = re.search(r"(\d+) failed", gr.stdout); e = re.search(r"(\d+) error", gr.stdout)
-        violations = (int(m.group(1)) if m else 0) + (int(e.group(1)) if e else 0)
+        m = re.search(r"(\d+) failed", gr.stdout)
+        violations = int(m.group(1)) if m else 0
         if gr.returncode != 0 and violations == 0:
-            violations = 1  # collection error etc.
+            violations = 1  # import/collection error etc.
         passed = (gr.returncode == 0)
         with open(os.path.join(rd, "grade.txt"), "w") as f:
             f.write(gr.stdout)
@@ -101,7 +117,7 @@ def main():
         with open(os.path.join(rd, "grade.txt"), "w") as f:
             f.write(grade_detail + "\n")
 
-    diff = sh(["git","diff","--stat","HEAD","--",".",":!.claude",":!raw-output.json",":!agent-result.txt",":!grade.txt",f":!test_grade_{task}.py"], cwd=rd).stdout.strip()
+    diff = sh(["git","diff","--stat","HEAD","--",".",":!.claude",":!raw-output.json",":!agent-result.txt",":!grade.txt",":!grade_harness.py",f":!test_grade_{task}.py"], cwd=rd).stdout.strip()
     summary = dict(task=task, arm=arm, passed=passed, turns=turns, cost=cost,
                    input_tokens=in_tok, total_input_tokens=total_in, wall=wall,
                    violations=violations, grade_detail=grade_detail,
