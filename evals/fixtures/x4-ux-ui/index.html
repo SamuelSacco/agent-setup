@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Counter Demo</title>
+<style>
+  body { background: #ffffff; font-family: sans-serif; margin: 2rem; }
+  #status { color: #b5b5b5; font-size: 14px; }
+  #add-btn { font-size: 20px; width: 44px; height: 44px; cursor: pointer; }
+  #count { font-weight: bold; }
+</style>
+</head>
+<body>
+  <h1>Counter demo</h1>
+  <p>Current count: <span id="count">0</span></p>
+  <button id="add-btn" type="button">&#65291;</button>
+  <p id="status">Tip: press the plus button to increase the count.</p>
+  <script>
+    let counter = 0;
+    document.getElementById('add-btn').addEventListener('click', () => {
+      counter++;
+      document.getElementById('cout').textContent = counter;
+    });
+  </script>
+</body>
+</html>
