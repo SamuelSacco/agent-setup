@@ -121,9 +121,27 @@ Status key: UNVERIFIABLE / PARTIAL / REFUTED / PROVEN / UNBUILT / BLOCKED.
   constructed; X3 still UNVERIFIABLE.
 
 ### X4 — ux-ui as an agent (vs skill) pays off
-- Status: BLOCKED — agent form waits on a Playwright verification loop;
-  Playwright MCP is PARTIAL (works only with `--no-sandbox` in this root
-  sandbox).
+- Status: **REFUTED 2026-10-01** (branch `lab/x4-ux-ui-loop`,
+  prereg `d76f61e`) — the Playwright loop ran in this root sandbox
+  (scratch config: canonical args + `--no-sandbox`, system
+  Chromium via `--executable-path`, `file://` navigation; loopback
+  HTTP is blocked by Chromium LNA checks here). One planted-defect
+  frontend task, Haiku 4.5, independent Playwright assertion
+  oracle: base CLOSED the loop (navigate → screenshot → 3 edits →
+  re-navigate → clicks → evaluate; assertion PASS; 18 turns,
+  $0.0964). The ux-ui agent did NOT close it — zero Playwright
+  calls: its emitted `tools: [Read, Write, Edit, Bash]` allowlist
+  (from canonical `tools_hint`, ledger S21) excludes every
+  `mcp__playwright__*` tool, so the browser loop its own working
+  rules require is unreachable as installed. It fixed all 3
+  defects from source and self-verified via curl + a Node DOM
+  simulation (final tree passes the assertion; 12 turns, $0.0425)
+  — correct fixes, no browser loop. Ledger S29; evidence:
+  evals/results/2026-10-01-X4-ux-ui-loop.md. A retest needs an
+  MCP-capable ux-ui allowlist — a canonical change, not a rerun.
+  (Was: BLOCKED — agent form waits on a Playwright verification
+  loop; Playwright MCP is PARTIAL (works only with `--no-sandbox`
+  in this root sandbox).)
 - Cheapest decisive test: in a non-root environment, one frontend task,
   ux-ui agent with screenshot+assert loop vs base; pass = loop closes
   without human eyes. Est. cost: ~$0.50 + a non-sandbox session.
