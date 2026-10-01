@@ -170,6 +170,15 @@ Status key: UNVERIFIABLE / PARTIAL / REFUTED / PROVEN / UNBUILT / BLOCKED.
   MCP startup fragile); delegation is the proven path for all 12.
 - Cheapest decisive test: marker-invoke 3 more agents via `--agent` with
   a warm MCP cache. Est. cost: ~$1 + ~10 min wall. Priority: low.
+- **Q15 isolation 2026-10-01: REFUTED** — the serialized-startup mechanism
+  is not triggered by the emitted `.github/mcp.json` alone: `planner`,
+  same X13 task, scratch HOME (no user-scope MCP config), CLI 1.0.90,
+  warm cache — with-file 41 s exit 0 (all 5 workspace servers connected),
+  without-file 22 s exit 0. X13's 3× 300 s stalls (real HOME, CLI 1.0.89,
+  user-scope duplication) do not reproduce; the 60 s lifecycle failures
+  themselves did not occur, so their trigger is unlocated. The stall is
+  environment-bound, not file-bound. Evidence:
+  `evals/results/2026-10-01-X13-mcp-isolation.md`.
 
 ### X14 — GitHub MCP authenticated operations (ledger S14 carve-out)
 - Status: UNVERIFIABLE — token ships empty by design; public search works
