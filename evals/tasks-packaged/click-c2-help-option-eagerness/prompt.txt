@@ -1,0 +1,41 @@
+You are working in a fresh checkout of Click, a Python library for
+command line interfaces (package code in `src/click/`, tests in the
+top-level `tests/` directory).
+
+Problem report:
+The help option generated from `help_option_names` is not always
+processed eagerly. Reproduction:
+
+    def print_and_exit(ctx, param, value):
+        if value:
+            click.echo(f"Value of {param.name} is: {value}")
+            ctx.exit()
+
+    @click.command(context_settings={"help_option_names": ("--my-help",)})
+    @click.option("-a", is_flag=True, expose_value=False, callback=print_and_exit)
+    @click.option("-b", is_flag=True, expose_value=False, callback=print_and_exit, is_eager=True)
+    def cli():
+        pass
+
+Invoking with `["--my-help", "-b"]` runs `-b`'s callback (printing
+`Value of b is: True`) instead of showing the help text — but invoking
+with `["-b", "--my-help"]` correctly shows help. The help option is
+eager by default, so it should take precedence over the eager `-b`
+regardless of invocation order, and `--my-help` alone must still print
+the help text. Non-eager option ordering (`-a` vs `-b`) must be
+unchanged.
+
+Investigate, find the root cause, and fix it in the library code so the
+reported behavior is correct in general, not just for the examples
+above. Rules:
+- Do not edit existing files under the `tests/` directory. You may add
+  new test files if you want, but grading uses an external test suite.
+- Keep the change minimal and consistent with the surrounding code
+  style; do not change public APIs or unrelated behavior.
+- Verify your fix by running the relevant existing tests from the repo
+  root with the prepared environment (the package is importable from
+  `src/`):
+  PYTHONPATH=src {PYTHON} -m pytest tests/test_commands.py -q
+  Do not install packages.
+- When finished, give a short summary: root cause, what you changed,
+  and what you ran to verify.

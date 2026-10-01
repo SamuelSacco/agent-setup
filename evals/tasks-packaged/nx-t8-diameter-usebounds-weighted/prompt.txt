@@ -1,0 +1,12 @@
+You are working in a fresh checkout of NetworkX, a Python library for graphs (package code in `networkx/`, tests in `tests/` subdirectories next to the modules).
+
+Problem report:
+`nx.diameter`, `nx.radius`, `nx.periphery`, and `nx.center` disagree with themselves when `usebounds=True` is passed on weighted graphs. For example, on random connected graphs whose edges carry small non-negative integer weights (zero weights included), `nx.diameter(G, weight="w", usebounds=True)` can return 10 while `nx.diameter(G, weight="w")` returns 13 for the same graph; the unweighted versions of all four functions agree. Expected: with `usebounds=True` these functions return exactly the same results as with `usebounds=False`, for weighted and unweighted graphs alike.
+
+Investigate, find the root cause, and fix it in the library code so the reported behavior is correct in general, not just for the examples above. Rules:
+- Do not edit existing files under any `tests/` directory. You may add new test files if you want, but grading uses an external test suite.
+- Keep the change minimal and consistent with the surrounding code style; do not change public APIs or unrelated behavior.
+- Verify your fix by running the relevant existing tests from the repo root with the prepared environment:
+  {PYTHON} -m pytest networkx/algorithms/tests/test_distance_measures.py -q
+  Do not install packages.
+- When finished, give a short summary: root cause, what you changed, and what you ran to verify.

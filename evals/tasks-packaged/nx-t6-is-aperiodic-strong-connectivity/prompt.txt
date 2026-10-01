@@ -1,0 +1,12 @@
+You are working in a fresh checkout of NetworkX, a Python library for graphs (package code in `networkx/`, tests in `tests/` subdirectories next to the modules).
+
+Problem report:
+`nx.is_aperiodic` returns a plain True/False answer for directed graphs where the notion of aperiodicity is not defined. For example, a digraph built from a 3-cycle plus a separate node carrying a self-loop returns `False`, and the plain path `nx.DiGraph([(1, 2), (2, 3)])` also returns `False`. Aperiodicity (the gcd of all cycle lengths) feeds Markov-chain ergodicity arguments and is only defined for strongly connected digraphs, so for inputs that are not strongly connected the only honest answer is to refuse. Expected: `nx.is_aperiodic` raises `NetworkXError` when the input digraph is not strongly connected (it already raises `NetworkXError` for undirected graphs and `NetworkXPointlessConcept` for the null graph), while strongly connected inputs keep returning correct answers: a single node with a self-loop returns `True`, a single node without one returns `False`, and a directed bipartite-style cycle graph returns `False`.
+
+Investigate, find the root cause, and fix it in the library code so the reported behavior is correct in general, not just for the examples above. Rules:
+- Do not edit existing files under any `tests/` directory. You may add new test files if you want, but grading uses an external test suite.
+- Keep the change minimal and consistent with the surrounding code style; do not change public APIs or unrelated behavior.
+- Verify your fix by running the relevant existing tests from the repo root with the prepared environment:
+  {PYTHON} -m pytest networkx/algorithms/tests/test_dag.py -q
+  Do not install packages.
+- When finished, give a short summary: root cause, what you changed, and what you ran to verify.

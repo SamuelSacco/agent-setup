@@ -1,0 +1,31 @@
+You are working in a fresh checkout of Rich, a Python library for rich
+text and terminal formatting (package code in `rich/`, tests in the
+top-level `tests/` directory).
+
+Problem report:
+A `Panel` title loses the panel's background style. Reproduction:
+build `Panel("Hello, World", style="on blue", title=Text("title",
+style="red"), subtitle=Text("subtitle", style="magenta bold"))` and
+print it to a 50-wide recording console with `force_terminal=True`
+and `color_system="truecolor"`. The title renders as red on the
+default background (`\x1b[31m`) instead of red on the panel's blue
+background (`\x1b[31;44m`); the subtitle has the same problem
+(`\x1b[1;35m` instead of `\x1b[1;35;44m`). Expected: the title and
+subtitle keep their own foreground styles while also picking up the
+panel's background, e.g. the title segment renders as
+`'\x1b[31;44m title \x1b[0m'`. Panels without a background style, and
+titles without their own style, must render exactly as before.
+
+Investigate, find the root cause, and fix it in the library code so the
+reported behavior is correct in general, not just for the examples
+above. Rules:
+- Do not edit existing files under the `tests/` directory. You may add
+  new test files if you want, but grading uses an external test suite.
+- Keep the change minimal and consistent with the surrounding code
+  style; do not change public APIs or unrelated behavior.
+- Verify your fix by running the relevant existing tests from the repo
+  root with the prepared environment:
+  {PYTHON} -m pytest tests/test_panel.py -q
+  Do not install packages.
+- When finished, give a short summary: root cause, what you changed,
+  and what you ran to verify.
