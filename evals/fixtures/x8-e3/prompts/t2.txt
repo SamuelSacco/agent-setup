@@ -1,0 +1,1 @@
+Add a `refund` function to `invoice.py` with the signature `refund(amount_cents, *, opened, defective)` returning the refund amount, following this project's refund policy. Do not change the behaviour of the existing functions. Run the existing tests before finishing.

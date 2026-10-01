@@ -1,0 +1,1 @@
+Write a file `ANSWER.md` at the repository root answering: what was decided for receipts storage (including the date), what alternative was considered and rejected and why, and what exact triggers should cause the decision to be revisited? If any of this information is not available in this workspace, write "not recorded" for that part. Do not invent facts.

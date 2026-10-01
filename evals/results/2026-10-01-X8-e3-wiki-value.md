@@ -1,0 +1,276 @@
+# X8 / E3 — Does the wiki actually help? (seeded-wiki A/B)
+
+Date: 2026-10-01. Backlog X8; ledger claim S3. Branch
+`lab/x8-e3-wiki-value` off master `ce0edbe`.
+Spend cap: $3.00 metered, hard stop at cap.
+
+## Pre-registration (written and committed before any agent run)
+
+### E3 spec, restated from `evals/tasks/E3-wiki-value.md`
+
+- Claim S3: "Orienting from the wiki improves task outcomes vs a
+  no-wiki baseline."
+- Pre-registered threshold (spec): "PASS if the wiki arm beats the
+  baseline arm on the rubric below across 5 matched tasks, with
+  ≤ 25% mean token overhead."
+- Design (spec): 5 small realistic tasks (bugfix, extend-a-feature,
+  answer-from-history, refactor-per-convention, find-the-decision).
+  Arm A: full workspace (AGENTS.md orientation + wiki). Arm B:
+  identical repo with `wiki/notes/` emptied and orientation skipped.
+  Same model, same tool, interleaved order to wash out drift.
+- Rubric per task (spec): correct outcome (0/1); steps/turns to
+  completion; input tokens (tool-reported where available; else
+  chars/4 estimate, labeled); convention violations (0–n).
+- Failure mode the spec names: "A wiki that costs 25% more tokens
+  and changes nothing gets its orientation step redesigned or
+  dropped. That is a legitimate result."
+
+### Ambiguities in the spec, and the literal choices taken
+
+1. The spec names the 5 task *types* but no concrete tasks, repo,
+   or grading tests. Choice: instantiate the 5 types on a seeded
+   fixture workspace (`evals/fixtures/x8-e3/workspace/`, a tiny
+   billing codebase, "ledgerlite") whose billing rules, money
+   convention, refund policy, importer history, and receipts
+   decision exist **only** in its wiki notes. This matches the
+   backlog's description of E3 as a "seeded-wiki design" distinct
+   from S12's real-code design. Using this repo itself was rejected
+   for a recorded reason: its wiki facts are duplicated in `docs/`,
+   `hidden_files/`, session logs, and code comments (verified by
+   grep 2026-10-01, e.g. the telemetry/Postgres decision appears in
+   `scripts/sidecar.sh`, `docs/grill-prep.md`, and the wiki note),
+   so a no-wiki arm could answer from non-wiki sources — contaminated
+   probes, in E2's own terms.
+2. "Orientation skipped" in Arm B is not operationalized. Choice:
+   Arm B's `AGENTS.md` is the same file with the orientation
+   section removed, and `wiki/notes/` is emptied (only `.gitkeep`).
+   Everything else — code, README, `wiki/index.md` (titles only, no
+   facts), prompts, model, tool — is identical across arms. The
+   prompt text is identical across arms; the treatment is files on
+   disk only.
+3. "Input tokens" is not defined against the Claude envelope's
+   cache fields. Choice: token metric = envelope `usage` total
+   input = `input_tokens + cache_creation_input_tokens +
+   cache_read_input_tokens`, tool-reported. Cost = envelope
+   `total_cost_usd` (metered). Turns = envelope `num_turns`.
+4. Spec says PASS/FAIL; the ledger needs PROVEN / REFUTED /
+   UNVERIFIABLE. Mapping, registered here: **PROVEN** if Arm A
+   correct total > Arm B correct total **and** mean total-input-token
+   overhead of A over B ≤ 25%. **REFUTED** if A correct total <
+   B correct total, **or** A == B with overhead > 25% (the spec's
+   own failure mode: costs >25% more and changes nothing).
+   **UNVERIFIABLE** otherwise (equal success at ≤25% overhead;
+   A > B but overhead > 25%; or a harness failure that prevents
+   grading a task pair).
+
+### Tasks (one per spec type; prompts in `evals/fixtures/x8-e3/prompts/`)
+
+| # | Type (spec) | Task | Wiki note(s) carrying the needed facts |
+|---|-------------|------|------------------------------------------|
+| T1 | bugfix | Fix `invoice_total` in `invoice.py` to the project's billing rules | billing, money-convention |
+| T2 | extend-a-feature | Add `refund(amount_cents, *, opened, defective)` per refund policy | refunds |
+| T3 | answer-from-history | Write `ANSWER.md`: Feb 2026 import failure + Mar 2026 importer choice | import-history |
+| T4 | refactor-per-convention | Refactor `quote` to the money convention | money-convention |
+| T5 | find-the-decision | Write `ANSWER.md`: receipts-storage decision + revisit triggers | receipts-decision |
+
+Fixture facts were chosen to be non-default so they cannot be
+guessed from convention alone: tax is on the full pre-discount
+subtotal and the discount is subtracted after tax; the restocking
+fee is 12%; the money convention requires integer cents and half-up
+rounding (the legacy code returns float dollars with `round()`);
+347 duplicates keyed on row number instead of `external_id`; the
+vendor API cap is 100 requests/day with no bulk endpoint; receipts
+are append-only JSONL (SQLite rejected, single writer), revisit at
+a second concurrent writer, 50,000 lines, or cross-machine queries.
+
+### Grading (from disk only, never agent self-report)
+
+- T1/T2/T4: hidden grading test files (`evals/fixtures/x8-e3/grading/`,
+  never copied into a run tree before the run) are overlaid after
+  the agent exits and executed by the evaluator. Success = all
+  grading tests pass. Convention violations
+  = number of failed/error grading tests. Oracle-checked before
+  any run: the unmodified fixture fails the grading tests
+  (T1 2/5, T2 import error — no `refund`, T4 0/4); a hand-written
+  correct implementation passes all of them (T1 5/5, T2 5/5, T4 4/4).
+  Pre-run amendment (2026-10-01, before any agent run): the tests
+  are plain assert functions executed by a stdlib harness, not
+  pytest — pip installs in this sandbox hang and do not persist in
+  a scratch venv (observed twice), so grading must not depend on
+  pytest. Test content and pass/fail semantics are unchanged.
+- T3/T5: `ANSWER.md` on disk is checked against pre-registered
+  required token groups and forbidden false-statement strings
+  (`grading/answer_checks.json`). Success = file exists, every
+  required group present, zero forbidden strings. Convention
+  violations = number of forbidden strings found.
+- Per run also recorded: turns, metered cost, total input tokens,
+  wall seconds, `git diff --stat`.
+
+### Model, tool, order, budget
+
+- Model: the spec names none. Choice, per tasking: the cheapest
+  tier used by comparable prior runs — `claude-haiku-4-5-20251001`
+  (as in S12), Claude Code 2.1.285 headless, `--output-format json`,
+  `--permission-mode acceptEdits`, allowedTools
+  `Write Edit Bash Read Glob Grep`, `.claude/settings.json`
+  apiKeyHelper (same pattern as `scripts/run_eval.py`). Per-run
+  timeout 300 s. Runs execute only in scratch dirs under
+  `evals/scratch-x8/runs/` (gitignored).
+- Interleaved order (registered): T1-A, T1-B, T2-B, T2-A, T3-A,
+  T3-B, T4-B, T4-A, T5-A, T5-B (starting arm alternates per task).
+- Budget: $3.00 metered hard cap. Spend is read from each run's
+  envelope before launching the next run; if the cap is approached,
+  stop launching, grade what exists, and report the achieved n
+  honestly (PARTIAL-n).
+- Runner: `evals/fixtures/x8-e3/run_x8.py`. Raw outputs: per-run
+  result files `evals/results/2026-10-01-RUN-x8-<task>-<arm>.md`
+  plus the full JSON envelopes preserved in the scratch run dirs.
+
+## Results
+
+### Incident, run 1 (T1-A, first attempt)
+
+The first T1-A run hit the registered 300 s per-run timeout and was
+killed before Claude emitted its JSON envelope: cost and turns are
+unmetered for that attempt. Disk grading of its tree: **PASS, 5/5**
+(the fix was complete on disk before the kill). A trivial probe
+afterwards (`claude -p "Reply with exactly: hi"`, Haiku) took 41 s
+of API time for one turn, i.e. API latency, not a hang — 300 s was
+below this model's current per-turn latency × expected turns.
+Packaged-task runs in this repo use 600–900 s for the same reason.
+Amendment (recorded here before any further run): per-run timeout
+raised 300 s → 900 s; the timed-out attempt is discarded from the
+results table (its PASS is noted, not counted) and T1-A is re-run
+once under the amended timeout. Against the $3.00 cap, a
+conservative $0.30 reserve is charged for the unmetered attempt
+(estimate, labeled — not a metered figure), leaving $2.70 of
+metered headroom.
+
+_(results table filled in after the runs)_
+
+### Incident, run 3 (T2-B, first attempt) — cross-run contamination, discarded
+
+T2-B (no-wiki arm) passed its grading 5/5 with an implementation
+matching the wiki-only refund policy exactly (12% fee, defective
+waiver, half-up). Transcript audit (session
+`dedcf36f-1271-4b3e-87b8-fc996f97bdf1`) shows why: the agent ran
+`find` over the shared scratch parent and read
+`runs/t1-A/wiki/notes/refunds.md` — the Arm A tree left on disk from
+the previous run. Same failure family as P2's T1 sandbox escape
+(S12 results file). The T1 pair's transcripts were audited and are
+clean (own-tree reads only). This T2-B attempt is **discarded**
+(its $0.0928468 metered cost is counted in total spend).
+Mitigation, applied before any re-run: the runner now keeps only
+one live run tree — previous trees are archived with their wiki
+notes stripped (notes are identical copies of the committed
+fixture, so nothing is lost) — and strips each run's notes after
+grading. Every remaining run gets a transcript audit for
+out-of-tree reads; a run that reads treatment material is
+discarded on the same rule. T2-B is re-run once under the
+mitigation; the registered order for the remaining cells is
+unchanged (T2-A next after the T2-B re-run, then T3-A, T3-B,
+T4-B, T4-A, T5-A, T5-B).
+
+### Incident, run 6 (T3-B, first attempt) — escape read a sibling answer, discarded
+
+Transcript audit (session `eb6a1081-821c-49d0-9b7b-6860421c5581`):
+the T3-B agent searched the scratch parent, found the archived
+T3-A tree, and read its `ANSWER.md` (the full Arm A answers) at
+transcript lines 87–88 — then, notably, wrote "not recorded" for
+every part anyway and failed grading (8/10 required groups
+missing). Reading treatment-derived material is discardable under
+the rule stated above, whether or not it was used, so this attempt
+is **discarded** (metered cost $0.08836995, counted in total
+spend; envelope preserved as
+`2026-10-01-X8-t3-B-attempt1-envelope.json`). Root cause: archived
+run trees still carried `ANSWER.md`. Fix before the re-run: the
+runner's sweep now copies `ANSWER.md`/envelope raw artifacts into
+`evals/results/` and strips both answers and notes from archived
+trees, and all pre-existing scratch archive/run trees were deleted
+after their raw outputs were preserved as per-run result files in
+`evals/results/`. T3-B is re-run once with no sibling material in
+the scratch parent.
+
+### Amendment (after T3-B re-run) — contamination rule refined to read+reflected
+
+The T3-B re-run (session `1ed80eca-6bb8-427f-be1a-69a0c692327c`,
+$0.0711075, 15 turns) escaped further: it read the fixture notes
+in the branch repo (`evals/fixtures/x8-e3/workspace/wiki/notes/
+import-history.md`), `evals/results/2026-10-01-X8-t3-A-ANSWER.md`,
+and this repo's own `wiki/index.md`/`log.md` — and still wrote
+"not recorded" for every part and failed grading identically
+(8/10 groups missing, 0 forbidden). Both B agents on T3 appear to
+treat out-of-tree finds as not "in this workspace" (the prompt's
+own wording) and refuse to use them. Rule refined, recorded here
+before any further run: a run is contaminated iff treatment
+material from outside its run tree is read **and reflected in the
+graded artifact**. T2-B attempt 1 (read + exact policy in the
+artifact) stays discarded; T3-B attempt 1 stays discarded (the
+stricter rule was in force, and discarding a B-arm failure is
+conservative against the wiki claim); the T3-B re-run is **counted**
+as a B failure with its escape reads disclosed in its per-run file
+(`2026-10-01-RUN-x8-t3-B.md`). Remaining runs are audited under
+read+reflected.
+
+### Incident, runs 11–12 (T5-B) — attempt 1 read+used fixture note, discarded
+
+T5-B attempt 1 (session `84bb4284-d364-446f-a100-7f725b2c8088`,
+$0.0510622, 7 turns) searched the branch repo, read the fixture
+treatment note (`evals/fixtures/x8-e3/workspace/wiki/notes/
+receipts-decision.md`) **and reflected it in the artifact** — a
+perfect recall answer graded 10/10 groups present. Read+reflected
+of treatment material: **discarded** (counted in spend; envelope
+preserved as `2026-10-01-X8-t5-B-attempt1-envelope.json`). T5-B
+was re-run once: the re-run read the same fixture note but wrote
+"not recorded" for every part — explicitly noting "no information
+… is recorded in this workspace" — and failed grading 0/9.
+Counted under read+reflected (per-run file `2026-10-01-RUN-x8-
+t5-B.md` discloses the reads).
+
+## Results
+
+Per-run files: `2026-10-01-RUN-x8-<t1..t5>-<A|B>.md`, JSON envelopes
+`2026-10-01-X8-<t1..t5>-<arm>-envelope.json`, ANSWER copies where
+applicable. All grading from disk; transcripts audited for
+out-of-tree reads under the read+reflected rule above.
+
+| Task | Type | Arm A (wiki+orientation) | Arm B (no notes) | A total_in | B total_in |
+|---|---|---|---|---|---|
+| T1 | bugfix | PASS 5/5 | FAIL 1/5 | 274,219 | 171,448 |
+| T2 | extend-a-feature | PASS 5/5 | FAIL 3/5 (counted re-run; attempt 1 discarded) | 285,477 | 568,159 |
+| T3 | answer-from-history | PASS | FAIL, all "not recorded" (attempt 1 discarded) | 134,197 | 347,212 |
+| T4 | refactor-per-convention | PASS 4/4 | PASS 4/4 (convention recoverable from in-tree code) | 283,105 | 306,502 |
+| T5 | find-the-decision | PASS | FAIL, all "not recorded" (attempt 1 discarded) | 106,103 | 443,304 |
+| | **Total correct** | **5/5** | **1/5** | **1,083,101** | **1,836,625** |
+
+Decision rule (pre-registered): PROVEN iff A correct total > B
+**and** mean total-input-token overhead ≤ 25%; REFUTED iff A < B,
+or A == B with overhead > 25% (E3's failure mode); otherwise
+UNVERIFIABLE. Overhead = (ΣA inputs − ΣB inputs)/ΣB inputs =
+(1,083,101 − 1,836,625)/1,836,625 = **−41%** — the wiki arm was
+41% cheaper in total input tokens, not 25% more expensive. (The
+unweighted mean of per-task overheads is −27%; same conclusion.)
+
+## Verdict
+
+**PROVEN.** A correct total 5/5 > B 1/5, token overhead −41% ≤
++25%. Secondary mechanism: the B arm paid *more* tokens, not
+less — B agents burned 568k/347k/443k input tokens on T2/T3/T5
+hunting through the repo and scratch parent for information that
+wasn't in their workspace, vs 285k/134k/106k for A. Three of four
+discarded/escape attempts involved B-arm answer tasks (T2-B,
+T3-B, T5-B) reading fixture material; under the read+reflected
+rule their counted artifacts remain genuine baseline failures
+(the agents refused to use out-of-workspace finds). Caveats:
+T4 both arms passed — the money convention was recoverable from
+the run tree itself (baseline already shipped `_round_half_up`
+and a cents docstring), so T4 diluted the contrast; the design's
+validity rests on the facts living only in wiki notes, which
+held for T1/T2/T3/T5 but not T4. Metered spend on counted cells
+$0.63; discarded attempts $0.23; unmetered T1-A attempt-1 reserve
+$0.30 (conservative estimate, labeled as such). Total ≈ $1.16
+of the $3.00 cap — cap never approached.
+
+## Verdict
+
+_(per the decision rule registered above)_

@@ -1,0 +1,1 @@
+Bug report: a customer who had both a discount and shipping was charged the wrong invoice total. Fix `invoice_total` in `invoice.py` so totals follow this project's billing rules. Keep the function signature unchanged. Run the existing tests before finishing.

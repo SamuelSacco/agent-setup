@@ -1,0 +1,1 @@
+Refactor the `quote` function in `invoice.py` so it complies with this project's money convention. Keep the function signature unchanged. The existing test for `quote` encodes the old behaviour and may need updating. Run the tests before finishing.
