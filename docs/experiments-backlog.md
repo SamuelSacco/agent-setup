@@ -164,6 +164,14 @@ Status key: UNVERIFIABLE / PARTIAL / REFUTED / PROVEN / UNBUILT / BLOCKED.
 - Cheapest decisive test: re-run E5 against the real wiki (this repo's
   `wiki/`) instead of the seeded corpus. Est. cost: ~$0.50.
   Priority: medium.
+- **Resolution 2026-10-01 (branch lab/x12-e5-real-wiki):** re-run done;
+  PARTIAL narrows, generalization fails. Real wiki at ce0edbe = 16
+  notes, all active (0 archived/stale), so token cut = 0.0%
+  (REFUTED vs ≥30% bar; the 38% was the seed's 37.5% archived share).
+  Quality 10/10 in both settings, 0 inventions — vacuous, settings
+  byte-identical; differential quality effect UNVERIFIABLE until the
+  real wiki holds archived/stale notes. Spend $0.0672358 of $0.50.
+  Evidence: `evals/results/2026-10-01-X12-e5-real-wiki.md`.
 
 ### X13 — Copilot `--agent` path for the other 11 agents (ledger S15)
 - Status: UNVERIFIABLE — proven for code-reviewer only (201 s, cold-cache
