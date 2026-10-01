@@ -88,3 +88,19 @@ cumulative converted cost would exceed the cap.
 ## Verdict
 
 (Pending.)
+
+### Amendment (recorded after Arm A attempt 1, before any valid run)
+
+Arm A attempt 1 (2026-10-01 ~04:13 ET) is INVALID and is not graded:
+exit 124 (runner `timeout 300`); its JSONL contains 6 events, all
+`session.mcp_server_status_changed`, zero assistant/tool events, and the
+disk snapshot is unchanged. Cause: a user-scope
+`~/.copilot/mcp-config.json` (created 2026-10-01 04:13 by a concurrent
+S24 worker; servers context7, filesystem-wiki, github, playwright,
+sequential-thinking) was auto-loaded, and each server stalled ~60 s on
+MCP lifecycle negotiation (cold npx), exhausting the 300 s window before
+the model ran. MCP is out of scope for this claim (see Setup). Fix for
+all subsequent runs, both arms identically: add
+`--disable-mcp-server` for each of the five user-scope servers and
+`--disable-builtin-mcps`. Prompt, agents, scratch trees, decision rule,
+and budget are unchanged.
