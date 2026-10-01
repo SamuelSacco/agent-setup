@@ -36,9 +36,22 @@ def main():
     os.makedirs(runs_root, exist_ok=True); os.makedirs(archive, exist_ok=True)
     for prev in os.listdir(runs_root):
         src = os.path.join(runs_root, prev)
+        # Preserve raw artifacts into evals/results/ before stripping:
+        # ANSWER.md and the JSON envelope are the run's raw outputs.
+        resdir = os.path.join(ROOT, "evals", "results")
+        for art, suffix in (("ANSWER.md", "ANSWER.md"),
+                            ("raw-output.json", "envelope.json")):
+            p = os.path.join(src, art)
+            if os.path.exists(p):
+                shutil.copy(p, os.path.join(
+                    resdir, f"2026-10-01-X8-{prev}-{suffix}"))
+        # Strip anything carrying treatment facts or derived answers.
         notes = os.path.join(src, "wiki", "notes")
         if os.path.isdir(notes):
             shutil.rmtree(notes)
+        ans = os.path.join(src, "ANSWER.md")
+        if os.path.exists(ans):
+            os.remove(ans)
         dst = os.path.join(archive, prev)
         if os.path.exists(dst):
             shutil.rmtree(dst)

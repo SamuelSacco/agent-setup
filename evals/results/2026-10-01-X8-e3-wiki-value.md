@@ -171,6 +171,26 @@ mitigation; the registered order for the remaining cells is
 unchanged (T2-A next after the T2-B re-run, then T3-A, T3-B,
 T4-B, T4-A, T5-A, T5-B).
 
+### Incident, run 6 (T3-B, first attempt) — escape read a sibling answer, discarded
+
+Transcript audit (session `eb6a1081-821c-49d0-9b7b-6860421c5581`):
+the T3-B agent searched the scratch parent, found the archived
+T3-A tree, and read its `ANSWER.md` (the full Arm A answers) at
+transcript lines 87–88 — then, notably, wrote "not recorded" for
+every part anyway and failed grading (8/10 required groups
+missing). Reading treatment-derived material is discardable under
+the rule stated above, whether or not it was used, so this attempt
+is **discarded** (metered cost $0.08836995, counted in total
+spend; envelope preserved as
+`2026-10-01-X8-t3-B-attempt1-envelope.json`). Root cause: archived
+run trees still carried `ANSWER.md`. Fix before the re-run: the
+runner's sweep now copies `ANSWER.md`/envelope raw artifacts into
+`evals/results/` and strips both answers and notes from archived
+trees, and all pre-existing scratch archive/run trees were deleted
+after their raw outputs were preserved as per-run result files in
+`evals/results/`. T3-B is re-run once with no sibling material in
+the scratch parent.
+
 ## Verdict
 
 _(per the decision rule registered above)_
