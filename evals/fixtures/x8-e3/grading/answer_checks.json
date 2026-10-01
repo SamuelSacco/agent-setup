@@ -1,0 +1,90 @@
+{
+  "t3": {
+    "required_groups": [
+      [
+        "csv"
+      ],
+      [
+        "347"
+      ],
+      [
+        "duplicate"
+      ],
+      [
+        "external_id"
+      ],
+      [
+        "row number"
+      ],
+      [
+        "100"
+      ],
+      [
+        "per day"
+      ],
+      [
+        "bulk"
+      ],
+      [
+        "api"
+      ],
+      [
+        "rejected"
+      ]
+    ],
+    "forbidden": [
+      "api importer was chosen",
+      "chose the api",
+      "api was chosen"
+    ]
+  },
+  "t5": {
+    "required_groups": [
+      [
+        "jsonl",
+        "json lines"
+      ],
+      [
+        "append-only",
+        "append only"
+      ],
+      [
+        "2026-02-18",
+        "february 18",
+        "18 february"
+      ],
+      [
+        "sqlite"
+      ],
+      [
+        "rejected"
+      ],
+      [
+        "single writer",
+        "one writer"
+      ],
+      [
+        "second",
+        "another"
+      ],
+      [
+        "writer"
+      ],
+      [
+        "50,000",
+        "50000"
+      ],
+      [
+        "cross-machine",
+        "cross machine"
+      ]
+    ],
+    "forbidden": [
+      "sqlite was chosen",
+      "postgres was chosen",
+      "jsonl was rejected",
+      "decision was sqlite",
+      "decision was postgres"
+    ]
+  }
+}
