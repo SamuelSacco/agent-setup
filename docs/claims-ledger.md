@@ -53,6 +53,8 @@ authenticated; see evals/results/).
 
 
 
+| S27 | Claude remote (GitHub) marketplace add/install works end-to-end, and `npx skills --copy` installs real copies (not symlinks) whose content matches the source byte-for-byte | **PROVEN** 2026-10-01 (backlog X16, scratch-HOME probes, Claude Code 2.1.286 / skills CLI 1.7.0) — remote: `claude plugin marketplace add anthropics/claude-plugins-official --sparse …` cloned via anonymous HTTPS, source recorded as `github` in settings + `known_marketplaces.json`; `plugin install commit-commands@… --scope user` exit 0, payload at `~/.claude/plugins/cache/claude-plugins-official/commit-commands/ab024cdcfa7c/`, `plugin list --json` scope user / enabled true, `plugin details` inventory returned (3 skills, ~71 tok). Copy mode: `skills add dbos-inc/agent-skills -g --copy --skill dbos-python` exit 0; zero symlinks under `~/.agents/skills` or `~/.claude/skills`; `diff -r` against a fresh source clone empty for canonical, Claude target, and canonical↔target; SKILL.md SHA-256 identical in all three. Nuances: Copilot gets no `~/.copilot/skills` copy — it is served by the canonical store copy (its PROVEN direct-read path); a source-internal symlink (`CLAUDE.md` → `AGENTS.md`) is dereferenced to a regular file with identical content | evals/results/2026-10-01-X16-install-surface.md |
+
 ## How a verdict changes
 
 1. Run the eval in `evals/tasks/` exactly as written (thresholds pre-registered).

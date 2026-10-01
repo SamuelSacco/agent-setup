@@ -277,10 +277,14 @@ Status key: UNVERIFIABLE / PARTIAL / REFUTED / PROVEN / UNBUILT / BLOCKED.
 - Cost as run: $0.1145 + ~6.7 min wall including one-time clone/venv.
 
 ### X16 — Install-surface leftovers (install matrix)
-- Status: UNVERIFIABLE ×2 — Claude remote (GitHub) marketplace add/install
-  not tested (local PROVEN); `npx skills --copy` mode not tested.
-- Cheapest decisive test: one probe each, matrix protocol.
-  Est. cost: ~$0.30 each. Priority: low.
+- Status: **PROVEN ×2 2026-10-01 (Wave 4-B)** — Claude remote (GitHub)
+  marketplace add/install PROVEN (anonymous HTTPS clone, payload in
+  shared cache keyed by git SHA, `plugin list` scope user/enabled);
+  `npx skills --copy` PROVEN (real copied dirs in canonical store +
+  `~/.claude/skills`, zero symlinks, `diff -r` vs source empty; Copilot
+  served via the canonical store, no `~/.copilot/skills` created).
+  Ledger S27; `evals/results/2026-10-01-X16-install-surface.md`.
+  Cost as run: $0.00.
 
 ### X17 — Copilot custom agents receive repo orientation
 - Status: **PROVEN** 2026-09-30 (X17 probe) — as-emitted custom agents
