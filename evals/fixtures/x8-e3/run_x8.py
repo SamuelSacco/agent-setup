@@ -16,7 +16,7 @@ SCRATCH = os.path.join(ROOT, "evals", "scratch-x8")
 CLAUDE = os.path.expanduser("~/workspace/tools/bin/claude")
 HELPER = os.path.expanduser("~/workspace/skills/anthropic/bin/claude_api_key_helper.py")
 MODEL = "claude-haiku-4-5-20251001"
-TIMEOUT = 300
+TIMEOUT = 900
 
 def sh(cmd, cwd=None, timeout=None):
     return subprocess.run(cmd, cwd=cwd, timeout=timeout, stdin=subprocess.DEVNULL,

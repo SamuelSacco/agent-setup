@@ -128,7 +128,25 @@ a second concurrent writer, 50,000 lines, or cross-machine queries.
 
 ## Results
 
-_(filled in after the runs, in the same file, per repo convention)_
+### Incident, run 1 (T1-A, first attempt)
+
+The first T1-A run hit the registered 300 s per-run timeout and was
+killed before Claude emitted its JSON envelope: cost and turns are
+unmetered for that attempt. Disk grading of its tree: **PASS, 5/5**
+(the fix was complete on disk before the kill). A trivial probe
+afterwards (`claude -p "Reply with exactly: hi"`, Haiku) took 41 s
+of API time for one turn, i.e. API latency, not a hang — 300 s was
+below this model's current per-turn latency × expected turns.
+Packaged-task runs in this repo use 600–900 s for the same reason.
+Amendment (recorded here before any further run): per-run timeout
+raised 300 s → 900 s; the timed-out attempt is discarded from the
+results table (its PASS is noted, not counted) and T1-A is re-run
+once under the amended timeout. Against the $3.00 cap, a
+conservative $0.30 reserve is charged for the unmetered attempt
+(estimate, labeled — not a metered figure), leaving $2.70 of
+metered headroom.
+
+_(results table filled in after the runs)_
 
 ## Verdict
 
