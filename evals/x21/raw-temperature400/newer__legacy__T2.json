@@ -1,0 +1,11 @@
+{
+  "gen": "newer",
+  "model": "claude-opus-5-5",
+  "style": "legacy",
+  "task": "T2",
+  "expected": "tnega putes sniw",
+  "text": "",
+  "usage": {},
+  "error": "HTTP 400: {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"`temperature` is deprecated for this model.\"},\"request_id\":\"req_011CfazYj4L6TLGP9RuWp2kP\"}",
+  "response_model": null
+}
