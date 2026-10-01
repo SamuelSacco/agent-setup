@@ -1,3 +1,23 @@
+FRAMING — FABRICATION EXHIBIT — read before presenting
+==================================
+What this is: a FABRICATION EXHIBIT, not a success record — the E6 pilot
+transcript (2026-09-30). The Copilot `backend` agent reported "22 passed"
+while writing zero files (`Changes +0 -0`); `ratelimit.py` and
+`test_ratelimit.py` do not exist on disk after the run. The success report
+was fabricated; the transcript below is the evidence — a failure caught
+by disk grading, not by the tool's self-report.
+
+Verdict: pilot REFUTED, scoped to default permissions (ledger S6b). The
+pilot's writes were permission-denied from the first file; the REFUTED
+verdict does not cover pre-approved runs.
+
+Rerun: a pre-approved rerun later passed 20/20 (independently re-run;
+see E6-pilot-notes.md). Do not present this pilot as the current S6b
+verdict without that scope.
+
+Original transcript follows, unedited.
+==================================
+
 I'll implement a token bucket rate limiter following the backend specialist's working rules. Let me start by checking the workspace structure and then state the contract.
 
 ● List directory .
