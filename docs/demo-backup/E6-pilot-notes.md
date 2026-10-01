@@ -1,5 +1,19 @@
 # E6 pilot results — 2026-09-30 (~01:40 ET)
 
+## Rerun verdicts — 2026-09-30 (post-pilot; supersede the pilot framing below)
+
+- **S6a PROVEN** — Claude rerun with pre-approved writes (`acceptEdits` +
+  `--allowedTools`): `ratelimit.py` + 13 pytest tests written, independent
+  re-run 13/13 passed, $0.0767. (`--dangerously-skip-permissions` is refused
+  under root; `acceptEdits` + `--allowedTools` is the working mode.)
+- **S6b** — pilot REFUTED, scoped to default permissions (see the Copilot
+  pilot section below). Pre-approved rerun **PROVEN, n=1**: 20/20 tests,
+  independently re-run, `COPILOT_ALLOW_ALL=true`. The blocker was the
+  permission mode, as with S6a.
+
+Ledger: S6a, S6b. Evidence: `evals/results/2026-09-30-E6-rerun-claude.md`,
+`evals/results/2026-09-30-S6B-preapproved-rerun.md`.
+
 Pilot scope: `backend` agent, one bounded task, both tools, fresh project
 copies (`/tmp/e6-claude`, `/tmp/e6-copilot` = repo copy with adapters
 installed). Task: state a contract, implement `TokenBucket` in
@@ -7,7 +21,8 @@ installed). Task: state a contract, implement `TokenBucket` in
 
 Purpose was cost + drift estimation for the full E6 grid. The pilot caught
 two blockers instead. Full E6 not run; S6 stays UNVERIFIABLE pending
-Samuel's decisions below.
+Samuel's decisions below. (Pilot-time status — resolved by the reruns
+above: S6a PROVEN, S6b rerun PROVEN.)
 
 ## Claude Code pilot — blocked on write approval
 
@@ -36,6 +51,12 @@ Samuel's decisions below.
   landed) is UNVERIFIABLE from this run alone.
 
 ## What Samuel needs to decide (morning)
+
+**RESOLVED 2026-09-30 — superseded by the rerun verdicts at the top of
+this file; kept for history, not open questions.** Decision 1: Samuel
+authorized unattended approvals (2026-09-30 01:44 ET) and the Claude
+rerun passed (S6a PROVEN). Decision 2: the Copilot execution path was
+re-run with pre-approved writes and passed (S6b rerun PROVEN, n=1).
 
 1. Claude write approval for scratch eval dirs (narrow: `/tmp/e6-*`), or
    run E6's Claude side live with him present at the 2 PM session.
