@@ -156,4 +156,4 @@ routine self-review, and do not treat your own files as read-only.
 
 ### Lessons
 
-<!-- Append dated entries: `- <YYYY-MM-DD> — <lesson> (<session file or correction that earned it>)`. -->
+<!-- Append dated entries: `- <YYYY-MM-DD> — <lesson naming the concrete mechanism that prevents recurrence> (<exact session file path, e.g. wiki/sessions/2026-10-01-0900-claude-code-x.md, or the correction that earned it>)`. -->

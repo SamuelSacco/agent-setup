@@ -53,6 +53,17 @@ Persona bar: a `SOUL.md` edit needs a pattern — the same behavior in
 ≥ 2 sessions, or one explicit user correction. A single incident is a
 lesson (`AGENTS.md`) at most, never a persona edit.
 
+**Mechanism rule.** A lesson drawn from a friction instance must name
+the concrete mechanism that prevents recurrence — the exact command,
+directory, path, or setting. "Read errors before retrying" alone does
+not conform; "run the eval suite from `demo/` — from the repo root it
+collects zero tests" does. If a session's `## Learned` states a durable
+fact that is not yet in `wiki/notes/`, route the fact itself, with its
+mechanism intact, to a note or a lesson — never let it survive only as
+a generic paraphrase. (Added after the S25 behavior probe: the first
+live run routed three generic discipline lessons and dropped the
+seeded working-directory fact.)
+
 ## 4. Write the review entry
 
 Append to today's session file, or create
@@ -66,6 +77,19 @@ template, containing: the 5 ratings with citations, every file changed
 One commit for the whole review: `self-review: <YYYY-MM-DD>`. Every
 self-change is a diff the user can read and revert. Uncommitted
 self-updates are process violations, not initiative.
+
+Before committing, check the diff against this list — every item, or
+the review is not conformant:
+
+- Every `AGENTS.md` lesson is dated, names its mechanism (rule above),
+  and ends with the exact session-file path in parentheses:
+  `(wiki/sessions/<file>.md)`. A description like "(seeded session)"
+  is not a citation.
+- Every axis rated ≤ 2 has a routed lesson, or an explicit note why
+  no fix exists.
+- `wiki/log.md` has exactly one new line for this review.
+- No persona file (`SOUL.md`, `IDENTITY.md`) changed without meeting
+  its bar in step 3.
 
 ## Guardrails
 
