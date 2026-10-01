@@ -68,6 +68,8 @@ agent-setup/
 
 See `docs/claims-ledger.md` for the live verdict on every claim this system makes.
 
-Known gap: workspace-scope MCP does not load on Copilot CLI 1.0.89 (ledger S24,
-REFUTED). The working Copilot path is user-scope `~/.copilot/mcp-config.json`;
-the installer does not emit it yet. The ledger's S13 claim stands for Claude only.
+Copilot MCP note: workspace-scope MCP does not load on Copilot CLI 1.0.89
+(ledger S24, REFUTED), so the installer also emits the user-scope config
+`~/.copilot/mcp-config.json` from the canonical MCP definitions — merged
+into any existing user config, never replaced. That scope is live-verified
+(ledger S24 closure, 2026-10-01).
