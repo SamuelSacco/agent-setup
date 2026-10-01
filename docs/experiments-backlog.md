@@ -214,6 +214,23 @@ Status key: UNVERIFIABLE / PARTIAL / REFUTED / PROVEN / UNBUILT / BLOCKED.
   that fails if Claude < v2.1.277, if a CLAUDE.md appears without the
   bridge, or if the AGENTS.md marker stops loading. Est. cost: ~$0.20.
   Priority: high once ruled.
+- Resolution — 2026-10-01 (X19 run, branch `feat/x19-version-guard`):
+  GUARD BUILT. `scripts/check-version-guard.sh` (standalone; the C4
+  guard `scripts/check-agents-md-load.sh` is untouched — it waives the
+  floor when a bridged CLAUDE.md is present and checks only the root
+  file). The X19 guard fails (exit 1) on: (1) Claude < 2.1.277,
+  unconditional (shim-induced 2.1.276 → exit 1; exactly 2.1.277 →
+  pass; `v`-prefixed / bare / prefixed version strings all parse);
+  (2) any CLAUDE.md in the tree without the `@AGENTS.md` bridge
+  (root and nested-only both caught; bridged control passes);
+  (3) marker missing from AGENTS.md (static) or not loading live
+  (marker-removed tree → probe `NOT LOADED`, exit 1; clean tree live
+  probe → marker loaded, exit 0). All three conditions PROVEN.
+  Evidence: `evals/results/2026-10-01-X19-version-guard.md`.
+  Spend: $0.0459424 metered (≈$0.061 incl. one unreported probe run).
+  The keep-vs-delete CLAUDE.md ruling itself remains PARKED for
+  Samuel — nothing was deleted and no bridge was changed (at head
+  the tree already ships no CLAUDE.md, per the C4 final shape).
 
 ### X20 — Roster narrative drift (packet vs wiki vs canonical/)
 - Status: OPEN inconsistency found this run. `wiki/notes/v2-roster.md`
