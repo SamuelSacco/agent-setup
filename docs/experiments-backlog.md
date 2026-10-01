@@ -161,6 +161,13 @@ Status key: UNVERIFIABLE / PARTIAL / REFUTED / PROVEN / UNBUILT / BLOCKED.
   ux-ui agent with screenshot+assert loop vs base; pass = loop closes
   without human eyes. Est. cost: ~$0.50 + a non-sandbox session.
   Priority: medium.
+- Fix update 2026-10-01 (Q17, branch `fix/ux-ui-tools-hint`):
+  canonical ux-ui now declares `mcp:playwright` in `tools_hint`;
+  `scripts/adapters.py` renders named-server MCP grants (Claude
+  `mcp__playwright__*`, Copilot `playwright/*`). Install-level
+  PROVEN; the behavioral retest is still owed (probe blocked on
+  Anthropic API credit). Evidence:
+  `evals/results/2026-10-01-Q17-ux-ui-tools-hint.md`.
 
 ### X5 — Automatic session-end cleanup/forget in both CLIs
 - Status: **Claude trigger PROVEN 2026-09-30** (SessionEnd hook fired 2/2

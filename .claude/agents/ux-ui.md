@@ -1,7 +1,7 @@
 ---
 name: ux-ui
 description: UX/UI specialist — interface design, accessibility, design-system fidelity. Use for screens, flows, and visual polish.
-tools: [Read, Write, Edit, Bash]
+tools: [Read, Write, Edit, Bash, mcp__playwright__*]
 ---
 
 # UX/UI specialist

@@ -216,6 +216,17 @@ def install_skills():
 # ---------------------------------------------------------------- agents
 # tools_hint categories -> per-tool allowlists. Canonical hints are abstract
 # (read/search/shell/edit); each tool's `tools:` field takes its own names.
+# MCP grants use a named-server form, `mcp:<server>`, where <server> is a
+# canonical/mcp/<server>.json name. Claude renders it `mcp__<server>__*`
+# (the wildcard allowlist entry for that server's tools); Copilot renders
+# `<server>/*` (the shared .agent.md MCP vocabulary). Without such a grant
+# an agent's allowlist contains no `mcp__*` entries at all, so the agent
+# cannot call any MCP tool even when the server is configured — X4
+# (2026-10-01) REFUTED the ux-ui agent on exactly this: its rules require
+# browser verification via Playwright, but [read, edit, shell] loaded 4
+# tools and no `mcp__playwright__*`. Copilot-side runtime *enforcement*
+# of the emitted MCP names is UNVERIFIABLE from this sandbox; the Claude
+# form is probe-verified in evals/results/2026-10-01-Q17-ux-ui-tools-hint.md.
 #   Claude Code subagents: tool names (Read, Grep, ...). `search` maps to the
 #     two file-search tools only — NOT WebSearch/WebFetch: a code-search hint
 #     must not silently grant network access.
@@ -243,11 +254,24 @@ COPILOT_TOOL_MAP = {
 }
 
 
-def translate_tools_hint(hint, tool_map, agent_name):
+def translate_tools_hint(hint, tool_map, agent_name, mcp_format):
     if hint is None:
         return None
     tools = []
     for token in hint:
+        if token.startswith("mcp:"):
+            server = token[len("mcp:"):]
+            if not re.fullmatch(r"[a-z0-9][a-z0-9-]*", server):
+                sys.exit(
+                    f"adapters: agent {agent_name!r} declares malformed "
+                    f"tools_hint {token!r} (want mcp:<server>, server = a "
+                    "canonical/mcp/<server>.json name); refusing to install "
+                    "with a dropped restriction"
+                )
+            t = mcp_format.format(server=server)
+            if t not in tools:
+                tools.append(t)
+            continue
         if token not in tool_map:
             sys.exit(
                 f"adapters: agent {agent_name!r} declares unknown tools_hint "
@@ -267,14 +291,16 @@ def install_agents():
         hint = fm.get("tools_hint")
         # Claude Code subagent
         c_fm = {"name": name, "description": fm.get("description", "")}
-        c_tools = translate_tools_hint(hint, CLAUDE_TOOL_MAP, name)
+        c_tools = translate_tools_hint(hint, CLAUDE_TOOL_MAP, name,
+                                       "mcp__{server}__*")
         if c_tools is not None:
             c_fm["tools"] = c_tools
         dest = CLAUDE / "agents" / f"{name}.md"
         write_with_backup(dest, f"{fm_block(c_fm)}\n\n{body}\n")
         # Copilot custom agent
         p_fm = {"name": name, "description": fm.get("description", "")}
-        p_tools = translate_tools_hint(hint, COPILOT_TOOL_MAP, name)
+        p_tools = translate_tools_hint(hint, COPILOT_TOOL_MAP, name,
+                                       "{server}/*")
         if p_tools is not None:
             p_fm["tools"] = p_tools
         dest = COPILOT_GH / "agents" / f"{name}.agent.md"
